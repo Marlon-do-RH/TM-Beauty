@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E4C66A;
+  --gold-dark: #9E7A2E;
+  --gold-shimmer: #F5D98B;
+  --black: #0A0A0A;
+  --black-soft: #141414;
+  --black-card: #1A1A1A;
+  --black-border: #2A2A2A;
+  --white: #FFFFFF;
+  --white-soft: #F5F0E8;
+  --text-muted: #888888;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
