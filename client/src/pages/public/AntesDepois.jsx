@@ -1,9 +1,8 @@
 import { useState } from 'react'
+import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 import s from './AntesDepois.module.css'
-
-const categories = ['Todos', 'Nanoplastia', 'Botox', 'Deep Treatment']
 
 const pairs = [
   { category: 'Nanoplastia', label: 'Cabelo cacheado → liso sedoso' },
@@ -15,17 +14,19 @@ const pairs = [
 ]
 
 export default function AntesDepois() {
-  const [active, setActive] = useState('Todos')
+  const { t } = useLanguage()
+  const categories = [t('antesDepois', 'all'), 'Nanoplastia', 'Botox', 'Deep Treatment']
+  const [active, setActive] = useState(categories[0])
 
-  const filtered = active === 'Todos' ? pairs : pairs.filter(p => p.category === active)
+  const filtered = active === categories[0] ? pairs : pairs.filter(p => p.category === active)
 
   return (
     <div>
       <section className={styles.pageHero}>
         <div className={styles.pageHeroContent}>
-          <p className={styles.eyebrow}>Resultados Reais</p>
-          <h1 className={styles.pageTitle}>Antes & Depois</h1>
-          <p className={styles.pageSubtitle}>Transformações reais de clientes reais. Cada resultado conta uma história única.</p>
+          <p className={styles.eyebrow}>{t('antesDepois', 'eyebrow')}</p>
+          <h1 className={styles.pageTitle}>{t('antesDepois', 'title')}</h1>
+          <p className={styles.pageSubtitle}>{t('antesDepois', 'subtitle')}</p>
         </div>
       </section>
 
@@ -48,10 +49,10 @@ export default function AntesDepois() {
               <div key={i} className={s.pairCard}>
                 <div className={s.pairImages}>
                   <div className={s.pairImg}>
-                    <span className={s.pairTag}>Antes</span>
+                    <span className={s.pairTag}>{t('antesDepois', 'before')}</span>
                   </div>
                   <div className={`${s.pairImg} ${s.pairImgAfter}`}>
-                    <span className={s.pairTag}>Depois</span>
+                    <span className={s.pairTag}>{t('antesDepois', 'after')}</span>
                   </div>
                 </div>
                 <div className={s.pairInfo}>
@@ -65,9 +66,9 @@ export default function AntesDepois() {
       </section>
 
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>Quer ser a próxima transformação?</h2>
-        <p className={styles.ctaText}>Agende sua consulta e comece sua jornada de transformação hoje.</p>
-        <BookingButton label="Quero me Transformar" variant="primary" />
+        <h2 className={styles.ctaTitle}>{t('antesDepois', 'ctaTitle')}</h2>
+        <p className={styles.ctaText}>{t('antesDepois', 'ctaText')}</p>
+        <BookingButton label={t('antesDepois', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )

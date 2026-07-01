@@ -1,7 +1,26 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../i18n/LanguageContext'
 import styles from './Footer.module.css'
 
 export default function Footer() {
+  const { t } = useLanguage()
+
+  const navLinks = [
+    { to: '/', label: t('nav', 'home') },
+    { to: '/sobre', label: t('nav', 'sobre') },
+    { to: '/servicos', label: t('nav', 'servicos') },
+    { to: '/antes-depois', label: t('nav', 'antesDepois') },
+    { to: '/experiencia', label: t('nav', 'experiencia') },
+  ]
+
+  const moreLinks = [
+    { to: '/studio', label: t('nav', 'studio') },
+    { to: '/produtos', label: t('nav', 'produtos') },
+    { to: '/avaliacoes', label: t('nav', 'avaliacoes') },
+    { to: '/faq', label: t('nav', 'faq') },
+    { to: '/contato', label: t('nav', 'contato') },
+  ]
+
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
@@ -9,35 +28,31 @@ export default function Footer() {
           <div className={styles.logo}>
             <span className={styles.logoTm}>TM</span>
           </div>
-          <p className={styles.tagline}>Thalita Medeiros</p>
-          <p className={styles.sub}>Brazilian Hair Specialist in Melbourne</p>
-          <p className={styles.copy}>© {new Date().getFullYear()} Thalita Medeiros. Todos os direitos reservados.</p>
+          <p className={styles.tagline}>{t('footer', 'tagline')}</p>
+          <p className={styles.sub}>{t('footer', 'sub')}</p>
+          <p className={styles.copy}>© {new Date().getFullYear()} Thalita Medeiros. {t('footer', 'copy')}</p>
         </div>
 
         <div className={styles.col}>
-          <h4 className={styles.colTitle}>Navegação</h4>
+          <h4 className={styles.colTitle}>{t('footer', 'nav')}</h4>
           <ul className={styles.colLinks}>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/sobre">Sobre Thalita</Link></li>
-            <li><Link to="/servicos">Serviços</Link></li>
-            <li><Link to="/antes-depois">Antes & Depois</Link></li>
-            <li><Link to="/experiencia">A Experiência</Link></li>
+            {navLinks.map(l => (
+              <li key={l.to}><Link to={l.to}>{l.label}</Link></li>
+            ))}
           </ul>
         </div>
 
         <div className={styles.col}>
-          <h4 className={styles.colTitle}>Mais</h4>
+          <h4 className={styles.colTitle}>{t('footer', 'more')}</h4>
           <ul className={styles.colLinks}>
-            <li><Link to="/studio">O Studio</Link></li>
-            <li><Link to="/produtos">Produtos</Link></li>
-            <li><Link to="/avaliacoes">Avaliações</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/contato">Contato</Link></li>
+            {moreLinks.map(l => (
+              <li key={l.to}><Link to={l.to}>{l.label}</Link></li>
+            ))}
           </ul>
         </div>
 
         <div className={styles.col}>
-          <h4 className={styles.colTitle}>Conecte-se</h4>
+          <h4 className={styles.colTitle}>{t('footer', 'connect')}</h4>
           <ul className={styles.colLinks}>
             <li>
               <a href="https://instagram.com/thalita.medeiros.hair" target="_blank" rel="noreferrer">
@@ -52,10 +67,10 @@ export default function Footer() {
             <li><Link to="/contato">Email</Link></li>
           </ul>
           <div className={styles.newsletter}>
-            <p className={styles.newsletterTitle}>Newsletter</p>
-            <p className={styles.newsletterSub}>Receba dicas e novidades exclusivas.</p>
+            <p className={styles.newsletterTitle}>{t('footer', 'newsletter')}</p>
+            <p className={styles.newsletterSub}>{t('footer', 'newsletterSub')}</p>
             <form className={styles.newsletterForm} onSubmit={e => e.preventDefault()}>
-              <input type="email" placeholder="Seu e-mail" className={styles.newsletterInput} />
+              <input type="email" placeholder={t('footer', 'newsletterPlaceholder')} className={styles.newsletterInput} />
               <button type="submit" className={styles.newsletterBtn}>→</button>
             </form>
           </div>

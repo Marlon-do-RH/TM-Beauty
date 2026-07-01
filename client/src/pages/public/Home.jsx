@@ -1,77 +1,51 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './Home.module.css'
 
-const stats = [
-  { value: '10+', label: 'Anos de Experiência' },
-  { value: '3', label: 'Países' },
-  { value: '1000+', label: 'Clientes Felizes' },
-  { value: '5.0', label: 'Google Reviews' },
-]
-
-const services = [
-  {
-    title: 'Brazilian Nanoplastia',
-    desc: 'O tratamento mais avançado de alisamento sem formol. Cabelos lisos, sedosos e com brilho duradouro.',
-    price: 'a partir de R$280',
-    icon: '✦',
-  },
-  {
-    title: 'Brazilian Botox',
-    desc: 'Hidratação profunda e redução de volume. Resultado natural e duradouro por até 4 meses.',
-    price: 'a partir de R$220',
-    icon: '✧',
-  },
-  {
-    title: 'Deep Treatment',
-    desc: 'Tratamento reconstrutivo intensivo que devolve vida e brilho ao cabelo danificado.',
-    price: 'a partir de R$180',
-    icon: '◈',
-  },
+const serviceKeys = [
+  { key: 'nano', price: 'a partir de R$280', icon: '✦' },
+  { key: 'botox', price: 'a partir de R$220', icon: '✧' },
+  { key: 'deep', price: 'a partir de R$180', icon: '◈' },
 ]
 
 const reviews = [
-  {
-    name: 'Sarah M.',
-    stars: 5,
-    text: 'Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring.',
-  },
-  {
-    name: 'Camila R.',
-    stars: 5,
-    text: 'Incredible experience from start to finish. The studio is beautiful and the results are beyond what I expected.',
-  },
-  {
-    name: 'Jessica T.',
-    stars: 5,
-    text: "I've been going to Thalita for 2 years and I will never go anywhere else. The best hair treatment in Melbourne!",
-  },
+  { name: 'Sarah M.', stars: 5, text: "Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring." },
+  { name: 'Camila R.', stars: 5, text: "Incredible experience from start to finish. The studio is beautiful and the results are beyond what I expected." },
+  { name: 'Jessica T.', stars: 5, text: "I've been going to Thalita for 2 years and I will never go anywhere else. The best hair treatment in Melbourne!" },
 ]
 
 export default function Home() {
+  const { t } = useLanguage()
+
+  const stats = [
+    { value: '10+', label: t('home', 'statsYears') },
+    { value: '3', label: t('home', 'statsCountries') },
+    { value: '1000+', label: t('home', 'statsClients') },
+    { value: '5.0', label: t('home', 'statsReviews') },
+  ]
+
   return (
     <div className={styles.page}>
       {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.heroEyebrow}>Brazilian Hair Specialist · Melbourne</p>
+          <p className={styles.heroEyebrow}>{t('home', 'heroEyebrow')}</p>
           <h1 className={styles.heroTitle}>
             Thalita<br />
             <span className={styles.heroTitleAccent}>Medeiros</span>
           </h1>
-          <p className={styles.heroTagline}>
-            Especialista em tratamentos capilares brasileiros que transformam cabelos e elevam a autoestima.
-          </p>
+          <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
           <div className={styles.heroCtas}>
-            <BookingButton label="Agendar Agora" variant="primary" />
-            <Link to="/servicos" className={styles.heroSecondary}>Ver Serviços →</Link>
+            <BookingButton label={t('nav', 'bookNow')} variant="primary" />
+            <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
           </div>
         </div>
         <div className={styles.heroVisual}>
           <div className={styles.heroPlaceholder}>
             <div className={styles.heroBadge}>
               <span className={styles.heroBadgeStars}>★★★★★</span>
-              <span>5.0 no Google</span>
+              <span>5.0 {t('home', 'statsReviews')}</span>
             </div>
           </div>
         </div>
@@ -90,18 +64,18 @@ export default function Home() {
       {/* Services preview */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <p className={styles.eyebrow}>O que ofereço</p>
-          <h2 className={styles.sectionTitle}>Tratamentos Especializados</h2>
-          <p className={styles.sectionSub}>Técnicas brasileiras exclusivas, aplicadas com precisão e carinho em Melbourne.</p>
+          <p className={styles.eyebrow}>{t('home', 'servicesEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home', 'servicesTitle')}</h2>
+          <p className={styles.sectionSub}>{t('home', 'servicesSub')}</p>
         </div>
         <div className={styles.servicesGrid}>
-          {services.map(s => (
-            <div key={s.title} className={styles.serviceCard}>
+          {serviceKeys.map(s => (
+            <div key={s.key} className={styles.serviceCard}>
               <span className={styles.serviceIcon}>{s.icon}</span>
-              <h3 className={styles.serviceTitle}>{s.title}</h3>
-              <p className={styles.serviceDesc}>{s.desc}</p>
+              <h3 className={styles.serviceTitle}>{t('servicos', s.key)?.name || t('servicos', `${s.key}.name`)}</h3>
+              <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
               <p className={styles.servicePrice}>{s.price}</p>
-              <Link to="/servicos" className={styles.serviceLink}>Saiba Mais →</Link>
+              <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
         </div>
@@ -110,17 +84,15 @@ export default function Home() {
       {/* Before/After teaser */}
       <section className={styles.teaserSection}>
         <div className={styles.teaserContent}>
-          <p className={styles.eyebrow}>Transformações Reais</p>
-          <h2 className={styles.teaserTitle}>Os Resultados Falam por Si</h2>
-          <p className={styles.teaserText}>
-            Veja as transformações incríveis que meus tratamentos proporcionam. Cada resultado é único e personalizado para cada tipo de cabelo.
-          </p>
-          <BookingButton label="Ver Antes & Depois" to="/antes-depois" variant="outline" />
+          <p className={styles.eyebrow}>{t('home', 'beforeEyebrow')}</p>
+          <h2 className={styles.teaserTitle}>{t('home', 'beforeTitle')}</h2>
+          <p className={styles.teaserText}>{t('home', 'beforeText')}</p>
+          <BookingButton label={t('home', 'viewBeforeAfter')} to="/antes-depois" variant="outline" />
         </div>
         <div className={styles.teaserVisual}>
           <div className={styles.beforeAfterBox}>
-            <div className={styles.beforeLabel}>Antes</div>
-            <div className={styles.afterLabel}>Depois</div>
+            <div className={styles.beforeLabel}>{t('antesDepois', 'before')}</div>
+            <div className={styles.afterLabel}>{t('antesDepois', 'after')}</div>
           </div>
         </div>
       </section>
@@ -128,9 +100,9 @@ export default function Home() {
       {/* Experience highlight */}
       <section className={styles.expSection}>
         <div className={styles.sectionHeader}>
-          <p className={styles.eyebrow}>Mais que um serviço</p>
-          <h2 className={styles.sectionTitle}>Uma Experiência Completa</h2>
-          <p className={styles.sectionSub}>Cada detalhe pensado para o seu conforto e bem-estar enquanto se transforma.</p>
+          <p className={styles.eyebrow}>{t('home', 'expEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home', 'expTitle')}</h2>
+          <p className={styles.sectionSub}>{t('home', 'expSub')}</p>
         </div>
         <div className={styles.amenities}>
           {['☕ Premium Coffee', '🍫 Brazilian Snacks', '💆 Massage Cushion', '🌸 Relaxing Aroma',
@@ -139,15 +111,15 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.expCta}>
-          <Link to="/experiencia" className={styles.heroSecondary}>Conhecer a Experiência →</Link>
+          <Link to="/experiencia" className={styles.heroSecondary}>{t('home', 'discoverExp')}</Link>
         </div>
       </section>
 
       {/* Reviews */}
       <section className={styles.reviewsSection}>
         <div className={styles.sectionHeader}>
-          <p className={styles.eyebrow}>O que dizem</p>
-          <h2 className={styles.sectionTitle}>Avaliações dos Clientes</h2>
+          <p className={styles.eyebrow}>{t('home', 'reviewsEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home', 'reviewsTitle')}</h2>
           <div className={styles.ratingBadge}>
             <span className={styles.ratingStars}>★★★★★</span>
             <span className={styles.ratingText}>5.0 · Google Reviews</span>
@@ -163,15 +135,15 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.expCta}>
-          <Link to="/avaliacoes" className={styles.heroSecondary}>Ver Todas as Avaliações →</Link>
+          <Link to="/avaliacoes" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>Pronta para a Transformação?</h2>
-        <p className={styles.ctaText}>Agende sua consulta e descubra o tratamento ideal para o seu cabelo.</p>
-        <BookingButton label="Agendar Minha Consulta" variant="primary" />
+        <h2 className={styles.ctaTitle}>{t('home', 'ctaTitle')}</h2>
+        <p className={styles.ctaText}>{t('home', 'ctaText')}</p>
+        <BookingButton label={t('home', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )

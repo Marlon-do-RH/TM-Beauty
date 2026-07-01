@@ -22,7 +22,7 @@
   height: 72px;
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
 }
 
 .brand {
@@ -60,22 +60,23 @@
 .links {
   display: flex;
   list-style: none;
-  gap: 4px;
+  gap: 0px;
   flex: 1;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .link {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--dark-soft);
-  padding: 6px 8px;
+  padding: 6px 7px;
   border-bottom: 2px solid transparent;
   transition: color 0.2s, border-color 0.2s;
   white-space: nowrap;
+  display: block;
 }
 
 .link:hover,
@@ -84,16 +85,123 @@
   border-bottom-color: var(--gold);
 }
 
+/* Actions row */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Language switcher */
+.langWrapper {
+  position: relative;
+}
+
+.langBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--dark-soft);
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.langBtn:hover {
+  border-color: var(--gold);
+  color: var(--chocolate);
+}
+
+.langFlag {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.langCode {
+  letter-spacing: 0.08em;
+}
+
+.langChevron {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.langChevronOpen {
+  transform: rotate(180deg);
+}
+
+.langDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(74, 52, 40, 0.12);
+  min-width: 160px;
+  overflow: hidden;
+  animation: dropIn 0.15s ease;
+  z-index: 200;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.langOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: var(--dark-soft);
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.langOption:hover {
+  background: var(--sage-light);
+  color: var(--chocolate);
+}
+
+.langOptionActive {
+  color: var(--chocolate);
+  font-weight: 600;
+}
+
+.langCheck {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 0.75rem;
+}
+
+/* Book Now */
 .bookBtn {
   flex-shrink: 0;
   background: var(--gold);
   color: var(--white);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 10px 20px;
+  padding: 9px 18px;
   border-radius: 2px;
   transition: background 0.2s, transform 0.15s;
 }
@@ -103,6 +211,26 @@
   transform: translateY(-1px);
 }
 
+/* Admin login */
+.adminBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.adminBtn:hover {
+  color: var(--chocolate);
+  border-color: var(--chocolate);
+  background: var(--sage-light);
+}
+
+/* Burger */
 .burger {
   display: none;
   flex-direction: column;
@@ -111,7 +239,6 @@
   border: none;
   padding: 4px;
   cursor: pointer;
-  margin-left: auto;
 }
 
 .burger span {
@@ -127,7 +254,8 @@
 .barOpen:nth-child(2) { opacity: 0; }
 .barOpen:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-@media (max-width: 960px) {
+/* Mobile */
+@media (max-width: 1024px) {
   .links {
     display: none;
     position: fixed;
@@ -136,10 +264,11 @@
     right: 0;
     background: var(--offwhite);
     flex-direction: column;
-    padding: 16px 24px 24px;
+    padding: 8px 24px 24px;
     border-bottom: 1px solid var(--border);
     box-shadow: 0 8px 24px rgba(74, 52, 40, 0.1);
     gap: 0;
+    z-index: 99;
   }
 
   .links.open {
@@ -149,14 +278,26 @@
   .link {
     padding: 12px 0;
     border-bottom: 1px solid var(--border);
+    border-left: none;
     font-size: 0.8rem;
   }
 
   .burger {
     display: flex;
+    margin-left: auto;
   }
 
   .bookBtn {
+    display: none;
+  }
+
+  .brandName {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .langCode {
     display: none;
   }
 }

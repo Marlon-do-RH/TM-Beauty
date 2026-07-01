@@ -1,26 +1,27 @@
+import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 
-const values = [
-  { icon: '✦', title: 'Excelência', desc: 'Cada tratamento é executado com a mais alta precisão e cuidado técnico.' },
-  { icon: '♡', title: 'Autenticidade', desc: 'Técnicas 100% brasileiras, adaptadas ao clima e necessidades locais.' },
-  { icon: '◈', title: 'Personalização', desc: 'Cada cabelo é único. Cada tratamento é pensado para você.' },
-  { icon: '✧', title: 'Bem-estar', desc: 'Mais do que beleza — uma experiência de autocuidado completa.' },
-]
-
 export default function SobreThalita() {
+  const { t } = useLanguage()
+
+  const values = [
+    { icon: '✦', title: t('sobre', 'v1Title'), desc: t('sobre', 'v1Desc') },
+    { icon: '♡', title: t('sobre', 'v2Title'), desc: t('sobre', 'v2Desc') },
+    { icon: '◈', title: t('sobre', 'v3Title'), desc: t('sobre', 'v3Desc') },
+    { icon: '✧', title: t('sobre', 'v4Title'), desc: t('sobre', 'v4Desc') },
+  ]
+
   return (
     <div>
-      {/* Hero */}
       <section className={styles.pageHero}>
         <div className={styles.pageHeroContent}>
-          <p className={styles.eyebrow}>A Especialista</p>
-          <h1 className={styles.pageTitle}>Sobre Thalita</h1>
-          <p className={styles.pageSubtitle}>Da cidade de São Paulo para o coração de Melbourne — uma jornada de paixão e dedicação.</p>
+          <p className={styles.eyebrow}>{t('sobre', 'eyebrow')}</p>
+          <h1 className={styles.pageTitle}>{t('sobre', 'title')}</h1>
+          <p className={styles.pageSubtitle}>{t('sobre', 'subtitle')}</p>
         </div>
       </section>
 
-      {/* Bio */}
       <section className={styles.bioSection}>
         <div className={styles.bioGrid}>
           <div className={styles.bioVisual}>
@@ -32,41 +33,34 @@ export default function SobreThalita() {
             </div>
           </div>
           <div className={styles.bioContent}>
-            <p className={styles.eyebrow}>Minha História</p>
-            <h2 className={styles.sectionTitle}>Da Arte à Ciência dos Cabelos</h2>
-            <p className={styles.bioText}>
-              Natural de São Paulo, comecei minha jornada no mundo da beleza ainda jovem, fascinada pela arte de transformar cabelos e elevar a autoestima das pessoas. Com mais de 10 anos de experiência, me especializei nas técnicas capilares mais avançadas do Brasil.
-            </p>
-            <p className={styles.bioText}>
-              Minha trajetória me levou por três continentes — do Brasil à França, onde aprofundei meus conhecimentos em técnicas europeias, até chegar à Austrália, onde encontrei meu lar e minha comunidade de clientes apaixonadas.
-            </p>
-            <p className={styles.bioText}>
-              Em Melbourne, criei o meu studio como um espaço de transformação real: onde a ciência capilar brasileira encontra o conforto e a exclusividade que cada cliente merece.
-            </p>
+            <p className={styles.eyebrow}>{t('sobre', 'storyEyebrow')}</p>
+            <h2 className={styles.sectionTitle}>{t('sobre', 'storyTitle')}</h2>
+            <p className={styles.bioText}>{t('sobre', 'bio1')}</p>
+            <p className={styles.bioText}>{t('sobre', 'bio2')}</p>
+            <p className={styles.bioText}>{t('sobre', 'bio3')}</p>
             <div className={styles.bioTimeline}>
               <div className={styles.bioTimelineItem}>
-                <span className={styles.bioTimelineYear}>Brasil</span>
-                <span className={styles.bioTimelineDesc}>Início da carreira e especialização em técnicas brasileiras</span>
+                <span className={styles.bioTimelineYear}>{t('sobre', 'brazil')}</span>
+                <span className={styles.bioTimelineDesc}>{t('sobre', 'brazilDesc')}</span>
               </div>
               <div className={styles.bioTimelineItem}>
-                <span className={styles.bioTimelineYear}>França</span>
-                <span className={styles.bioTimelineDesc}>Aperfeiçoamento em técnicas europeias de tratamento</span>
+                <span className={styles.bioTimelineYear}>{t('sobre', 'france')}</span>
+                <span className={styles.bioTimelineDesc}>{t('sobre', 'franceDesc')}</span>
               </div>
               <div className={styles.bioTimelineItem}>
-                <span className={styles.bioTimelineYear}>Melbourne</span>
-                <span className={styles.bioTimelineDesc}>Abertura do studio e mais de 1000 clientes transformadas</span>
+                <span className={styles.bioTimelineYear}>{t('sobre', 'melbourne')}</span>
+                <span className={styles.bioTimelineDesc}>{t('sobre', 'melbourneDesc')}</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values */}
       <section className={styles.valuesSection}>
         <div className={styles.inner}>
           <div className={styles.sectionHeader}>
-            <p className={styles.eyebrow}>O que me guia</p>
-            <h2 className={styles.sectionTitle}>Meus Valores</h2>
+            <p className={styles.eyebrow}>{t('sobre', 'valuesEyebrow')}</p>
+            <h2 className={styles.sectionTitle}>{t('sobre', 'valuesTitle')}</h2>
           </div>
           <div className={styles.valuesGrid}>
             {values.map(v => (
@@ -80,11 +74,10 @@ export default function SobreThalita() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>Vamos nos Conhecer?</h2>
-        <p className={styles.ctaText}>Agende sua consulta e venha descobrir o tratamento perfeito para o seu cabelo.</p>
-        <BookingButton label="Agendar Consulta" variant="primary" />
+        <h2 className={styles.ctaTitle}>{t('sobre', 'ctaTitle')}</h2>
+        <p className={styles.ctaText}>{t('sobre', 'ctaText')}</p>
+        <BookingButton label={t('sobre', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )
