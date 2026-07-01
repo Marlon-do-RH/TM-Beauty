@@ -2,7 +2,7 @@
 const DEMO_USER = {
   email: 'admin@tmbeauty.com',
   password: 'tmbeauty123',
-  name: 'Salon Admin',
+  name: 'Thalita',
   role: 'admin',
 }
 

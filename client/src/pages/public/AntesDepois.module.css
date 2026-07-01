@@ -1,0 +1,121 @@
+.gallerySection {
+  padding: 80px 0;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.filterRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  padding: 10px 24px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dark-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.06em;
+}
+
+.filterBtn:hover {
+  border-color: var(--gold);
+  color: var(--chocolate);
+}
+
+.filterBtnActive {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--white);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.pairCard {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pairCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(74, 52, 40, 0.1);
+}
+
+.pairImages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.pairImg {
+  aspect-ratio: 3/4;
+  background: linear-gradient(160deg, #d0c9c1 0%, #e0d8d0 100%);
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  position: relative;
+}
+
+.pairImgAfter {
+  background: linear-gradient(160deg, var(--sage-light) 0%, var(--sage) 100%);
+}
+
+.pairTag {
+  background: rgba(255,255,255,0.9);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  color: var(--dark);
+}
+
+.pairInfo {
+  padding: 16px 20px;
+}
+
+.pairCategory {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pairLabel {
+  font-size: 0.82rem;
+  color: var(--dark-soft);
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './LoginPage.module.css'
 
 export default function LoginPage() {
@@ -7,6 +8,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -16,9 +18,24 @@ export default function LoginPage() {
       return
     }
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setLoading(false)
-    setError('Invalid credentials. Please try again.')
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        localStorage.setItem('tm_token', data.token)
+        navigate('/admin')
+      } else {
+        setError(data.error || 'Invalid credentials. Please try again.')
+      }
+    } catch {
+      setError('Connection error. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

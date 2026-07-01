@@ -1,0 +1,357 @@
+/* Shared admin page styles */
+.page {
+  padding: 40px;
+  max-width: 1200px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--admin-gold);
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.primaryBtn {
+  background: var(--admin-gold);
+  color: #0a0a0a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+/* Stats */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.statCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.statIcon {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.statValue {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Table */
+.sectionTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.tableWrapper {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: auto;
+  margin-bottom: 32px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #555;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+.tdName {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* Quick links */
+.quickLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.quickLink {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 0.8rem;
+  color: #888;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.quickLink:hover {
+  border-color: var(--admin-gold);
+  color: var(--admin-gold);
+}
+
+/* Action buttons in tables */
+.actionBtns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid #3a3a3a;
+  color: #aaa;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.actionBtn:hover {
+  border-color: var(--admin-gold);
+  color: var(--admin-gold);
+}
+
+.actionBtnDanger:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+/* Forms */
+.form {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 28px;
+  margin-bottom: 32px;
+}
+
+.formTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--admin-gold);
+  margin-bottom: 20px;
+}
+
+.formRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.input,
+.select,
+.textarea {
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  color: #ccc;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  padding: 10px 14px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--admin-gold);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submitBtn {
+  background: var(--admin-gold);
+  color: #0a0a0a;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.submitBtn:hover {
+  opacity: 0.85;
+}
+
+/* Editable row */
+.editInput {
+  background: #0f0f0f;
+  border: 1px solid #3a3a3a;
+  color: #ccc;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.editInput:focus {
+  border-color: var(--admin-gold);
+}
+
+/* Filter row */
+.filterRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #666;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filterBtn:hover {
+  border-color: var(--admin-gold);
+  color: var(--admin-gold);
+}
+
+.filterBtnActive {
+  background: var(--admin-gold);
+  border-color: var(--admin-gold);
+  color: #0a0a0a;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  color: #444;
+}
+
+.emptyState p {
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+@media (max-width: 960px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

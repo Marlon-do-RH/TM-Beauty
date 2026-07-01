@@ -1,0 +1,262 @@
+.contactSection {
+  padding: 80px 0 100px;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Info column */
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.infoBlock {}
+
+.infoTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.infoText {
+  font-size: 0.88rem;
+  color: var(--dark-soft);
+  line-height: 1.6;
+}
+
+.contactLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--dark-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contactLink:hover {
+  color: var(--chocolate);
+}
+
+.contactLinkIcon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.hours {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--dark-soft);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hoursRow:last-child {
+  border-bottom: none;
+}
+
+.mapPlaceholder {
+  aspect-ratio: 16/9;
+  background: #e0dbd5;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapInner {
+  font-size: 0.82rem;
+  color: var(--dark-soft);
+}
+
+/* Form column */
+.formCol {}
+
+.formTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  margin-bottom: 8px;
+}
+
+.formSub {
+  font-size: 0.85rem;
+  color: var(--dark-soft);
+  margin-bottom: 32px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chocolate);
+}
+
+.input,
+.textarea {
+  border: 1px solid var(--border);
+  background: var(--white);
+  padding: 12px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  color: var(--dark);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--gold);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submitBtn {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  padding: 14px 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  align-self: flex-start;
+}
+
+.submitBtn:hover {
+  background: var(--chocolate);
+  transform: translateY(-2px);
+}
+
+.successMsg {
+  background: var(--sage);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.successIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--white);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.successMsg h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: var(--chocolate);
+  margin-bottom: 8px;
+}
+
+.successMsg p {
+  font-size: 0.88rem;
+  color: var(--dark-soft);
+}
+
+/* Book CTA */
+.bookSection {
+  background: var(--chocolate);
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.bookTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--sage);
+  margin-bottom: 12px;
+}
+
+.bookText {
+  font-size: 0.88rem;
+  color: rgba(232, 222, 212, 0.7);
+  margin-bottom: 32px;
+}
+
+.whatsappBtn {
+  display: inline-block;
+  background: #25D366;
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 14px 36px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.whatsappBtn:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 960px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
