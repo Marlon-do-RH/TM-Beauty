@@ -1,146 +1,264 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
+import a from './Appointments.module.css'
+
+const SERVICES = ['Brazilian Nanoplastia', 'Brazilian Botox', 'Deep Treatment']
 
 const INITIAL = [
-  { id: 1, name: 'Sarah M.', email: 'sarah@email.com', service: 'Brazilian Nanoplastia', date: '2024-06-03', time: '10:00', status: 'confirmed' },
-  { id: 2, name: 'Camila R.', email: 'camila@email.com', service: 'Brazilian Botox', date: '2024-06-03', time: '13:30', status: 'pending' },
-  { id: 3, name: 'Jessica T.', email: 'jess@email.com', service: 'Deep Treatment', date: '2024-06-04', time: '11:00', status: 'confirmed' },
-  { id: 4, name: 'Ana P.', email: 'ana@email.com', service: 'Brazilian Nanoplastia', date: '2024-06-05', time: '09:30', status: 'pending' },
-  { id: 5, name: 'Michelle K.', email: 'michelle@email.com', service: 'Brazilian Botox', date: '2024-06-06', time: '14:00', status: 'completed' },
+  { id: 1, name: 'Sarah M.', email: 'sarah@email.com', phone: '+61 400 111 111', service: 'Brazilian Nanoplastia', date: '2024-06-03', time: '10:00', status: 'confirmed', notes: '' },
+  { id: 2, name: 'Camila R.', email: 'camila@email.com', phone: '+61 400 222 222', service: 'Brazilian Botox', date: '2024-06-03', time: '13:30', status: 'pending', notes: 'First time client' },
+  { id: 3, name: 'Jessica T.', email: 'jess@email.com', phone: '+61 400 333 333', service: 'Deep Treatment', date: '2024-06-04', time: '11:00', status: 'confirmed', notes: '' },
+  { id: 4, name: 'Ana P.', email: 'ana@email.com', phone: '+61 400 444 444', service: 'Brazilian Nanoplastia', date: '2024-06-05', time: '09:30', status: 'pending', notes: 'Allergic to strong fragrances' },
+  { id: 5, name: 'Michelle K.', email: 'michelle@email.com', phone: '+61 400 555 555', service: 'Brazilian Botox', date: '2024-06-06', time: '14:00', status: 'completed', notes: '' },
 ]
 
-const statusColors = {
-  pending: { bg: 'rgba(230,126,34,0.12)', color: '#e67e22', label: 'Pendente' },
-  confirmed: { bg: 'rgba(39,174,96,0.12)', color: '#27ae60', label: 'Confirmado' },
-  completed: { bg: 'rgba(52,152,219,0.12)', color: '#3498db', label: 'Concluído' },
-  cancelled: { bg: 'rgba(231,76,60,0.12)', color: '#e74c3c', label: 'Cancelado' },
+const STATUS_MAP = {
+  pending:   { label: 'Pendente',   bg: 'rgba(230,126,34,0.12)', color: '#e67e22' },
+  confirmed: { label: 'Confirmado', bg: 'rgba(39,174,96,0.12)',  color: '#27ae60' },
+  completed: { label: 'Concluído',  bg: 'rgba(52,152,219,0.12)', color: '#3498db' },
+  cancelled: { label: 'Cancelado',  bg: 'rgba(231,76,60,0.12)',  color: '#e74c3c' },
 }
 
-const EMPTY_FORM = { name: '', email: '', service: 'Brazilian Nanoplastia', date: '', time: '', status: 'pending' }
+const EMPTY = { name: '', email: '', phone: '', service: SERVICES[0], date: '', time: '', status: 'pending', notes: '' }
+
+function Modal({ title, onClose, children }) {
+  return (
+    <div className={a.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className={a.modal}>
+        <div className={a.modalHeader}>
+          <h2 className={a.modalTitle}>{title}</h2>
+          <button className={a.modalClose} onClick={onClose}>✕</button>
+        </div>
+        <div className={a.modalBody}>{children}</div>
+      </div>
+    </div>
+  )
+}
+
+function BookingForm({ initial, onSave, onCancel, mode }) {
+  const [form, setForm] = useState(initial)
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  return (
+    <form onSubmit={e => { e.preventDefault(); onSave(form) }}>
+      <div className={a.formGrid}>
+        <div className={styles.field}>
+          <label className={styles.label}>Nome da cliente *</label>
+          <input required className={styles.input} value={form.name} onChange={e => set('name', e.target.value)} placeholder="Nome completo" />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>E-mail</label>
+          <input type="email" className={styles.input} value={form.email} onChange={e => set('email', e.target.value)} placeholder="email@exemplo.com" />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>Telefone</label>
+          <input className={styles.input} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+61 400 000 000" />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>Serviço *</label>
+          <select required className={styles.select} value={form.service} onChange={e => set('service', e.target.value)}>
+            {SERVICES.map(s => <option key={s}>{s}</option>)}
+          </select>
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>Data *</label>
+          <input type="date" required className={styles.input} value={form.date} onChange={e => set('date', e.target.value)} />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>Horário *</label>
+          <input type="time" required className={styles.input} value={form.time} onChange={e => set('time', e.target.value)} />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label}>Status</label>
+          <select className={styles.select} value={form.status} onChange={e => set('status', e.target.value)}>
+            {Object.entries(STATUS_MAP).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
+          </select>
+        </div>
+        <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+          <label className={styles.label}>Observações</label>
+          <textarea rows={3} className={styles.textarea} value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Alergias, preferências, primeira vez..." />
+        </div>
+      </div>
+      <div className={a.formActions}>
+        <button type="button" className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
+        <button type="submit" className={styles.submitBtn}>
+          {mode === 'create' ? '+ Criar Agendamento' : '✓ Salvar Alterações'}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function DeleteConfirm({ booking, onConfirm, onCancel }) {
+  return (
+    <div className={a.deleteConfirm}>
+      <div className={a.deleteIcon}>🗑</div>
+      <p className={a.deleteText}>
+        Tem certeza que deseja excluir o agendamento de <strong>{booking.name}</strong> ({booking.service} — {booking.date} às {booking.time})?
+      </p>
+      <p className={a.deleteHint}>Esta ação não pode ser desfeita.</p>
+      <div className={a.formActions}>
+        <button className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
+        <button className={a.deleteBtn} onClick={onConfirm}>Excluir Permanentemente</button>
+      </div>
+    </div>
+  )
+}
 
 export default function Appointments() {
   const [appts, setAppts] = useState(INITIAL)
-  const [form, setForm] = useState(EMPTY_FORM)
   const [filter, setFilter] = useState('all')
+  const [search, setSearch] = useState('')
+  const [modal, setModal] = useState(null) // null | { mode: 'create' | 'edit' | 'delete' | 'view', booking }
 
-  const handleAdd = e => {
-    e.preventDefault()
-    setAppts(a => [...a, { ...form, id: Date.now() }])
-    setForm(EMPTY_FORM)
+  const filtered = appts.filter(a => {
+    const matchFilter = filter === 'all' || a.status === filter
+    const matchSearch = !search || [a.name, a.email, a.service].some(v => v.toLowerCase().includes(search.toLowerCase()))
+    return matchFilter && matchSearch
+  })
+
+  const handleCreate = form => {
+    setAppts(prev => [...prev, { ...form, id: Date.now() }])
+    setModal(null)
   }
 
-  const setStatus = (id, status) => {
-    setAppts(a => a.map(x => x.id === id ? { ...x, status } : x))
+  const handleEdit = form => {
+    setAppts(prev => prev.map(x => x.id === form.id ? form : x))
+    setModal(null)
   }
 
-  const remove = id => setAppts(a => a.filter(x => x.id !== id))
+  const handleDelete = id => {
+    setAppts(prev => prev.filter(x => x.id !== id))
+    setModal(null)
+  }
 
-  const filtered = filter === 'all' ? appts : appts.filter(a => a.status === filter)
+  const quickStatus = (id, status) => {
+    setAppts(prev => prev.map(x => x.id === id ? { ...x, status } : x))
+  }
+
+  const countByStatus = st => appts.filter(a => a.status === st).length
 
   return (
     <div className={styles.page}>
+      {/* Header */}
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Agendamentos</h1>
           <p className={styles.pageSubtitle}>{appts.length} agendamento(s) no total</p>
         </div>
+        <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', booking: EMPTY })}>
+          + Novo Agendamento
+        </button>
       </div>
 
-      {/* Add form */}
-      <div className={styles.form}>
-        <p className={styles.formTitle}>+ Novo Agendamento</p>
-        <form onSubmit={handleAdd}>
-          <div className={styles.formRow}>
-            <div className={styles.field}>
-              <label className={styles.label}>Nome</label>
-              <input required className={styles.input} value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Nome da cliente" />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>E-mail</label>
-              <input type="email" className={styles.input} value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="email@exemplo.com" />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Serviço</label>
-              <select className={styles.select} value={form.service} onChange={e => setForm(f => ({ ...f, service: e.target.value }))}>
-                <option>Brazilian Nanoplastia</option>
-                <option>Brazilian Botox</option>
-                <option>Deep Treatment</option>
-              </select>
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Data</label>
-              <input type="date" required className={styles.input} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Horário</label>
-              <input type="time" required className={styles.input} value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} />
-            </div>
+      {/* Summary cards */}
+      <div className={a.summaryCards}>
+        {Object.entries(STATUS_MAP).map(([k, v]) => (
+          <div key={k} className={a.summaryCard} style={{ borderColor: v.color + '40' }}>
+            <span className={a.summaryNum} style={{ color: v.color }}>{countByStatus(k)}</span>
+            <span className={a.summaryLabel}>{v.label}</span>
           </div>
-          <button type="submit" className={styles.submitBtn}>Adicionar</button>
-        </form>
-      </div>
-
-      {/* Filter */}
-      <div className={styles.filterRow}>
-        {['all', 'pending', 'confirmed', 'completed', 'cancelled'].map(f => (
-          <button
-            key={f}
-            className={`${styles.filterBtn} ${filter === f ? styles.filterBtnActive : ''}`}
-            onClick={() => setFilter(f)}
-          >
-            {f === 'all' ? 'Todos' : statusColors[f]?.label || f}
-          </button>
         ))}
       </div>
 
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Serviço</th>
-              <th>Data</th>
-              <th>Horário</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr><td colSpan={6} style={{ textAlign: 'center', padding: '40px', color: '#444' }}>Nenhum agendamento encontrado.</td></tr>
-            ) : filtered.map(a => {
-              const st = statusColors[a.status] || statusColors.pending
-              return (
-                <tr key={a.id}>
-                  <td className={styles.tdName}>{a.name}</td>
-                  <td>{a.service}</td>
-                  <td>{a.date}</td>
-                  <td>{a.time}</td>
-                  <td>
-                    <span className={styles.badge} style={{ background: st.bg, color: st.color }}>
-                      {st.label}
-                    </span>
-                  </td>
-                  <td>
-                    <div className={styles.actionBtns}>
-                      {a.status === 'pending' && (
-                        <button className={styles.actionBtn} onClick={() => setStatus(a.id, 'confirmed')}>Confirmar</button>
-                      )}
-                      {a.status === 'confirmed' && (
-                        <button className={styles.actionBtn} onClick={() => setStatus(a.id, 'completed')}>Concluir</button>
-                      )}
-                      {a.status !== 'cancelled' && (
-                        <button className={styles.actionBtn} onClick={() => setStatus(a.id, 'cancelled')}>Cancelar</button>
-                      )}
-                      <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(a.id)}>✕</button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      {/* Filters + search */}
+      <div className={a.toolBar}>
+        <div className={styles.filterRow}>
+          <button className={`${styles.filterBtn} ${filter === 'all' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('all')}>Todos</button>
+          {Object.entries(STATUS_MAP).map(([k, v]) => (
+            <button key={k} className={`${styles.filterBtn} ${filter === k ? styles.filterBtnActive : ''}`} onClick={() => setFilter(k)}>
+              {v.label}
+            </button>
+          ))}
+        </div>
+        <input
+          className={`${styles.input} ${a.searchInput}`}
+          placeholder="🔍  Buscar por nome, e-mail ou serviço..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
       </div>
+
+      {/* Table */}
+      <div className={styles.tableWrapper}>
+        {filtered.length === 0 ? (
+          <div className={styles.emptyState}>
+            <p style={{ fontSize: '1.5rem' }}>📅</p>
+            <p>Nenhum agendamento encontrado.</p>
+          </div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Serviço</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(ap => {
+                const st = STATUS_MAP[ap.status]
+                return (
+                  <tr key={ap.id}>
+                    <td>
+                      <div className={styles.tdName}>{ap.name}</div>
+                      {ap.phone && <div className={a.tdSub}>{ap.phone}</div>}
+                    </td>
+                    <td>{ap.service}</td>
+                    <td>{ap.date}</td>
+                    <td>{ap.time}</td>
+                    <td>
+                      <span className={styles.badge} style={{ background: st.bg, color: st.color }}>
+                        {st.label}
+                      </span>
+                    </td>
+                    <td>
+                      <div className={styles.actionBtns}>
+                        {/* Quick status buttons */}
+                        {ap.status === 'pending' && (
+                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'confirmed')}>✓ Confirmar</button>
+                        )}
+                        {ap.status === 'confirmed' && (
+                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'completed')}>✓ Concluir</button>
+                        )}
+                        {/* Edit / Delete */}
+                        <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', booking: { ...ap } })} title="Editar">✎</button>
+                        <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setModal({ mode: 'delete', booking: ap })} title="Excluir">🗑</button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Modals */}
+      {modal?.mode === 'create' && (
+        <Modal title="Novo Agendamento" onClose={() => setModal(null)}>
+          <BookingForm initial={modal.booking} onSave={handleCreate} onCancel={() => setModal(null)} mode="create" />
+        </Modal>
+      )}
+
+      {modal?.mode === 'edit' && (
+        <Modal title="Editar Agendamento" onClose={() => setModal(null)}>
+          <BookingForm initial={modal.booking} onSave={handleEdit} onCancel={() => setModal(null)} mode="edit" />
+        </Modal>
+      )}
+
+      {modal?.mode === 'delete' && (
+        <Modal title="Excluir Agendamento" onClose={() => setModal(null)}>
+          <DeleteConfirm
+            booking={modal.booking}
+            onConfirm={() => handleDelete(modal.booking.id)}
+            onCancel={() => setModal(null)}
+          />
+        </Modal>
+      )}
     </div>
   )
 }

@@ -140,6 +140,46 @@ app.delete('/api/faq/:id', (req, res) => {
   res.json({ success: true })
 })
 
+// ── Contact Info ──────────────────────────────────────────────────────────────
+
+let contactInfo = {
+  phone: '+61 400 000 000',
+  whatsapp: '61400000000',
+  email: 'hello@thalitamedeiros.com.au',
+  instagram: 'thalita.medeiros.hair',
+  address: 'Melbourne, Victoria, Australia',
+  mapUrl: '',
+  hoursMonFri: '9:00 – 18:00',
+  hoursSat: '9:00 – 15:00',
+  hoursSun: 'Closed',
+  bookingNote: 'Book via WhatsApp or fill in the contact form.',
+}
+
+app.get('/api/contact', (req, res) => res.json(contactInfo))
+
+app.put('/api/contact', (req, res) => {
+  contactInfo = { ...contactInfo, ...req.body }
+  res.json(contactInfo)
+})
+
+// ── Media / Photos ────────────────────────────────────────────────────────────
+
+let media = {
+  hero: [],
+  studio: [],
+  about: [],
+  experience: [],
+}
+
+app.get('/api/media', (req, res) => res.json(media))
+
+app.put('/api/media/:section', (req, res) => {
+  const { section } = req.params
+  if (!Object.keys(media).includes(section)) return res.status(400).json({ error: 'Unknown section.' })
+  media[section] = req.body.photos || []
+  res.json(media)
+})
+
 // ── Start ─────────────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => {

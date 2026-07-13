@@ -20,6 +20,8 @@ import Appointments from './pages/admin/Appointments'
 import ServicesCMS from './pages/admin/ServicesCMS'
 import GalleryCMS from './pages/admin/GalleryCMS'
 import FAQCMS from './pages/admin/FAQCMS'
+import ContactInfo from './pages/admin/ContactInfo'
+import MediaCMS from './pages/admin/MediaCMS'
 
 import './index.css'
 
@@ -48,7 +50,9 @@ function App() {
           <Route path="appointments" element={<Appointments />} />
           <Route path="services" element={<ServicesCMS />} />
           <Route path="gallery" element={<GalleryCMS />} />
+          <Route path="media" element={<MediaCMS />} />
           <Route path="faq" element={<FAQCMS />} />
+          <Route path="contact-info" element={<ContactInfo />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
