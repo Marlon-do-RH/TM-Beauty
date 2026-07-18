@@ -9,10 +9,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 12px;
+  padding: 10px;
   position: sticky;
   top: 24px;
 }
@@ -32,34 +32,34 @@
 }
 
 .sectionBtn:hover {
-  background: #252525;
+  background: var(--sage-light);
 }
 
 .sectionBtnActive {
-  background: rgba(201, 168, 76, 0.1);
-  outline: 1px solid rgba(201, 168, 76, 0.25);
+  background: rgba(201, 164, 109, 0.12);
+  outline: 1px solid rgba(201, 164, 109, 0.3);
 }
 
 .sectionBtnLabel {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #ddd;
+  color: var(--dark-soft);
   line-height: 1.3;
 }
 
 .sectionBtnActive .sectionBtnLabel {
-  color: var(--admin-gold);
+  color: var(--chocolate);
 }
 
 .sectionBtnCount {
   font-size: 0.68rem;
-  color: #555;
+  color: var(--text-muted);
 }
 
 /* Panel */
 .panel {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 28px;
 }
@@ -67,29 +67,29 @@
 .panelHeader {
   margin-bottom: 24px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--border);
 }
 
 .panelTitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: var(--admin-gold);
+  color: var(--chocolate);
   margin-bottom: 4px;
 }
 
 .panelDesc {
   font-size: 0.8rem;
-  color: #666;
-  margin-bottom: 8px;
+  color: var(--dark-soft);
+  margin-bottom: 10px;
   line-height: 1.5;
 }
 
 .badge {
   display: inline-block;
-  background: rgba(52, 152, 219, 0.12);
-  border: 1px solid rgba(52, 152, 219, 0.3);
-  color: #3498db;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #2563EB;
   font-size: 0.68rem;
   font-weight: 600;
   padding: 3px 10px;
@@ -106,10 +106,10 @@
 
 .photoCard {
   position: relative;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
-  background: #111;
+  background: var(--sage-light);
 }
 
 .photoImg {
@@ -121,23 +121,22 @@
 
 .photoCaption {
   font-size: 0.72rem;
-  color: #777;
+  color: var(--dark-soft);
   padding: 8px 10px;
-  border-top: 1px solid #222;
+  border-top: 1px solid var(--border);
 }
 
 .photoDelete {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(231, 76, 60, 0.85);
+  background: rgba(192, 57, 43, 0.88);
   color: #fff;
   border: none;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,24 +144,25 @@
 }
 
 .photoDelete:hover {
-  background: #e74c3c;
+  background: #C0392B;
 }
 
 /* Upload zone */
 .uploadZone {
-  border: 2px dashed #2a2a2a;
+  border: 2px dashed var(--border);
   border-radius: 8px;
   overflow: hidden;
   transition: border-color 0.2s;
 }
 
 .uploadZone:focus-within {
-  border-color: rgba(201, 168, 76, 0.4);
+  border-color: rgba(201, 164, 109, 0.5);
 }
 
 .uploadTabs {
   display: flex;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--border);
+  background: var(--sage-light);
 }
 
 .uploadTab {
@@ -173,20 +173,24 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-muted);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
 .uploadTab:hover {
-  background: #222;
-  color: #aaa;
+  background: var(--sage);
+  color: var(--dark-soft);
 }
 
 .uploadTabActive {
-  background: #222;
-  color: var(--admin-gold);
-  border-bottom: 2px solid var(--admin-gold);
+  background: var(--white);
+  color: var(--chocolate);
+  border-bottom: 2px solid var(--gold);
 }
 
 .uploadBody {
@@ -194,6 +198,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  background: var(--white);
 }
 
 .dropArea {
@@ -203,7 +208,7 @@
   justify-content: center;
   gap: 8px;
   min-height: 160px;
-  border: 2px dashed #333;
+  border: 2px dashed var(--border);
   border-radius: 6px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
@@ -212,23 +217,24 @@
 }
 
 .dropArea:hover {
-  border-color: var(--admin-gold);
-  background: rgba(201, 168, 76, 0.04);
+  border-color: var(--gold);
+  background: var(--sage-light);
 }
 
-.dropIcon {
-  font-size: 2rem;
+.dropIconWrap {
+  color: var(--text-muted);
+  display: flex;
 }
 
 .dropText {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #aaa;
+  color: var(--dark-soft);
 }
 
 .dropHint {
   font-size: 0.72rem;
-  color: #555;
+  color: var(--text-muted);
 }
 
 .fileInput {
@@ -256,12 +262,13 @@
   max-height: 160px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border);
 }
 
 .captionRow {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .captionRow input {
@@ -271,7 +278,7 @@
 .replaceNote {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid var(--border);
 }
 
 @media (max-width: 800px) {
@@ -283,7 +290,7 @@
     position: static;
     flex-direction: row;
     overflow-x: auto;
-    gap: 6px;
+    gap: 4px;
   }
 
   .sectionBtn {

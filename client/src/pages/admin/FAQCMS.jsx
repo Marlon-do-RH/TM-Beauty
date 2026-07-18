@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
 import f from './FAQCMS.module.css'
+import { IconEdit, IconTrash, IconX, IconCheck, IconChevronUp, IconChevronDown } from '../../components/AdminIcons'
 
 const INITIAL_FAQ = [
   { id: 1, question: 'Quanto tempo dura o tratamento de Nanoplastia?', answer: 'O tratamento de Nanoplastia dura em média 3 a 4 horas.' },
@@ -24,35 +25,35 @@ export default function FAQCMS() {
   }
 
   const saveEdit = id => {
-    setFaqs(f => f.map(x => x.id === id ? { ...x, ...editData } : x))
+    setFaqs(list => list.map(x => x.id === id ? { ...x, ...editData } : x))
     setEditing(null)
   }
 
-  const remove = id => setFaqs(f => f.filter(x => x.id !== id))
+  const remove = id => setFaqs(list => list.filter(x => x.id !== id))
 
   const addFaq = e => {
     e.preventDefault()
     if (!newQ.trim() || !newA.trim()) return
-    setFaqs(f => [...f, { id: Date.now(), question: newQ, answer: newA }])
+    setFaqs(list => [...list, { id: Date.now(), question: newQ, answer: newA }])
     setNewQ('')
     setNewA('')
   }
 
   const moveUp = id => {
-    setFaqs(f => {
-      const idx = f.findIndex(x => x.id === id)
-      if (idx === 0) return f
-      const arr = [...f]
+    setFaqs(list => {
+      const idx = list.findIndex(x => x.id === id)
+      if (idx === 0) return list
+      const arr = [...list]
       ;[arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
       return arr
     })
   }
 
   const moveDown = id => {
-    setFaqs(f => {
-      const idx = f.findIndex(x => x.id === id)
-      if (idx === f.length - 1) return f
-      const arr = [...f]
+    setFaqs(list => {
+      const idx = list.findIndex(x => x.id === id)
+      if (idx === list.length - 1) return list
+      const arr = [...list]
       ;[arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
       return arr
     })
@@ -71,9 +72,13 @@ export default function FAQCMS() {
         {faqs.map((faq, i) => (
           <div key={faq.id} className={f.faqItem}>
             <div className={f.faqOrder}>
-              <button className={f.orderBtn} onClick={() => moveUp(faq.id)} disabled={i === 0}>▲</button>
+              <button className={f.orderBtn} onClick={() => moveUp(faq.id)} disabled={i === 0} aria-label="Mover para cima">
+                <IconChevronUp size={12} />
+              </button>
               <span className={f.orderNum}>{i + 1}</span>
-              <button className={f.orderBtn} onClick={() => moveDown(faq.id)} disabled={i === faqs.length - 1}>▼</button>
+              <button className={f.orderBtn} onClick={() => moveDown(faq.id)} disabled={i === faqs.length - 1} aria-label="Mover para baixo">
+                <IconChevronDown size={12} />
+              </button>
             </div>
 
             <div className={f.faqContent}>
@@ -103,13 +108,21 @@ export default function FAQCMS() {
             <div className={f.faqActions}>
               {editing === faq.id ? (
                 <>
-                  <button className={styles.actionBtn} onClick={() => saveEdit(faq.id)}>✓</button>
-                  <button className={styles.actionBtn} onClick={() => setEditing(null)}>✕</button>
+                  <button className={styles.actionBtn} onClick={() => saveEdit(faq.id)} title="Salvar">
+                    <IconCheck size={13} />
+                  </button>
+                  <button className={styles.actionBtn} onClick={() => setEditing(null)} title="Cancelar">
+                    <IconX size={13} />
+                  </button>
                 </>
               ) : (
                 <>
-                  <button className={styles.actionBtn} onClick={() => startEdit(faq)}>✎</button>
-                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(faq.id)}>✕</button>
+                  <button className={styles.actionBtn} onClick={() => startEdit(faq)} title="Editar">
+                    <IconEdit size={13} />
+                  </button>
+                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(faq.id)} title="Excluir">
+                    <IconTrash size={13} />
+                  </button>
                 </>
               )}
             </div>
@@ -118,7 +131,7 @@ export default function FAQCMS() {
       </div>
 
       <div className={styles.form}>
-        <p className={styles.formTitle}>+ Nova Pergunta</p>
+        <p className={styles.formTitle}>Nova Pergunta</p>
         <form onSubmit={addFaq}>
           <div className={styles.field} style={{ marginBottom: 12 }}>
             <label className={styles.label}>Pergunta</label>

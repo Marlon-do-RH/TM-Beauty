@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import styles from './Admin.module.css'
 import m from './MediaCMS.module.css'
+import { IconUpload, IconLink, IconX, IconCamera } from '../../components/AdminIcons'
 
 const INITIAL_SECTIONS = [
   {
@@ -38,12 +39,14 @@ function PhotoCard({ photo, onDelete }) {
     <div className={m.photoCard}>
       <img src={photo.url} alt={photo.caption || 'Photo'} className={m.photoImg} />
       {photo.caption && <p className={m.photoCaption}>{photo.caption}</p>}
-      <button className={m.photoDelete} onClick={onDelete} title="Remover foto">✕</button>
+      <button className={m.photoDelete} onClick={onDelete} title="Remover foto" aria-label="Remover foto">
+        <IconX size={12} />
+      </button>
     </div>
   )
 }
 
-function UploadZone({ onAdd, single }) {
+function UploadZone({ onAdd }) {
   const [url, setUrl] = useState('')
   const [caption, setCaption] = useState('')
   const [preview, setPreview] = useState(null)
@@ -71,11 +74,19 @@ function UploadZone({ onAdd, single }) {
   return (
     <div className={m.uploadZone}>
       <div className={m.uploadTabs}>
-        <button className={`${m.uploadTab} ${tab === 'file' ? m.uploadTabActive : ''}`} type="button" onClick={() => setTab('file')}>
-          📁 Upload de arquivo
+        <button
+          className={`${m.uploadTab} ${tab === 'file' ? m.uploadTabActive : ''}`}
+          type="button"
+          onClick={() => setTab('file')}
+        >
+          <IconUpload size={13} /> Upload de arquivo
         </button>
-        <button className={`${m.uploadTab} ${tab === 'url' ? m.uploadTabActive : ''}`} type="button" onClick={() => setTab('url')}>
-          🔗 Colar URL
+        <button
+          className={`${m.uploadTab} ${tab === 'url' ? m.uploadTabActive : ''}`}
+          type="button"
+          onClick={() => setTab('url')}
+        >
+          <IconLink size={13} /> Colar URL
         </button>
       </div>
 
@@ -86,7 +97,7 @@ function UploadZone({ onAdd, single }) {
               <img src={preview} alt="preview" className={m.previewImg} />
             ) : (
               <>
-                <span className={m.dropIcon}>📷</span>
+                <span className={m.dropIconWrap}><IconCamera size={28} /></span>
                 <span className={m.dropText}>Clique ou arraste uma foto aqui</span>
                 <span className={m.dropHint}>JPG, PNG, WEBP — até 5MB</span>
               </>
@@ -103,7 +114,7 @@ function UploadZone({ onAdd, single }) {
               onChange={e => { setUrl(e.target.value); setPreview(e.target.value) }}
             />
             {url && (
-              <img src={url} alt="preview" className={m.urlPreview} onError={e => e.target.style.display = 'none'} />
+              <img src={url} alt="preview" className={m.urlPreview} onError={e => { e.target.style.display = 'none' }} />
             )}
           </div>
         )}
@@ -115,8 +126,13 @@ function UploadZone({ onAdd, single }) {
             value={caption}
             onChange={e => setCaption(e.target.value)}
           />
-          <button type="button" className={styles.submitBtn} onClick={handleAdd}
-            disabled={tab === 'file' ? !preview : !url}>
+          <button
+            type="button"
+            className={styles.submitBtn}
+            style={{ marginTop: 0 }}
+            onClick={handleAdd}
+            disabled={tab === 'file' ? !preview : !url}
+          >
             Adicionar Foto
           </button>
         </div>
@@ -155,7 +171,6 @@ export default function MediaCMS() {
       </div>
 
       <div className={m.layout}>
-        {/* Sidebar section picker */}
         <div className={m.sectionList}>
           {sections.map(s => (
             <button
@@ -169,7 +184,6 @@ export default function MediaCMS() {
           ))}
         </div>
 
-        {/* Main panel */}
         <div className={m.panel}>
           <div className={m.panelHeader}>
             <div>
@@ -181,7 +195,6 @@ export default function MediaCMS() {
             </div>
           </div>
 
-          {/* Existing photos */}
           {current.photos.length > 0 && (
             <div className={m.photosGrid}>
               {current.photos.map((p, i) => (
@@ -201,10 +214,10 @@ export default function MediaCMS() {
             <div className={m.replaceNote}>
               <button
                 type="button"
-                className={`${styles.actionBtn}`}
+                className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
                 onClick={() => deletePhoto(current.id, 0)}
               >
-                ✕ Remover foto atual e adicionar nova
+                <IconX size={12} /> Remover foto atual e adicionar nova
               </button>
             </div>
           )}

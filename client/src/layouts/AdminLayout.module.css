@@ -1,21 +1,23 @@
 .shell {
   display: flex;
   min-height: 100vh;
-  background: #0f0f0f;
+  background: var(--offwhite);
   font-family: 'Montserrat', sans-serif;
 }
 
+/* ── Sidebar ───────────────────────────────────────────────────────────────── */
+
 .sidebar {
-  width: 240px;
+  width: 248px;
   flex-shrink: 0;
-  background: #141414;
-  border-right: 1px solid #2a2a2a;
+  background: var(--chocolate);
   display: flex;
   flex-direction: column;
   padding: 0 0 24px 0;
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-y: auto;
 }
 
 .sidebarBrand {
@@ -23,37 +25,41 @@
   align-items: center;
   gap: 12px;
   padding: 28px 20px;
-  border-bottom: 1px solid #2a2a2a;
-  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
 }
 
 .brandMark {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--admin-gold);
-  border: 1.5px solid var(--admin-gold);
-  width: 36px;
-  height: 36px;
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: 3px;
   flex-shrink: 0;
+  letter-spacing: 0.04em;
 }
 
 .brandTitle {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--admin-gold);
+  color: var(--gold);
 }
 
 .brandSub {
-  font-size: 0.7rem;
-  color: #666;
+  font-size: 0.68rem;
+  color: rgba(248, 240, 232, 0.45);
+  margin-top: 1px;
 }
+
+/* ── Nav ───────────────────────────────────────────────────────────────────── */
 
 .sidebarNav {
   display: flex;
@@ -61,71 +67,101 @@
   padding: 0 12px;
   flex: 1;
   overflow-y: auto;
+  gap: 4px;
 }
 
 .navGroup {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .navGroupLabel {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #3a3a3a;
-  padding: 12px 12px 4px;
+  color: rgba(255, 255, 255, 0.28);
+  padding: 10px 12px 5px;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 12px;
+  gap: 10px;
+  padding: 11px 12px;
   border-radius: 6px;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #888;
+  color: rgba(248, 240, 232, 0.62);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
 }
 
 .navItem:hover {
-  background: #1e1e1e;
-  color: #ccc;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(248, 240, 232, 0.9);
 }
 
 .navItemActive {
-  background: rgba(201, 168, 76, 0.12);
-  color: var(--admin-gold);
+  background: rgba(201, 164, 109, 0.18);
+  color: var(--gold-light);
+}
+
+.navItemActive:hover {
+  background: rgba(201, 164, 109, 0.22);
+  color: var(--gold-light);
 }
 
 .navIcon {
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  flex-shrink: 0;
+  opacity: 0.8;
 }
 
+.navItemActive .navIcon {
+  opacity: 1;
+}
+
+/* ── Logout ────────────────────────────────────────────────────────────────── */
+
 .logoutBtn {
-  margin: 0 12px;
-  padding: 10px 12px;
-  background: none;
-  border: 1px solid #2a2a2a;
+  margin: 8px 12px 0;
+  padding: 11px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 6px;
-  color: #555;
+  color: rgba(248, 240, 232, 0.45);
   font-family: 'Montserrat', sans-serif;
   font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-  text-align: left;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .logoutBtn:hover {
-  color: #ccc;
-  border-color: #444;
+  color: rgba(248, 240, 232, 0.85);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
 }
+
+/* ── Main ──────────────────────────────────────────────────────────────────── */
 
 .main {
   flex: 1;
   overflow: auto;
-  background: #0f0f0f;
+  background: var(--offwhite);
+  min-width: 0;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 220px;
+  }
 }

@@ -9,15 +9,16 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 20px;
-  transition: border-color 0.15s;
+  padding: 18px 20px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .faqItem:hover {
-  border-color: #3a3a3a;
+  border-color: var(--gold);
+  box-shadow: 0 2px 8px rgba(74, 52, 40, 0.06);
 }
 
 .faqOrder {
@@ -31,22 +32,22 @@
 
 .orderBtn {
   background: transparent;
-  border: 1px solid #2a2a2a;
-  color: #555;
-  font-size: 0.7rem;
-  width: 22px;
-  height: 22px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .orderBtn:hover:not(:disabled) {
-  border-color: var(--admin-gold);
-  color: var(--admin-gold);
+  border-color: var(--gold);
+  color: var(--chocolate);
+  background: var(--sage-light);
 }
 
 .orderBtn:disabled {
@@ -55,32 +56,34 @@
 }
 
 .orderNum {
-  font-size: 0.7rem;
-  color: #444;
+  font-size: 0.68rem;
+  color: var(--text-muted);
   font-weight: 700;
+  line-height: 1;
 }
 
 .faqContent {
   flex: 1;
+  min-width: 0;
 }
 
 .faqQuestion {
   font-size: 0.88rem;
   font-weight: 600;
-  color: #ddd;
+  color: var(--chocolate);
   margin-bottom: 6px;
   line-height: 1.4;
 }
 
 .faqAnswer {
   font-size: 0.82rem;
-  color: #666;
+  color: var(--dark-soft);
   line-height: 1.6;
 }
 
 .faqActions {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   flex-shrink: 0;
   padding-top: 2px;
 }

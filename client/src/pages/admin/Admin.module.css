@@ -1,4 +1,5 @@
-/* Shared admin page styles */
+/* ── Shared admin page styles — brand light theme ──────────────────────────── */
+
 .page {
   padding: 40px;
   max-width: 1200px;
@@ -17,38 +18,44 @@
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem;
   font-weight: 600;
-  color: var(--admin-gold);
+  color: var(--chocolate);
   margin-bottom: 4px;
+  letter-spacing: -0.01em;
 }
 
 .pageSubtitle {
   font-size: 0.82rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
+/* ── Primary button ─────────────────────────────────────────────────────────── */
+
 .primaryBtn {
-  background: var(--admin-gold);
-  color: #0a0a0a;
+  background: var(--gold);
+  color: var(--white);
   font-family: 'Montserrat', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 10px 20px;
+  padding: 11px 22px;
   border-radius: 4px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background 0.2s;
   white-space: nowrap;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .primaryBtn:hover {
-  opacity: 0.9;
+  background: var(--gold-dark);
 }
 
-/* Stats */
+/* ── Stats ──────────────────────────────────────────────────────────────────── */
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -57,44 +64,54 @@
 }
 
 .statCard {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 24px;
 }
 
-.statIcon {
-  font-size: 1.5rem;
-  margin-bottom: 12px;
+.statIconBox {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
 }
 
 .statValue {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.2rem;
   font-weight: 700;
+  color: var(--chocolate);
   margin-bottom: 4px;
+  line-height: 1;
 }
 
 .statLabel {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
-/* Table */
+/* ── Section title ──────────────────────────────────────────────────────────── */
+
 .sectionTitle {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 16px;
 }
 
+/* ── Table ──────────────────────────────────────────────────────────────────── */
+
 .tableWrapper {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   overflow: auto;
   margin-bottom: 32px;
 }
@@ -102,24 +119,25 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
-  color: #ccc;
+  font-size: 0.84rem;
+  color: var(--dark);
 }
 
 .table th {
-  padding: 14px 20px;
+  padding: 12px 20px;
   text-align: left;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #555;
-  border-bottom: 1px solid #2a2a2a;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--sage-light);
 }
 
 .table td {
   padding: 14px 20px;
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid #F0EBE5;
 }
 
 .table tr:last-child td {
@@ -127,16 +145,18 @@
 }
 
 .table tr:hover td {
-  background: rgba(255,255,255,0.02);
+  background: var(--sage-light);
 }
 
 .tdName {
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--chocolate);
 }
 
+/* ── Badges ─────────────────────────────────────────────────────────────────── */
+
 .badge {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -144,74 +164,87 @@
   border-radius: 100px;
 }
 
-/* Quick links */
+/* ── Quick links ────────────────────────────────────────────────────────────── */
+
 .quickLinks {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .quickLink {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 12px 20px;
+  padding: 11px 18px;
   font-size: 0.8rem;
-  color: #888;
+  font-weight: 500;
+  color: var(--dark-soft);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   transition: border-color 0.2s, color 0.2s;
 }
 
 .quickLink:hover {
-  border-color: var(--admin-gold);
-  color: var(--admin-gold);
+  border-color: var(--gold);
+  color: var(--chocolate);
 }
 
-/* Action buttons in tables */
+/* ── Action buttons ─────────────────────────────────────────────────────────── */
+
 .actionBtns {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .actionBtn {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid #3a3a3a;
-  color: #aaa;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--dark-soft);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   white-space: nowrap;
 }
 
 .actionBtn:hover {
-  border-color: var(--admin-gold);
-  color: var(--admin-gold);
+  border-color: var(--gold);
+  color: var(--chocolate);
+  background: var(--sage-light);
 }
 
 .actionBtnDanger:hover {
-  border-color: #e74c3c;
-  color: #e74c3c;
+  border-color: #C0392B;
+  color: #C0392B;
+  background: #FFF5F5;
 }
 
-/* Forms */
+/* ── Forms ──────────────────────────────────────────────────────────────────── */
+
 .form {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 28px;
   margin-bottom: 32px;
 }
 
 .formTitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  color: var(--admin-gold);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--chocolate);
   margin-bottom: 20px;
 }
 
@@ -219,6 +252,7 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
 .field {
@@ -230,31 +264,32 @@
 }
 
 .label {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #666;
+  color: var(--chocolate);
 }
 
 .input,
 .select,
 .textarea {
-  background: #0f0f0f;
-  border: 1px solid #2a2a2a;
-  color: #ccc;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--dark);
   font-family: 'Montserrat', sans-serif;
   font-size: 0.85rem;
   padding: 10px 14px;
-  border-radius: 4px;
+  border-radius: 5px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
-  border-color: var(--admin-gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 164, 109, 0.12);
 }
 
 .textarea {
@@ -263,33 +298,42 @@
 }
 
 .submitBtn {
-  background: var(--admin-gold);
-  color: #0a0a0a;
+  background: var(--gold);
+  color: var(--white);
   border: none;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 10px 24px;
+  padding: 11px 24px;
   border-radius: 4px;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background 0.2s;
   margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .submitBtn:hover {
-  opacity: 0.85;
+  background: var(--gold-dark);
 }
 
-/* Editable row */
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Editable row input ─────────────────────────────────────────────────────── */
+
 .editInput {
-  background: #0f0f0f;
-  border: 1px solid #3a3a3a;
-  color: #ccc;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--dark);
   font-family: 'Montserrat', sans-serif;
   font-size: 0.82rem;
-  padding: 6px 10px;
+  padding: 7px 11px;
   border-radius: 4px;
   outline: none;
   width: 100%;
@@ -297,61 +341,82 @@
 }
 
 .editInput:focus {
-  border-color: var(--admin-gold);
+  border-color: var(--gold);
 }
 
-/* Filter row */
+/* ── Filter row ─────────────────────────────────────────────────────────────── */
+
 .filterRow {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .filterBtn {
   background: transparent;
-  border: 1px solid #2a2a2a;
-  color: #666;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 100px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .filterBtn:hover {
-  border-color: var(--admin-gold);
-  color: var(--admin-gold);
+  border-color: var(--gold);
+  color: var(--chocolate);
 }
 
 .filterBtnActive {
-  background: var(--admin-gold);
-  border-color: var(--admin-gold);
-  color: #0a0a0a;
+  background: var(--chocolate);
+  border-color: var(--chocolate);
+  color: var(--white);
 }
 
-/* Empty state */
+.filterBtnActive:hover {
+  background: var(--chocolate-light);
+  border-color: var(--chocolate-light);
+  color: var(--white);
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────────── */
+
 .emptyState {
   text-align: center;
   padding: 60px 24px;
-  color: #444;
+  color: var(--text-muted);
 }
 
 .emptyState p {
   font-size: 0.85rem;
-  margin-top: 8px;
+  margin-top: 10px;
 }
+
+.emptyStateIcon {
+  color: var(--border);
+  margin-bottom: 8px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
   .page {
-    padding: 24px 16px;
+    padding: 24px 20px;
   }
 
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
   }
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
 import sv from './ServicesCMS.module.css'
+import { IconEdit, IconTrash, IconX, IconCheck } from '../../components/AdminIcons'
 
 const INITIAL_SERVICES = [
   { id: 1, name: 'Brazilian Nanoplastia', description: 'Alisamento avançado sem formol com nanopartículas. Resultado liso, sedoso e duradouro por até 8 meses.', price: 280, priceMin: 280, priceMax: 450, duration: '3–4', durationUnit: 'horas', active: true },
@@ -18,8 +19,10 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
     <div className={sv.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
       <div className={sv.modal}>
         <div className={sv.modalHeader}>
-          <h2 className={sv.modalTitle}>{mode === 'create' ? '+ Novo Serviço' : 'Editar Serviço'}</h2>
-          <button className={sv.modalClose} onClick={onClose}>✕</button>
+          <h2 className={sv.modalTitle}>{mode === 'create' ? 'Novo Serviço' : 'Editar Serviço'}</h2>
+          <button className={sv.modalClose} onClick={onClose} aria-label="Fechar">
+            <IconX size={14} />
+          </button>
         </div>
         <form onSubmit={e => { e.preventDefault(); onSave(form) }} className={sv.modalBody}>
           <div className={sv.formGrid}>
@@ -36,7 +39,7 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
             <div className={styles.field}>
               <label className={styles.label}>Preço de tabela (R$) *</label>
               <input required type="number" min="0" className={styles.input} value={form.price} onChange={e => set('price', e.target.value)} placeholder="280" />
-              <p className={sv.hint}>Preço exibido como "a partir de"</p>
+              <p className={sv.hint}>Exibido como &ldquo;a partir de&rdquo;</p>
             </div>
 
             <div className={styles.field}>
@@ -67,7 +70,7 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
                   className={`${sv.toggleBtn} ${form.active ? sv.toggleBtnOn : ''}`}
                   onClick={() => set('active', !form.active)}
                 >
-                  {form.active ? '✓ Ativo' : '○ Inativo'}
+                  {form.active ? 'Ativo' : 'Inativo'}
                 </button>
                 <p className={sv.hint}>Serviços inativos não aparecem no site</p>
               </div>
@@ -77,6 +80,7 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
           <div className={sv.formActions}>
             <button type="button" className={sv.cancelBtn} onClick={onClose}>Cancelar</button>
             <button type="submit" className={styles.submitBtn}>
+              <IconCheck size={14} />
               {mode === 'create' ? 'Criar Serviço' : 'Salvar Alterações'}
             </button>
           </div>
@@ -110,11 +114,10 @@ export default function ServicesCMS() {
           <p className={styles.pageSubtitle}>Gerencie os serviços, preços e duração exibidos no site</p>
         </div>
         <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', svc: EMPTY })}>
-          + Novo Serviço
+          Novo Serviço
         </button>
       </div>
 
-      {/* Service cards */}
       <div className={sv.cards}>
         {services.map(svc => (
           <div key={svc.id} className={`${sv.card} ${!svc.active ? sv.cardInactive : ''}`}>
@@ -128,7 +131,7 @@ export default function ServicesCMS() {
                 onClick={() => toggle(svc.id)}
                 title="Clique para alternar status"
               >
-                {svc.active ? '● Ativo' : '○ Inativo'}
+                {svc.active ? 'Ativo' : 'Inativo'}
               </button>
             </div>
 
@@ -148,17 +151,16 @@ export default function ServicesCMS() {
 
             <div className={sv.cardActions}>
               <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', svc: { ...svc } })}>
-                ✎ Editar
+                <IconEdit size={13} /> Editar
               </button>
               <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(svc.id)}>
-                🗑 Remover
+                <IconTrash size={13} /> Remover
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal */}
       {modal && (
         <ServiceModal
           initial={modal.svc}

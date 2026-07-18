@@ -1,27 +1,31 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import styles from './AdminLayout.module.css'
+import {
+  IconGrid, IconCalendar, IconScissors, IconImage,
+  IconCamera, IconHelpCircle, IconMapPin, IconLogOut,
+} from '../components/AdminIcons'
 
 const navGroups = [
   {
     label: 'Gestão',
     items: [
-      { to: '/admin', label: 'Dashboard', icon: '⊞', end: true },
-      { to: '/admin/appointments', label: 'Agendamentos', icon: '📅' },
+      { to: '/admin', label: 'Dashboard', Icon: IconGrid, end: true },
+      { to: '/admin/appointments', label: 'Agendamentos', Icon: IconCalendar },
     ],
   },
   {
     label: 'Conteúdo',
     items: [
-      { to: '/admin/services', label: 'Serviços & Preços', icon: '✂' },
-      { to: '/admin/gallery', label: 'Galeria', icon: '🖼' },
-      { to: '/admin/media', label: 'Fotos do Site', icon: '📷' },
-      { to: '/admin/faq', label: 'FAQ', icon: '❓' },
+      { to: '/admin/services', label: 'Serviços & Preços', Icon: IconScissors },
+      { to: '/admin/gallery', label: 'Galeria', Icon: IconImage },
+      { to: '/admin/media', label: 'Fotos do Site', Icon: IconCamera },
+      { to: '/admin/faq', label: 'FAQ', Icon: IconHelpCircle },
     ],
   },
   {
     label: 'Configurações',
     items: [
-      { to: '/admin/contact-info', label: 'Informações de Contato', icon: '📍' },
+      { to: '/admin/contact-info', label: 'Informações de Contato', Icon: IconMapPin },
     ],
   },
 ]
@@ -58,7 +62,9 @@ export default function AdminLayout() {
                     `${styles.navItem} ${isActive ? styles.navItemActive : ''}`
                   }
                 >
-                  <span className={styles.navIcon}>{item.icon}</span>
+                  <span className={styles.navIcon}>
+                    <item.Icon size={15} />
+                  </span>
                   {item.label}
                 </NavLink>
               ))}
@@ -67,7 +73,8 @@ export default function AdminLayout() {
         </nav>
 
         <button className={styles.logoutBtn} onClick={handleLogout}>
-          ← Sair
+          <IconLogOut size={14} />
+          Sair
         </button>
       </aside>
 

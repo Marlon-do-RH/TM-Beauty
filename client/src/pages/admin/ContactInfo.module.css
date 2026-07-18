@@ -1,24 +1,27 @@
 .formGrid {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .section {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 28px;
 }
 
 .sectionTitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--admin-gold);
+  color: var(--chocolate);
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .fields {
@@ -33,24 +36,24 @@
 }
 
 .prefix {
-  background: #252525;
-  border: 1px solid #2a2a2a;
+  background: var(--sage-light);
+  border: 1px solid var(--border);
   border-right: none;
-  color: #555;
+  color: var(--dark-soft);
   font-size: 0.82rem;
   padding: 10px 12px;
-  border-radius: 4px 0 0 4px;
+  border-radius: 5px 0 0 5px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .inputPrefixInput {
-  border-radius: 0 4px 4px 0 !important;
+  border-radius: 0 5px 5px 0 !important;
 }
 
 .hint {
-  font-size: 0.72rem;
-  color: #555;
+  font-size: 0.7rem;
+  color: var(--text-muted);
   margin-top: 5px;
   line-height: 1.5;
 }
@@ -60,32 +63,33 @@
 }
 
 .previewLabel {
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #555;
-  margin-bottom: 8px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
 
 .preview {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: var(--sage-light);
+  border-radius: 8px;
+  padding: 18px 20px;
 }
 
 .previewRow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 0.85rem;
-  color: #aaa;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: var(--dark-soft);
 }
 
-.previewIcon {
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
+.previewIconSvg {
+  color: var(--gold-dark);
   flex-shrink: 0;
 }
 
@@ -96,13 +100,16 @@
 }
 
 .savedBadge {
-  background: rgba(39, 174, 96, 0.15);
-  border: 1px solid rgba(39, 174, 96, 0.4);
-  color: #27ae60;
+  background: #EAF5EF;
+  border: 1px solid rgba(40, 122, 91, 0.3);
+  color: #287A5B;
   font-size: 0.78rem;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   animation: fadeIn 0.2s ease;
 }
 

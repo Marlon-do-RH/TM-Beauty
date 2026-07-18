@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
 import ci from './ContactInfo.module.css'
+import { IconPhone, IconMail, IconInstagram, IconWhatsApp, IconMapPin, IconClock, IconEye, IconCheck } from '../../components/AdminIcons'
 
 const INITIAL = {
   phone: '+61 400 000 000',
@@ -37,14 +38,19 @@ export default function ContactInfo() {
           <h1 className={styles.pageTitle}>Informações de Contato</h1>
           <p className={styles.pageSubtitle}>Estas informações aparecem na página de Contato e rodapé do site</p>
         </div>
-        {saved && <div className={ci.savedBadge}>✓ Salvo com sucesso</div>}
+        {saved && (
+          <div className={ci.savedBadge}>
+            <IconCheck size={13} /> Salvo com sucesso
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSave} className={ci.formGrid}>
 
-        {/* Contact Details */}
         <section className={ci.section}>
-          <h2 className={ci.sectionTitle}>📞 Contato Direto</h2>
+          <h2 className={ci.sectionTitle}>
+            <IconPhone size={16} /> Contato Direto
+          </h2>
           <div className={ci.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Telefone / WhatsApp (exibição)</label>
@@ -56,7 +62,7 @@ export default function ContactInfo() {
                 <span className={ci.prefix}>wa.me/</span>
                 <input className={`${styles.input} ${ci.inputPrefixInput}`} value={data.whatsapp} onChange={e => set('whatsapp', e.target.value)} placeholder="61400000000" />
               </div>
-              <p className={ci.hint}>Usado para o botão "Agendar pelo WhatsApp"</p>
+              <p className={ci.hint}>Usado para o botão &ldquo;Agendar pelo WhatsApp&rdquo;</p>
             </div>
             <div className={styles.field}>
               <label className={styles.label}>E-mail</label>
@@ -72,9 +78,10 @@ export default function ContactInfo() {
           </div>
         </section>
 
-        {/* Address */}
         <section className={ci.section}>
-          <h2 className={ci.sectionTitle}>📍 Endereço</h2>
+          <h2 className={ci.sectionTitle}>
+            <IconMapPin size={16} /> Endereço
+          </h2>
           <div className={ci.fields}>
             <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
               <label className={styles.label}>Endereço completo</label>
@@ -84,7 +91,7 @@ export default function ContactInfo() {
               <label className={styles.label}>Google Maps Embed URL</label>
               <input className={styles.input} value={data.mapUrl} onChange={e => set('mapUrl', e.target.value)} placeholder="https://www.google.com/maps/embed?pb=..." />
               <p className={ci.hint}>
-                No Google Maps: Compartilhar → Incorporar mapa → copiar o src="..." do iframe
+                No Google Maps: Compartilhar → Incorporar mapa → copiar o src=&ldquo;...&rdquo; do iframe
               </p>
             </div>
             {data.mapUrl && (
@@ -104,9 +111,10 @@ export default function ContactInfo() {
           </div>
         </section>
 
-        {/* Opening Hours */}
         <section className={ci.section}>
-          <h2 className={ci.sectionTitle}>⏰ Horário de Atendimento</h2>
+          <h2 className={ci.sectionTitle}>
+            <IconClock size={16} /> Horário de Atendimento
+          </h2>
           <div className={ci.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Segunda — Sexta</label>
@@ -123,9 +131,8 @@ export default function ContactInfo() {
           </div>
         </section>
 
-        {/* Booking note */}
         <section className={ci.section}>
-          <h2 className={ci.sectionTitle}>📋 Nota de Agendamento</h2>
+          <h2 className={ci.sectionTitle}>Nota de Agendamento</h2>
           <div className={ci.fields}>
             <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
               <label className={styles.label}>Mensagem exibida na página de contato</label>
@@ -139,16 +146,18 @@ export default function ContactInfo() {
           </div>
         </section>
 
-        {/* Preview */}
         <section className={ci.section}>
-          <h2 className={ci.sectionTitle}>👁 Pré-visualização</h2>
+          <h2 className={ci.sectionTitle}>
+            <IconEye size={16} /> Pré-visualização
+          </h2>
           <div className={ci.preview}>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>📞</span><span>{data.phone}</span></div>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>💬</span><span>wa.me/{data.whatsapp}</span></div>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>✉</span><span>{data.email}</span></div>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>📷</span><span>@{data.instagram}</span></div>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>📍</span><span>{data.address}</span></div>
-            <div className={ci.previewRow}><span className={ci.previewIcon}>⏰</span>
+            <div className={ci.previewRow}><IconPhone size={14} className={ci.previewIconSvg} /><span>{data.phone}</span></div>
+            <div className={ci.previewRow}><IconWhatsApp size={14} className={ci.previewIconSvg} /><span>wa.me/{data.whatsapp}</span></div>
+            <div className={ci.previewRow}><IconMail size={14} className={ci.previewIconSvg} /><span>{data.email}</span></div>
+            <div className={ci.previewRow}><IconInstagram size={14} className={ci.previewIconSvg} /><span>@{data.instagram}</span></div>
+            <div className={ci.previewRow}><IconMapPin size={14} className={ci.previewIconSvg} /><span>{data.address}</span></div>
+            <div className={ci.previewRow}>
+              <IconClock size={14} className={ci.previewIconSvg} />
               <span>Seg–Sex: {data.hoursMonFri} · Sáb: {data.hoursSat} · Dom: {data.hoursSun}</span>
             </div>
           </div>
@@ -156,6 +165,7 @@ export default function ContactInfo() {
 
         <div className={ci.saveRow}>
           <button type="submit" className={styles.submitBtn}>
+            <IconCheck size={14} />
             Salvar Informações de Contato
           </button>
         </div>

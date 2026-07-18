@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
 import a from './Appointments.module.css'
+import { IconEdit, IconTrash, IconX, IconCheck, IconCalendar, IconSearch } from '../../components/AdminIcons'
 
 const SERVICES = ['Brazilian Nanoplastia', 'Brazilian Botox', 'Deep Treatment']
 
@@ -13,10 +14,10 @@ const INITIAL = [
 ]
 
 const STATUS_MAP = {
-  pending:   { label: 'Pendente',   bg: 'rgba(230,126,34,0.12)', color: '#e67e22' },
-  confirmed: { label: 'Confirmado', bg: 'rgba(39,174,96,0.12)',  color: '#27ae60' },
-  completed: { label: 'Concluído',  bg: 'rgba(52,152,219,0.12)', color: '#3498db' },
-  cancelled: { label: 'Cancelado',  bg: 'rgba(231,76,60,0.12)',  color: '#e74c3c' },
+  pending:   { label: 'Pendente',   bg: '#FEF3E2', color: '#C0862E' },
+  confirmed: { label: 'Confirmado', bg: '#EAF5EF', color: '#287A5B' },
+  completed: { label: 'Concluído',  bg: '#EAF3FF', color: '#2563EB' },
+  cancelled: { label: 'Cancelado',  bg: '#FEF2F2', color: '#C0392B' },
 }
 
 const EMPTY = { name: '', email: '', phone: '', service: SERVICES[0], date: '', time: '', status: 'pending', notes: '' }
@@ -27,7 +28,9 @@ function Modal({ title, onClose, children }) {
       <div className={a.modal}>
         <div className={a.modalHeader}>
           <h2 className={a.modalTitle}>{title}</h2>
-          <button className={a.modalClose} onClick={onClose}>✕</button>
+          <button className={a.modalClose} onClick={onClose} aria-label="Fechar">
+            <IconX size={14} />
+          </button>
         </div>
         <div className={a.modalBody}>{children}</div>
       </div>
@@ -82,7 +85,8 @@ function BookingForm({ initial, onSave, onCancel, mode }) {
       <div className={a.formActions}>
         <button type="button" className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
         <button type="submit" className={styles.submitBtn}>
-          {mode === 'create' ? '+ Criar Agendamento' : '✓ Salvar Alterações'}
+          <IconCheck size={14} />
+          {mode === 'create' ? 'Criar Agendamento' : 'Salvar Alterações'}
         </button>
       </div>
     </form>
@@ -92,14 +96,19 @@ function BookingForm({ initial, onSave, onCancel, mode }) {
 function DeleteConfirm({ booking, onConfirm, onCancel }) {
   return (
     <div className={a.deleteConfirm}>
-      <div className={a.deleteIcon}>🗑</div>
+      <div className={a.deleteIconWrap}>
+        <IconTrash size={22} />
+      </div>
       <p className={a.deleteText}>
         Tem certeza que deseja excluir o agendamento de <strong>{booking.name}</strong> ({booking.service} — {booking.date} às {booking.time})?
       </p>
       <p className={a.deleteHint}>Esta ação não pode ser desfeita.</p>
       <div className={a.formActions}>
         <button className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
-        <button className={a.deleteBtn} onClick={onConfirm}>Excluir Permanentemente</button>
+        <button className={a.deleteBtn} onClick={onConfirm}>
+          <IconTrash size={13} />
+          Excluir Permanentemente
+        </button>
       </div>
     </div>
   )
@@ -109,7 +118,7 @@ export default function Appointments() {
   const [appts, setAppts] = useState(INITIAL)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
-  const [modal, setModal] = useState(null) // null | { mode: 'create' | 'edit' | 'delete' | 'view', booking }
+  const [modal, setModal] = useState(null)
 
   const filtered = appts.filter(a => {
     const matchFilter = filter === 'all' || a.status === filter
@@ -140,28 +149,25 @@ export default function Appointments() {
 
   return (
     <div className={styles.page}>
-      {/* Header */}
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Agendamentos</h1>
           <p className={styles.pageSubtitle}>{appts.length} agendamento(s) no total</p>
         </div>
         <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', booking: EMPTY })}>
-          + Novo Agendamento
+          Novo Agendamento
         </button>
       </div>
 
-      {/* Summary cards */}
       <div className={a.summaryCards}>
         {Object.entries(STATUS_MAP).map(([k, v]) => (
-          <div key={k} className={a.summaryCard} style={{ borderColor: v.color + '40' }}>
+          <div key={k} className={a.summaryCard} style={{ borderLeftColor: v.color }}>
             <span className={a.summaryNum} style={{ color: v.color }}>{countByStatus(k)}</span>
             <span className={a.summaryLabel}>{v.label}</span>
           </div>
         ))}
       </div>
 
-      {/* Filters + search */}
       <div className={a.toolBar}>
         <div className={styles.filterRow}>
           <button className={`${styles.filterBtn} ${filter === 'all' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('all')}>Todos</button>
@@ -171,19 +177,24 @@ export default function Appointments() {
             </button>
           ))}
         </div>
-        <input
-          className={`${styles.input} ${a.searchInput}`}
-          placeholder="🔍  Buscar por nome, e-mail ou serviço..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <span style={{ position: 'absolute', left: 12, color: 'var(--text-muted)', display: 'flex' }}>
+            <IconSearch size={14} />
+          </span>
+          <input
+            className={`${styles.input} ${a.searchInput}`}
+            style={{ paddingLeft: 36 }}
+            placeholder="Buscar por nome, e-mail ou serviço..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
-      {/* Table */}
       <div className={styles.tableWrapper}>
         {filtered.length === 0 ? (
           <div className={styles.emptyState}>
-            <p style={{ fontSize: '1.5rem' }}>📅</p>
+            <div className={styles.emptyStateIcon}><IconCalendar size={32} /></div>
             <p>Nenhum agendamento encontrado.</p>
           </div>
         ) : (
@@ -217,16 +228,22 @@ export default function Appointments() {
                     </td>
                     <td>
                       <div className={styles.actionBtns}>
-                        {/* Quick status buttons */}
                         {ap.status === 'pending' && (
-                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'confirmed')}>✓ Confirmar</button>
+                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'confirmed')}>
+                            <IconCheck size={12} /> Confirmar
+                          </button>
                         )}
                         {ap.status === 'confirmed' && (
-                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'completed')}>✓ Concluir</button>
+                          <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'completed')}>
+                            <IconCheck size={12} /> Concluir
+                          </button>
                         )}
-                        {/* Edit / Delete */}
-                        <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', booking: { ...ap } })} title="Editar">✎</button>
-                        <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setModal({ mode: 'delete', booking: ap })} title="Excluir">🗑</button>
+                        <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', booking: { ...ap } })} title="Editar">
+                          <IconEdit size={13} />
+                        </button>
+                        <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setModal({ mode: 'delete', booking: ap })} title="Excluir">
+                          <IconTrash size={13} />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -237,7 +254,6 @@ export default function Appointments() {
         )}
       </div>
 
-      {/* Modals */}
       {modal?.mode === 'create' && (
         <Modal title="Novo Agendamento" onClose={() => setModal(null)}>
           <BookingForm initial={modal.booking} onSave={handleCreate} onCancel={() => setModal(null)} mode="create" />

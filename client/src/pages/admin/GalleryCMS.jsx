@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import styles from './Admin.module.css'
 import g from './GalleryCMS.module.css'
+import { IconTrash, IconCamera, IconImage } from '../../components/AdminIcons'
 
 const INITIAL = [
-  { id: 1, category: 'Nanoplastia', caption: 'Cabelo cacheado → liso sedoso', date: '2024-05-10' },
+  { id: 1, category: 'Nanoplastia', caption: 'Cabelo cacheado — liso sedoso', date: '2024-05-10' },
   { id: 2, category: 'Botox', caption: 'Volume controlado', date: '2024-05-15' },
   { id: 3, category: 'Deep Treatment', caption: 'Fios hidratados', date: '2024-05-20' },
 ]
@@ -30,13 +31,12 @@ export default function GalleryCMS() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Galeria</h1>
-          <p className={styles.pageSubtitle}>Gerencie as fotos de antes & depois</p>
+          <p className={styles.pageSubtitle}>Gerencie as fotos de antes &amp; depois</p>
         </div>
       </div>
 
-      {/* Upload form */}
       <div className={styles.form}>
-        <p className={styles.formTitle}>+ Adicionar Par de Fotos</p>
+        <p className={styles.formTitle}>Adicionar Par de Fotos</p>
         <form onSubmit={addItem}>
           <div className={styles.formRow}>
             <div className={styles.field}>
@@ -47,30 +47,29 @@ export default function GalleryCMS() {
             </div>
             <div className={styles.field} style={{ flex: 2 }}>
               <label className={styles.label}>Legenda</label>
-              <input required className={styles.input} value={form.caption} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))} placeholder="Ex: Cabelo cacheado → liso sedoso" />
+              <input required className={styles.input} value={form.caption} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))} placeholder="Ex: Cabelo cacheado — liso sedoso" />
             </div>
           </div>
 
           <div className={g.uploadRow}>
             <div className={g.uploadBox}>
-              <span className={g.uploadIcon}>📷</span>
+              <span className={g.uploadIconWrap}><IconCamera size={22} /></span>
               <span className={g.uploadLabel}>Foto — Antes</span>
               <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
               <input type="file" accept="image/*" className={g.fileInput} />
             </div>
             <div className={g.uploadBox}>
-              <span className={g.uploadIcon}>✨</span>
+              <span className={g.uploadIconWrap}><IconImage size={22} /></span>
               <span className={g.uploadLabel}>Foto — Depois</span>
               <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
               <input type="file" accept="image/*" className={g.fileInput} />
             </div>
           </div>
 
-          <button type="submit" className={styles.submitBtn}>Adicionar ao Galeria</button>
+          <button type="submit" className={styles.submitBtn}>Adicionar à Galeria</button>
         </form>
       </div>
 
-      {/* Filter */}
       <div className={styles.filterRow}>
         {['all', ...categories].map(c => (
           <button key={c} className={`${styles.filterBtn} ${filter === c ? styles.filterBtnActive : ''}`} onClick={() => setFilter(c)}>
@@ -79,7 +78,6 @@ export default function GalleryCMS() {
         ))}
       </div>
 
-      {/* Grid */}
       <div className={g.galleryGrid}>
         {filtered.map(item => (
           <div key={item.id} className={g.galleryCard}>
@@ -96,7 +94,9 @@ export default function GalleryCMS() {
               <p className={g.cardCaption}>{item.caption}</p>
               <div className={g.cardFooter}>
                 <span className={g.cardDate}>{item.date}</span>
-                <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>✕ Remover</button>
+                <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
+                  <IconTrash size={12} /> Remover
+                </button>
               </div>
             </div>
           </div>
