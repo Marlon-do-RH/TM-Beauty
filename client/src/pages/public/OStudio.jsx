@@ -25,16 +25,6 @@ export default function OStudio() {
         </div>
       </section>
 
-      <section className={s.introSection}>
-        <div className={s.inner}>
-          <div className={s.introText}>
-            <p className={styles.eyebrow}>Melbourne · Australia</p>
-            <h2 className={styles.sectionTitle}>{t('studio', 'title')}</h2>
-            <p className={s.text}>{t('studio', 'subtitle')}</p>
-          </div>
-        </div>
-      </section>
-
       <section className={s.gallerySection}>
         <div className={s.inner}>
           <div className={s.galleryGrid}>
