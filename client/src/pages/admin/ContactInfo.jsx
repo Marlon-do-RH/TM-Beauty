@@ -4,12 +4,12 @@ import ci from './ContactInfo.module.css'
 import { IconPhone, IconMail, IconInstagram, IconWhatsApp, IconMapPin, IconClock, IconEye, IconCheck } from '../../components/AdminIcons'
 
 const INITIAL = {
-  phone: '+61 400 000 000',
-  whatsapp: '61400000000',
+  phone: '+61 450 442 869',
+  whatsapp: '61450442869',
   email: 'hello@thalitamedeiros.com.au',
   instagram: 'thalita.medeiros.hair',
-  address: 'Melbourne, Victoria, Australia',
-  mapUrl: '',
+  address: '100 Wells St, Southbank VIC 3006',
+  mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau',
   hoursMonFri: '9:00 – 18:00',
   hoursSat: '9:00 – 15:00',
   hoursSun: 'Closed',

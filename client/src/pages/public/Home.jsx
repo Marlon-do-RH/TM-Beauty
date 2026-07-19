@@ -28,24 +28,8 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      {/* Hero */}
-      <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <p className={styles.heroEyebrow}>{t('home', 'heroEyebrow')}</p>
-          <h1 className={styles.heroTitle}>
-            Thalita<br />
-            <span className={styles.heroTitleAccent}>Medeiros</span>
-          </h1>
-          <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
-          <div className={styles.heroCtas}>
-            <BookingButton label={t('nav', 'bookNow')} variant="primary" />
-            <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
-          </div>
-        </div>
-        <div className={styles.heroVisual}>
-          <BeforeAfterCarousel />
-        </div>
-      </section>
+      {/* Full-screen hero carousel */}
+      <BeforeAfterCarousel />
 
       {/* Stats */}
       <section className={styles.stats}>

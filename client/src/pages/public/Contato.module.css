@@ -86,19 +86,11 @@
   border-bottom: none;
 }
 
-.mapPlaceholder {
-  aspect-ratio: 16/9;
-  background: #e0dbd5;
-  border-radius: 4px;
+.mapEmbed {
+  border-radius: 6px;
+  overflow: hidden;
   border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mapInner {
-  font-size: 0.82rem;
-  color: var(--dark-soft);
+  line-height: 0;
 }
 
 /* Form column */

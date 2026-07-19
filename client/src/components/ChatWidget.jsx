@@ -70,7 +70,7 @@ const STRINGS = {
   },
 }
 
-const WA_NUMBER = '61400000000'
+const WA_NUMBER = '61450442869'
 
 export default function ChatWidget() {
   const { lang } = useLanguage()
