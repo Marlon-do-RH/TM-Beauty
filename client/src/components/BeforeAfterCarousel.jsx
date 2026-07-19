@@ -4,124 +4,129 @@ import { useLanguage } from '../i18n/LanguageContext'
 import styles from './BeforeAfterCarousel.module.css'
 
 export const BEFORE_AFTER_PAIRS = [
-  { category: 'Nanoplastia',    label: 'Curly hair — silky smooth' },
-  { category: 'Botox',          label: 'Excess volume — controlled frizz' },
-  { category: 'Nanoplastia',    label: 'Intense frizz — natural shine' },
-  { category: 'Deep Treatment', label: 'Dry ends — deeply hydrated' },
-  { category: 'Botox',          label: 'Wavy hair — lightly smoothed' },
-  { category: 'Nanoplastia',    label: 'Chemical damage — full restoration' },
+  { category: 'Nanoplastia', label: 'Curly hair → silky smooth' },
+  { category: 'Botox',       label: 'Excess volume → controlled frizz' },
+  { category: 'Nanoplastia', label: 'Intense frizz → natural shine' },
+  { category: 'Deep Treatment', label: 'Dry ends → deeply hydrated' },
+  { category: 'Botox',       label: 'Wavy hair → lightly smoothed' },
+  { category: 'Nanoplastia', label: 'Chemical damage → full restoration' },
 ]
 
-const INTERVAL = 4000
+const INTERVAL = 3500
 
-function ArrowBtn({ dir, onClick }) {
+function ChevronLeft() {
   return (
-    <button
-      className={`${styles.arrow} ${dir === 'prev' ? styles.arrowPrev : styles.arrowNext}`}
-      onClick={onClick}
-      aria-label={dir === 'prev' ? 'Previous' : 'Next'}
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {dir === 'prev'
-          ? <polyline points="15 18 9 12 15 6"/>
-          : <polyline points="9 18 15 12 9 6"/>
-        }
-      </svg>
-    </button>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  )
+}
+
+function ChevronRight() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
   )
 }
 
 export default function BeforeAfterCarousel() {
   const { t } = useLanguage()
   const [current, setCurrent] = useState(0)
-  const [fading, setFading] = useState(false)
   const [paused, setPaused] = useState(false)
-  const nextIdx = useRef(0)
+  const [animDir, setAnimDir] = useState('next') // 'next' | 'prev'
+  const [visible, setVisible] = useState(true)
   const total = BEFORE_AFTER_PAIRS.length
+  const timerRef = useRef(null)
 
-  const goTo = useCallback((idx) => {
-    nextIdx.current = (idx + total) % total
-    setFading(true)
+  const goTo = useCallback((idx, dir = 'next') => {
+    setAnimDir(dir)
+    setVisible(false)
     setTimeout(() => {
-      setCurrent(nextIdx.current)
-      setFading(false)
-    }, 350)
+      setCurrent((idx + total) % total)
+      setVisible(true)
+    }, 220)
   }, [total])
 
-  const next = useCallback(() => goTo(current + 1), [current, goTo])
-  const prev = useCallback(() => goTo(current - 1), [current, goTo])
+  const next = useCallback(() => goTo(current + 1, 'next'), [current, goTo])
+  const prev = useCallback(() => goTo(current - 1, 'prev'), [current, goTo])
 
+  // Auto-advance
   useEffect(() => {
     if (paused) return
-    const t = setTimeout(next, INTERVAL)
-    return () => clearTimeout(t)
+    timerRef.current = setTimeout(next, INTERVAL)
+    return () => clearTimeout(timerRef.current)
   }, [current, paused, next])
 
   const pair = BEFORE_AFTER_PAIRS[current]
+
   const beforeLabel = t('antesDepois', 'before') || 'Before'
   const afterLabel  = t('antesDepois', 'after')  || 'After'
 
   return (
-    <section
+    <div
       className={styles.root}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* ── Image pair ── */}
-      <div className={`${styles.slide} ${fading ? styles.slideOut : styles.slideIn}`}>
-        <div className={styles.imgBefore}>
-          <span className={styles.imgTag}>{beforeLabel}</span>
-        </div>
-        <div className={styles.imgAfter}>
-          <span className={styles.imgTag}>{afterLabel}</span>
-        </div>
+      {/* Social proof pill */}
+      <div className={styles.proofPill}>
+        <span className={styles.proofStars}>★★★★★</span>
+        <span className={styles.proofText}>5.0 · Google Reviews</span>
       </div>
 
-      {/* ── Centre divider ── */}
-      <div className={styles.divider} aria-hidden="true" />
-
-      {/* ── Brand overlay ── */}
-      <div className={styles.brandOverlay} aria-hidden="true">
-        <div className={styles.monogram}>TM</div>
-        <div className={styles.ornament}>
-          <span className={styles.ornLine} />
-          <span className={styles.ornDiamond} />
-          <span className={styles.ornLine} />
+      {/* Slide */}
+      <div className={`${styles.slide} ${visible ? styles.slideIn : styles.slideOut} ${animDir === 'next' ? styles.dirNext : styles.dirPrev}`}>
+        <div className={styles.images}>
+          {/* Before */}
+          <div className={styles.imgBox}>
+            <span className={styles.imgTag}>{beforeLabel}</span>
+          </div>
+          {/* After */}
+          <div className={`${styles.imgBox} ${styles.imgBoxAfter}`}>
+            <span className={styles.imgTag}>{afterLabel}</span>
+          </div>
         </div>
-        <p className={styles.brandName}>Thalita Medeiros</p>
-        <p className={styles.brandSub}>Brazilian Hair Specialist · Melbourne</p>
-      </div>
 
-      {/* ── Prev / Next arrows ── */}
-      <ArrowBtn dir="prev" onClick={prev} />
-      <ArrowBtn dir="next" onClick={next} />
-
-      {/* ── Bottom strip ── */}
-      <div className={styles.bottomStrip}>
-        <div className={`${styles.caption} ${fading ? styles.captionOut : styles.captionIn}`}>
+        {/* Caption */}
+        <div className={styles.caption}>
           <span className={styles.captionCategory}>{pair.category}</span>
-          <span className={styles.captionDot} aria-hidden="true">·</span>
-          <span className={styles.captionLabel}>{pair.label}</span>
+          <p className={styles.captionLabel}>{pair.label}</p>
         </div>
+      </div>
 
+      {/* Controls row */}
+      <div className={styles.controls}>
+        {/* Dots */}
         <div className={styles.dots}>
           {BEFORE_AFTER_PAIRS.map((_, i) => (
             <button
               key={i}
               className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
-              onClick={() => goTo(i)}
+              onClick={() => goTo(i, i > current ? 'next' : 'prev')}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>
 
-        <Link to="/antes-depois" className={styles.cta}>
-          View all transformations
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </Link>
+        {/* Arrows */}
+        <div className={styles.arrows}>
+          <button className={styles.arrow} onClick={prev} aria-label="Previous">
+            <ChevronLeft />
+          </button>
+          <button className={styles.arrow} onClick={next} aria-label="Next">
+            <ChevronRight />
+          </button>
+        </div>
       </div>
-    </section>
+
+      {/* CTA */}
+      <Link to="/antes-depois" className={styles.cta}>
+        View all transformations
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </Link>
+    </div>
   )
 }

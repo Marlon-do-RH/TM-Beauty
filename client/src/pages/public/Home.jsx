@@ -1,79 +1,111 @@
-import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
+import BookingButton from '../../components/BookingButton'
 import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
-import { DEFAULT_REVIEWS } from '../../data/reviewsData'
 import styles from './Home.module.css'
 
-function getStoredReviews() {
-  try {
-    const raw = localStorage.getItem('tm_reviews')
-    if (raw) {
-      const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed)) return parsed
-    }
-  } catch {}
-  return DEFAULT_REVIEWS
-}
+const serviceKeys = [
+  { key: 'nano', price: 'a partir de R$280', icon: '✦' },
+  { key: 'botox', price: 'a partir de R$220', icon: '✧' },
+  { key: 'deep', price: 'a partir de R$180', icon: '◈' },
+]
 
-function useCountUp(target, duration = 1400) {
-  const [count, setCount] = useState(0)
-  const [started, setStarted] = useState(false)
-  const ref = useRef(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setStarted(true) },
-      { threshold: 0.4 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!started) return
-    let start = null
-    const step = ts => {
-      if (!start) start = ts
-      const progress = Math.min((ts - start) / duration, 1)
-      setCount(Math.floor(progress * target))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [started, target, duration])
-
-  return { count, ref }
-}
+const reviews = [
+  { name: 'Sarah M.', stars: 5, text: "Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring." },
+  { name: 'Camila R.', stars: 5, text: "Incredible experience from start to finish. The studio is beautiful and the results are beyond what I expected." },
+  { name: 'Jessica T.', stars: 5, text: "I've been going to Thalita for 2 years and I will never go anywhere else. The best hair treatment in Melbourne!" },
+]
 
 export default function Home() {
   const { t } = useLanguage()
-  const { count: clientCount, ref: statsRef } = useCountUp(1000)
-
-  const featuredReviews = getStoredReviews()
-    .filter(r => r.featured !== false)
-    .slice(0, 3)
 
   const stats = [
-    { value: '10+',         label: t('home', 'statsYears') },
-    { value: `${clientCount}+`, label: t('home', 'statsClients'), animated: true },
-    { value: '5.0',         label: t('home', 'statsReviews') },
+    { value: '10+', label: t('home', 'statsYears') },
+    { value: '3', label: t('home', 'statsCountries') },
+    { value: '1000+', label: t('home', 'statsClients') },
+    { value: '5.0', label: t('home', 'statsReviews') },
   ]
 
   return (
     <div className={styles.page}>
-      {/* Full-screen hero carousel */}
-      <BeforeAfterCarousel />
+      {/* Hero */}
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <p className={styles.heroEyebrow}>{t('home', 'heroEyebrow')}</p>
+          <h1 className={styles.heroTitle}>
+            Thalita<br />
+            <span className={styles.heroTitleAccent}>Medeiros</span>
+          </h1>
+          <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
+          <div className={styles.heroCtas}>
+            <BookingButton label={t('nav', 'bookNow')} variant="primary" />
+            <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
+          </div>
+        </div>
+        <div className={styles.heroVisual}>
+          <BeforeAfterCarousel />
+        </div>
+      </section>
 
       {/* Stats */}
-      <section className={styles.stats} ref={statsRef}>
+      <section className={styles.stats}>
         {stats.map(s => (
           <div key={s.label} className={styles.stat}>
             <span className={styles.statValue}>{s.value}</span>
             <span className={styles.statLabel}>{s.label}</span>
           </div>
         ))}
+      </section>
+
+      {/* Services preview */}
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.eyebrow}>{t('home', 'servicesEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home', 'servicesTitle')}</h2>
+          <p className={styles.sectionSub}>{t('home', 'servicesSub')}</p>
+        </div>
+        <div className={styles.servicesGrid}>
+          {serviceKeys.map(s => (
+            <div key={s.key} className={styles.serviceCard}>
+              <span className={styles.serviceIcon}>{s.icon}</span>
+              <h3 className={styles.serviceTitle}>{t('servicos', s.key)?.name || t('servicos', `${s.key}.name`)}</h3>
+              <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
+              <p className={styles.servicePrice}>{s.price}</p>
+              <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Before/After teaser */}
+      <section className={styles.teaserSection}>
+        <div className={styles.teaserContent}>
+          <p className={styles.eyebrow}>{t('home', 'beforeEyebrow')}</p>
+          <h2 className={styles.teaserTitle}>{t('home', 'beforeTitle')}</h2>
+          <p className={styles.teaserText}>{t('home', 'beforeText')}</p>
+          <BookingButton label={t('home', 'viewBeforeAfter')} to="/antes-depois" variant="outline" />
+        </div>
+        <div className={styles.teaserVisual}>
+          <div className={styles.beforeAfterBox}>
+            <div className={styles.beforeLabel}>{t('antesDepois', 'before')}</div>
+            <div className={styles.afterLabel}>{t('antesDepois', 'after')}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience highlight */}
+      <section className={styles.expSection}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.eyebrow}>{t('home', 'expEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home', 'expTitle')}</h2>
+          <p className={styles.sectionSub}>{t('home', 'expSub')}</p>
+        </div>
+        <div className={styles.amenities}>
+          {['☕ Premium Coffee', '🍫 Brazilian Snacks', '💆 Massage Cushion', '🌸 Relaxing Aroma',
+            '📶 Free Wi-Fi', '🔋 Phone Charging', '💧 Sparkling Water', '📖 Magazines'].map(a => (
+            <div key={a} className={styles.amenity}>{a}</div>
+          ))}
+        </div>
       </section>
 
       {/* Reviews */}
@@ -87,8 +119,8 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.reviewsGrid}>
-          {featuredReviews.map(r => (
-            <div key={r.id || r.name} className={styles.reviewCard}>
+          {reviews.map(r => (
+            <div key={r.name} className={styles.reviewCard}>
               <div className={styles.reviewStars}>{'★'.repeat(r.stars)}</div>
               <p className={styles.reviewText}>"{r.text}"</p>
               <p className={styles.reviewName}>{r.name}</p>
@@ -98,6 +130,13 @@ export default function Home() {
         <div className={styles.expCta}>
           <Link to="/avaliacoes" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className={styles.ctaSection}>
+        <h2 className={styles.ctaTitle}>{t('home', 'ctaTitle')}</h2>
+        <p className={styles.ctaText}>{t('home', 'ctaText')}</p>
+        <BookingButton label={t('home', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )

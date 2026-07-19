@@ -23,7 +23,6 @@ import GalleryCMS from './pages/admin/GalleryCMS'
 import FAQCMS from './pages/admin/FAQCMS'
 import ContactInfo from './pages/admin/ContactInfo'
 import MediaCMS from './pages/admin/MediaCMS'
-import ReviewsCMS from './pages/admin/ReviewsCMS'
 
 import './index.css'
 
@@ -70,7 +69,6 @@ function App() {
             <Route path="media" element={<MediaCMS />} />
             <Route path="faq" element={<FAQCMS />} />
             <Route path="contact-info" element={<ContactInfo />} />
-            <Route path="reviews" element={<ReviewsCMS />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
