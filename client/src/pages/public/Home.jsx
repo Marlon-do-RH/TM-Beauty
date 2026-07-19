@@ -110,9 +110,6 @@ export default function Home() {
             <div key={a} className={styles.amenity}>{a}</div>
           ))}
         </div>
-        <div className={styles.expCta}>
-          <Link to="/experiencia" className={styles.heroSecondary}>{t('home', 'discoverExp')}</Link>
-        </div>
       </section>
 
       {/* Reviews */}
