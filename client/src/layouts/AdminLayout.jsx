@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import styles from './AdminLayout.module.css'
 import {
   IconGrid, IconCalendar, IconScissors, IconImage,
-  IconCamera, IconHelpCircle, IconMapPin, IconLogOut,
+  IconCamera, IconHelpCircle, IconMapPin, IconLogOut, IconStar,
 } from '../components/AdminIcons'
 
 const navGroups = [
@@ -20,6 +20,7 @@ const navGroups = [
       { to: '/admin/gallery', label: 'Galeria', Icon: IconImage },
       { to: '/admin/media', label: 'Fotos do Site', Icon: IconCamera },
       { to: '/admin/faq', label: 'FAQ', Icon: IconHelpCircle },
+      { to: '/admin/reviews', label: 'Avaliações', Icon: IconStar },
     ],
   },
   {
