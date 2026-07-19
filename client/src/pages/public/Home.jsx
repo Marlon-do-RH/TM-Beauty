@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
+import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
 import styles from './Home.module.css'
 
 const serviceKeys = [
@@ -42,12 +43,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.heroVisual}>
-          <div className={styles.heroPlaceholder}>
-            <div className={styles.heroBadge}>
-              <span className={styles.heroBadgeStars}>★★★★★</span>
-              <span>5.0 {t('home', 'statsReviews')}</span>
-            </div>
-          </div>
+          <BeforeAfterCarousel />
         </div>
       </section>
 

@@ -1,8 +1,10 @@
+import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LanguageProvider } from './i18n/LanguageContext'
 import PublicLayout from './layouts/PublicLayout'
 import AdminLayout from './layouts/AdminLayout'
 import LoginPage from './pages/LoginPage'
+import SplashScreen from './components/SplashScreen'
 
 import Home from './pages/public/Home'
 import SobreThalita from './pages/public/SobreThalita'
@@ -24,38 +26,54 @@ import MediaCMS from './pages/admin/MediaCMS'
 
 import './index.css'
 
+const hasSeenSplash = () => {
+  try { return !!sessionStorage.getItem('tm_splash') } catch { return false }
+}
+
+const markSplashSeen = () => {
+  try { sessionStorage.setItem('tm_splash', '1') } catch {}
+}
+
 function App() {
+  const [showSplash, setShowSplash] = useState(!hasSeenSplash())
+
+  const handleSplashDone = useCallback(() => {
+    markSplashSeen()
+    setShowSplash(false)
+  }, [])
+
   return (
     <LanguageProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/sobre" element={<SobreThalita />} />
-          <Route path="/servicos" element={<Servicos />} />
-          <Route path="/antes-depois" element={<AntesDepois />} />
-          <Route path="/studio" element={<OStudio />} />
-          <Route path="/produtos" element={<Produtos />} />
-          <Route path="/avaliacoes" element={<Avaliacoes />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/contato" element={<Contato />} />
-        </Route>
+      {showSplash && <SplashScreen onDone={handleSplashDone} />}
+      <BrowserRouter>
+        <Routes>
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/sobre" element={<SobreThalita />} />
+            <Route path="/servicos" element={<Servicos />} />
+            <Route path="/antes-depois" element={<AntesDepois />} />
+            <Route path="/studio" element={<OStudio />} />
+            <Route path="/produtos" element={<Produtos />} />
+            <Route path="/avaliacoes" element={<Avaliacoes />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contato" element={<Contato />} />
+          </Route>
 
-        <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin/login" element={<LoginPage />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="services" element={<ServicesCMS />} />
-          <Route path="gallery" element={<GalleryCMS />} />
-          <Route path="media" element={<MediaCMS />} />
-          <Route path="faq" element={<FAQCMS />} />
-          <Route path="contact-info" element={<ContactInfo />} />
-        </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route path="services" element={<ServicesCMS />} />
+            <Route path="gallery" element={<GalleryCMS />} />
+            <Route path="media" element={<MediaCMS />} />
+            <Route path="faq" element={<FAQCMS />} />
+            <Route path="contact-info" element={<ContactInfo />} />
+          </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </LanguageProvider>
   )
 }
