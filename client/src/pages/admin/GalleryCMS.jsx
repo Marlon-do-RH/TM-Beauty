@@ -3,8 +3,8 @@ import styles from './Admin.module.css'
 import g from './GalleryCMS.module.css'
 import { IconTrash, IconCamera, IconImage } from '../../components/AdminIcons'
 
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'rhknykmy'
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'tm_beauty_upload'
 const categories = ['Nanoplastia', 'Botox', 'Deep Treatment']
 
 async function uploadToCloudinary(file, folder = 'tm-beauty/gallery') {
