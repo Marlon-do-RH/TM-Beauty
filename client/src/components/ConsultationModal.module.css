@@ -1,0 +1,393 @@
+/* ── Backdrop ─────────────────────────────────────────────────────────────── */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(20, 12, 8, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--offwhite);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 64px rgba(20, 12, 8, 0.35);
+  animation: slideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header (progress + close) ────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.progress {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.25s, transform 0.25s;
+}
+
+.dotActive {
+  background: var(--gold);
+  transform: scale(1.2);
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dark-soft);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.closeBtn:hover {
+  background: var(--chocolate);
+  color: var(--offwhite);
+  border-color: var(--chocolate);
+}
+
+/* ── Body ─────────────────────────────────────────────────────────────────── */
+
+.body {
+  padding: 28px 28px 8px;
+  animation: fadeStep 0.2s ease;
+}
+
+@keyframes fadeStep {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.stepLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.stepTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.stepSub {
+  font-size: 0.82rem;
+  color: var(--dark-soft);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ── Inputs ───────────────────────────────────────────────────────────────── */
+
+.select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  color: var(--dark);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%234A3428' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select:focus {
+  border-color: var(--gold);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark-soft);
+}
+
+.input {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--gold);
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--dark);
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  border-color: var(--gold);
+}
+
+/* ── Upload area ──────────────────────────────────────────────────────────── */
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px dashed var(--border);
+  border-radius: 4px;
+  padding: 32px 20px;
+  cursor: pointer;
+  color: var(--dark-soft);
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+  position: relative;
+}
+
+.uploadArea:hover {
+  border-color: var(--gold);
+  background: rgba(201, 164, 109, 0.04);
+}
+
+.uploadDone {
+  border-color: var(--gold);
+  background: rgba(201, 164, 109, 0.06);
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.uploadHint {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--chocolate);
+}
+
+.uploadTypes {
+  font-size: 0.72rem;
+  color: rgba(74, 52, 40, 0.5);
+}
+
+.uploadFileName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  word-break: break-all;
+}
+
+.uploadSpinner {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error ────────────────────────────────────────────────────────────────── */
+
+.errorMsg {
+  font-size: 0.78rem;
+  color: #c0392b;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* ── Footer buttons ───────────────────────────────────────────────────────── */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px 28px;
+}
+
+.backBtn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--dark-soft);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.backBtn:hover {
+  border-color: var(--chocolate);
+  color: var(--chocolate);
+}
+
+.nextBtn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--chocolate);
+  border: none;
+  border-radius: 3px;
+  padding: 11px 28px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.nextBtn:hover:not(:disabled) {
+  background: var(--gold-dark, #a87c3a);
+}
+
+.nextBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Success screen ───────────────────────────────────────────────────────── */
+
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 32px 52px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.checkCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  margin-bottom: 24px;
+  animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.checkSvg {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: drawCheck 0.4s ease 0.3s forwards;
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+.successTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  margin-bottom: 10px;
+}
+
+.successText {
+  font-size: 0.9rem;
+  color: var(--dark-soft);
+  line-height: 1.7;
+  max-width: 320px;
+  animation: fadeSlideUp 0.4s ease 0.5s both;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

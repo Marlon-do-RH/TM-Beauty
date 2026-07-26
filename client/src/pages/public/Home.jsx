@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useConsultation } from '../../layouts/PublicLayout'
 import BookingButton from '../../components/BookingButton'
 import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
 import styles from './Home.module.css'
@@ -19,6 +20,7 @@ const reviews = [
 
 export default function Home() {
   const { t } = useLanguage()
+  const openConsultation = useConsultation()
   const [teaserPair, setTeaserPair] = useState(null)
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function Home() {
           </h1>
           <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
           <div className={styles.heroCtas}>
-            <BookingButton label={t('nav', 'bookNow')} variant="primary" />
+            <BookingButton label={t('nav', 'bookNow')} variant="primary" onClick={openConsultation} />
             <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
           </div>
         </div>
@@ -164,7 +166,7 @@ export default function Home() {
       <section className={styles.ctaSection}>
         <h2 className={styles.ctaTitle}>{t('home', 'ctaTitle')}</h2>
         <p className={styles.ctaText}>{t('home', 'ctaText')}</p>
-        <BookingButton label={t('home', 'ctaBtn')} variant="primary" />
+        <BookingButton label={t('home', 'ctaBtn')} variant="primary" onClick={openConsultation} />
       </section>
     </div>
   )
