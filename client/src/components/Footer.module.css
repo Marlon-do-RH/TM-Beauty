@@ -8,8 +8,9 @@
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
-  gap: 48px;
+  grid-template-columns: 1.6fr 1fr 0.8fr;
+  gap: 64px;
+  align-items: start;
 }
 
 .brand {}
@@ -79,6 +80,31 @@
 
 .colLinks a:hover {
   color: var(--gold);
+}
+
+.socialIcons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 164, 109, 0.35);
+  color: rgba(232, 222, 212, 0.75);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+
+.socialIcon:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(201, 164, 109, 0.1);
 }
 
 .newsletter {
