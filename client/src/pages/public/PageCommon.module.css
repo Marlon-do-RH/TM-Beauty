@@ -95,6 +95,16 @@
   padding: 20px;
 }
 
+.bioProfileImg {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
 .bioImgBadge {
   background: var(--white);
   padding: 12px 16px;

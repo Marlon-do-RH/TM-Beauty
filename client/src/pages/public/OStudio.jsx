@@ -1,19 +1,30 @@
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 import s from './OStudio.module.css'
 
-const photos = [
-  { size: 'large', caption: 'Área de tratamento principal' },
-  { size: 'small', caption: 'Estação de lavagem' },
-  { size: 'small', caption: 'Área de espera' },
-  { size: 'small', caption: 'Produtos selecionados' },
-  { size: 'small', caption: 'Detalhes do espaço' },
-  { size: 'large', caption: 'O ambiente completo' },
+const STATIC_CAPTIONS = [
+  'Área de tratamento principal',
+  'Estação de lavagem',
+  'Área de espera',
+  'Produtos selecionados',
+  'Detalhes do espaço',
+  'O ambiente completo',
 ]
+
+const CARD_SIZES = ['large', 'small', 'small', 'small', 'small', 'large']
 
 export default function OStudio() {
   const { t } = useLanguage()
+  const [studioPhotos, setStudioPhotos] = useState([])
+
+  useEffect(() => {
+    fetch('/api/site-media?section=studio')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) && setStudioPhotos(data))
+      .catch(() => {})
+  }, [])
 
   return (
     <div>
@@ -28,12 +39,20 @@ export default function OStudio() {
       <section className={s.gallerySection}>
         <div className={s.inner}>
           <div className={s.galleryGrid}>
-            {photos.map((p, i) => (
-              <div key={i} className={`${s.photoCard} ${p.size === 'large' ? s.photoCardLarge : ''}`}>
-                <div className={s.photoPlaceholder} />
-                <p className={s.photoCaption}>{p.caption}</p>
-              </div>
-            ))}
+            {CARD_SIZES.map((size, i) => {
+              const photo = studioPhotos[i]
+              const caption = photo?.caption || STATIC_CAPTIONS[i]
+              return (
+                <div key={i} className={`${s.photoCard} ${size === 'large' ? s.photoCardLarge : ''}`}>
+                  {photo ? (
+                    <img src={photo.url} alt={caption} className={s.photoImg} />
+                  ) : (
+                    <div className={s.photoPlaceholder} />
+                  )}
+                  <p className={s.photoCaption}>{caption}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

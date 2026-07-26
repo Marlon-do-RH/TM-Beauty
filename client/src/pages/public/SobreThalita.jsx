@@ -1,9 +1,18 @@
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 
 export default function SobreThalita() {
   const { t } = useLanguage()
+  const [profilePhoto, setProfilePhoto] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/site-media?section=about')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) && data.length > 0 && setProfilePhoto(data[0].url))
+      .catch(() => {})
+  }, [])
 
   const values = [
     { icon: '✦', title: t('sobre', 'v1Title'), desc: t('sobre', 'v1Desc') },
@@ -25,12 +34,20 @@ export default function SobreThalita() {
       <section className={styles.bioSection}>
         <div className={styles.bioGrid}>
           <div className={styles.bioVisual}>
-            <div className={styles.bioImgPlaceholder}>
-              <div className={styles.bioImgBadge}>
-                <span>Thalita Medeiros</span>
-                <span className={styles.bioImgSub}>Brazilian Hair Specialist</span>
+            {profilePhoto ? (
+              <img
+                src={profilePhoto}
+                alt="Thalita Medeiros"
+                className={styles.bioProfileImg}
+              />
+            ) : (
+              <div className={styles.bioImgPlaceholder}>
+                <div className={styles.bioImgBadge}>
+                  <span>Thalita Medeiros</span>
+                  <span className={styles.bioImgSub}>Brazilian Hair Specialist</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className={styles.bioContent}>
             <p className={styles.eyebrow}>{t('sobre', 'storyEyebrow')}</p>
