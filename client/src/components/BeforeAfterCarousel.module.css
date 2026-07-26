@@ -204,3 +204,28 @@
   color: var(--gold-dark);
   gap: 11px;
 }
+
+/* ── Loading skeleton ──────────────────────────────────────────────────────── */
+
+.skeleton {
+  border-radius: 12px;
+  height: 380px;
+  background: linear-gradient(90deg, var(--sage) 25%, var(--sage-light) 50%, var(--sage) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border: 1px solid var(--border);
+}
+
+.skeletonCaption {
+  height: 20px;
+  border-radius: 4px;
+  width: 60%;
+  background: linear-gradient(90deg, var(--sage) 25%, var(--sage-light) 50%, var(--sage) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

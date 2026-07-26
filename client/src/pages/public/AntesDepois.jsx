@@ -17,16 +17,16 @@ export default function AntesDepois() {
   const { t } = useLanguage()
   const categories = [t('antesDepois', 'all'), 'Nanoplastia', 'Botox', 'Deep Treatment']
   const [active, setActive] = useState(categories[0])
-  const [pairs, setPairs] = useState(FALLBACK_PAIRS)
+  const [pairs, setPairs] = useState(null)
 
   useEffect(() => {
     fetch('/api/gallery?section=gallery')
       .then(r => r.json())
-      .then(data => Array.isArray(data) && data.length > 0 && setPairs(data.map(d => ({ ...d, label: d.caption }))))
-      .catch(() => {})
+      .then(data => setPairs(Array.isArray(data) && data.length > 0 ? data.map(d => ({ ...d, label: d.caption })) : FALLBACK_PAIRS))
+      .catch(() => setPairs(FALLBACK_PAIRS))
   }, [])
 
-  const filtered = active === categories[0] ? pairs : pairs.filter(p => p.category === active)
+  const filtered = pairs ? (active === categories[0] ? pairs : pairs.filter(p => p.category === active)) : []
 
   return (
     <div>
@@ -52,24 +52,30 @@ export default function AntesDepois() {
             ))}
           </div>
 
-          <div className={s.grid}>
-            {filtered.map((p, i) => (
-              <div key={p.id || i} className={s.pairCard}>
-                <div className={s.pairImages}>
-                  <div className={s.pairImg} style={p.before_url ? { backgroundImage: `url(${p.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                    <span className={s.pairTag}>{t('antesDepois', 'before')}</span>
+          {pairs === null ? (
+            <div className={s.loadingRow}>
+              <div className={s.spinner} />
+            </div>
+          ) : (
+            <div className={s.grid}>
+              {filtered.map((p, i) => (
+                <div key={p.id || i} className={s.pairCard}>
+                  <div className={s.pairImages}>
+                    <div className={s.pairImg} style={p.before_url ? { backgroundImage: `url(${p.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+                      <span className={s.pairTag}>{t('antesDepois', 'before')}</span>
+                    </div>
+                    <div className={`${s.pairImg} ${s.pairImgAfter}`} style={p.after_url ? { backgroundImage: `url(${p.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+                      <span className={s.pairTag}>{t('antesDepois', 'after')}</span>
+                    </div>
                   </div>
-                  <div className={`${s.pairImg} ${s.pairImgAfter}`} style={p.after_url ? { backgroundImage: `url(${p.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                    <span className={s.pairTag}>{t('antesDepois', 'after')}</span>
+                  <div className={s.pairInfo}>
+                    <span className={s.pairCategory}>{p.category}</span>
+                    <p className={s.pairLabel}>{p.caption || p.label}</p>
                   </div>
                 </div>
-                <div className={s.pairInfo}>
-                  <span className={s.pairCategory}>{p.category}</span>
-                  <p className={s.pairLabel}>{p.caption || p.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

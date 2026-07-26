@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import styles from './BeforeAfterCarousel.module.css'
 
-// Fallback shown while loading or if no gallery items exist yet
+// Fallback shown ONLY if the API call fails entirely
 const FALLBACK_PAIRS = [
   { category: 'Nanoplastia',    caption: 'Curly hair → silky smooth',        before_url: '', after_url: '' },
   { category: 'Botox',          caption: 'Excess volume → controlled frizz', before_url: '', after_url: '' },
@@ -30,7 +30,7 @@ function ChevronRight() {
 
 export default function BeforeAfterCarousel() {
   const { t } = useLanguage()
-  const [pairs, setPairs] = useState(FALLBACK_PAIRS)
+  const [pairs, setPairs] = useState(null)  // null = still loading
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
   const [animDir, setAnimDir] = useState('next')
@@ -40,8 +40,8 @@ export default function BeforeAfterCarousel() {
   useEffect(() => {
     fetch('/api/gallery?view=carousel')
       .then(r => r.json())
-      .then(data => Array.isArray(data) && data.length > 0 && setPairs(data))
-      .catch(() => {})
+      .then(data => setPairs(Array.isArray(data) && data.length > 0 ? data : FALLBACK_PAIRS))
+      .catch(() => setPairs(FALLBACK_PAIRS))
   }, [])
 
   const total = pairs.length
@@ -67,6 +67,20 @@ export default function BeforeAfterCarousel() {
   const pair = pairs[current]
   const beforeLabel = t('antesDepois', 'before') || 'Before'
   const afterLabel  = t('antesDepois', 'after')  || 'After'
+
+  // Show skeleton while loading — no interactive elements to prevent crash
+  if (pairs === null) {
+    return (
+      <div className={styles.root}>
+        <div className={styles.proofPill}>
+          <span className={styles.proofStars}>★★★★★</span>
+          <span className={styles.proofText}>5.0 · Google Reviews</span>
+        </div>
+        <div className={styles.skeleton} />
+        <div className={styles.skeletonCaption} />
+      </div>
+    )
+  }
 
   return (
     <div
