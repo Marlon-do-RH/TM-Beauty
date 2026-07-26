@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import styles from './BeforeAfterCarousel.module.css'
@@ -30,13 +30,16 @@ function ChevronRight() {
 
 export default function BeforeAfterCarousel() {
   const { t } = useLanguage()
-  const [pairs, setPairs] = useState(null)  // null = still loading
+
+  // null = still loading; array = ready (real data or fallback)
+  const [pairs, setPairs]   = useState(null)
   const [current, setCurrent] = useState(0)
-  const [paused, setPaused] = useState(false)
+  const [paused, setPaused]   = useState(false)
   const [animDir, setAnimDir] = useState('next')
   const [visible, setVisible] = useState(true)
   const timerRef = useRef(null)
 
+  // Fetch data — only show something once resolved
   useEffect(() => {
     fetch('/api/gallery?view=carousel')
       .then(r => r.json())
@@ -44,32 +47,23 @@ export default function BeforeAfterCarousel() {
       .catch(() => setPairs(FALLBACK_PAIRS))
   }, [])
 
-  const total = pairs.length
-
-  const goTo = useCallback((idx, dir = 'next') => {
-    setAnimDir(dir)
-    setVisible(false)
-    setTimeout(() => {
-      setCurrent((idx + total) % total)
-      setVisible(true)
-    }, 220)
-  }, [total])
-
-  const next = useCallback(() => goTo(current + 1, 'next'), [current, goTo])
-  const prev = useCallback(() => goTo(current - 1, 'prev'), [current, goTo])
-
+  // Auto-advance — only runs when pairs is loaded
   useEffect(() => {
-    if (paused) return
-    timerRef.current = setTimeout(next, INTERVAL)
+    if (!pairs || paused) return
+    const total = pairs.length
+    timerRef.current = setTimeout(() => {
+      setAnimDir('next')
+      setVisible(false)
+      setTimeout(() => {
+        setCurrent(c => (c + 1) % total)
+        setVisible(true)
+      }, 220)
+    }, INTERVAL)
     return () => clearTimeout(timerRef.current)
-  }, [current, paused, next])
+  }, [current, paused, pairs])
 
-  const pair = pairs[current]
-  const beforeLabel = t('antesDepois', 'before') || 'Before'
-  const afterLabel  = t('antesDepois', 'after')  || 'After'
-
-  // Show skeleton while loading — no interactive elements to prevent crash
-  if (pairs === null) {
+  // Skeleton while loading
+  if (!pairs) {
     return (
       <div className={styles.root}>
         <div className={styles.proofPill}>
@@ -81,6 +75,22 @@ export default function BeforeAfterCarousel() {
       </div>
     )
   }
+
+  const total = pairs.length
+
+  const goTo = (idx, dir = 'next') => {
+    clearTimeout(timerRef.current)
+    setAnimDir(dir)
+    setVisible(false)
+    setTimeout(() => {
+      setCurrent((idx + total) % total)
+      setVisible(true)
+    }, 220)
+  }
+
+  const pair         = pairs[current]
+  const beforeLabel  = t('antesDepois', 'before') || 'Before'
+  const afterLabel   = t('antesDepois', 'after')  || 'After'
 
   return (
     <div
@@ -97,14 +107,12 @@ export default function BeforeAfterCarousel() {
       {/* Slide */}
       <div className={`${styles.slide} ${visible ? styles.slideIn : styles.slideOut} ${animDir === 'next' ? styles.dirNext : styles.dirPrev}`}>
         <div className={styles.images}>
-          {/* Before */}
           <div
             className={styles.imgBox}
             style={pair.before_url ? { backgroundImage: `url(${pair.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
           >
             <span className={styles.imgTag}>{beforeLabel}</span>
           </div>
-          {/* After */}
           <div
             className={`${styles.imgBox} ${styles.imgBoxAfter}`}
             style={pair.after_url ? { backgroundImage: `url(${pair.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
@@ -113,14 +121,13 @@ export default function BeforeAfterCarousel() {
           </div>
         </div>
 
-        {/* Caption */}
         <div className={styles.caption}>
           <span className={styles.captionCategory}>{pair.category}</span>
           <p className={styles.captionLabel}>{pair.caption || pair.label}</p>
         </div>
       </div>
 
-      {/* Controls row */}
+      {/* Controls */}
       <div className={styles.controls}>
         <div className={styles.dots}>
           {pairs.map((_, i) => (
@@ -133,16 +140,15 @@ export default function BeforeAfterCarousel() {
           ))}
         </div>
         <div className={styles.arrows}>
-          <button className={styles.arrow} onClick={prev} aria-label="Previous">
+          <button className={styles.arrow} onClick={() => goTo(current - 1, 'prev')} aria-label="Previous">
             <ChevronLeft />
           </button>
-          <button className={styles.arrow} onClick={next} aria-label="Next">
+          <button className={styles.arrow} onClick={() => goTo(current + 1, 'next')} aria-label="Next">
             <ChevronRight />
           </button>
         </div>
       </div>
 
-      {/* CTA */}
       <Link to="/antes-depois" className={styles.cta}>
         View all transformations
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
