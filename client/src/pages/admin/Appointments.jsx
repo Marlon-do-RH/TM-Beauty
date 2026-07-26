@@ -1,17 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import a from './Appointments.module.css'
 import { IconEdit, IconTrash, IconX, IconCheck, IconCalendar, IconSearch } from '../../components/AdminIcons'
 
 const SERVICES = ['Brazilian Nanoplastia', 'Brazilian Botox', 'Deep Treatment']
-
-const INITIAL = [
-  { id: 1, name: 'Sarah M.', email: 'sarah@email.com', phone: '+61 400 111 111', service: 'Brazilian Nanoplastia', date: '2024-06-03', time: '10:00', status: 'confirmed', notes: '' },
-  { id: 2, name: 'Camila R.', email: 'camila@email.com', phone: '+61 400 222 222', service: 'Brazilian Botox', date: '2024-06-03', time: '13:30', status: 'pending', notes: 'First time client' },
-  { id: 3, name: 'Jessica T.', email: 'jess@email.com', phone: '+61 400 333 333', service: 'Deep Treatment', date: '2024-06-04', time: '11:00', status: 'confirmed', notes: '' },
-  { id: 4, name: 'Ana P.', email: 'ana@email.com', phone: '+61 400 444 444', service: 'Brazilian Nanoplastia', date: '2024-06-05', time: '09:30', status: 'pending', notes: 'Allergic to strong fragrances' },
-  { id: 5, name: 'Michelle K.', email: 'michelle@email.com', phone: '+61 400 555 555', service: 'Brazilian Botox', date: '2024-06-06', time: '14:00', status: 'completed', notes: '' },
-]
 
 const STATUS_MAP = {
   pending:   { label: 'Pendente',   bg: '#FEF3E2', color: '#C0862E' },
@@ -115,34 +107,49 @@ function DeleteConfirm({ booking, onConfirm, onCancel }) {
 }
 
 export default function Appointments() {
-  const [appts, setAppts] = useState(INITIAL)
+  const [appts, setAppts] = useState([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [modal, setModal] = useState(null)
 
+  useEffect(() => {
+    fetch('/api/appointments')
+      .then(r => r.json())
+      .then(data => { setAppts(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
   const filtered = appts.filter(a => {
     const matchFilter = filter === 'all' || a.status === filter
-    const matchSearch = !search || [a.name, a.email, a.service].some(v => v.toLowerCase().includes(search.toLowerCase()))
+    const matchSearch = !search || [a.name, a.email, a.service].some(v => (v || '').toLowerCase().includes(search.toLowerCase()))
     return matchFilter && matchSearch
   })
 
-  const handleCreate = form => {
-    setAppts(prev => [...prev, { ...form, id: Date.now() }])
+  const handleCreate = async form => {
+    const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+    const data = await res.json()
+    setAppts(prev => [data, ...prev])
     setModal(null)
   }
 
-  const handleEdit = form => {
-    setAppts(prev => prev.map(x => x.id === form.id ? form : x))
+  const handleEdit = async form => {
+    const res = await fetch(`/api/appointments/${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+    const data = await res.json()
+    setAppts(prev => prev.map(x => x.id === form.id ? data : x))
     setModal(null)
   }
 
-  const handleDelete = id => {
+  const handleDelete = async id => {
+    await fetch(`/api/appointments/${id}`, { method: 'DELETE' })
     setAppts(prev => prev.filter(x => x.id !== id))
     setModal(null)
   }
 
-  const quickStatus = (id, status) => {
-    setAppts(prev => prev.map(x => x.id === id ? { ...x, status } : x))
+  const quickStatus = async (id, status) => {
+    const res = await fetch(`/api/appointments/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) })
+    const data = await res.json()
+    setAppts(prev => prev.map(x => x.id === id ? data : x))
   }
 
   const countByStatus = st => appts.filter(a => a.status === st).length
@@ -152,7 +159,7 @@ export default function Appointments() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Agendamentos</h1>
-          <p className={styles.pageSubtitle}>{appts.length} agendamento(s) no total</p>
+          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : `${appts.length} agendamento(s) no total`}</p>
         </div>
         <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', booking: EMPTY })}>
           Novo Agendamento

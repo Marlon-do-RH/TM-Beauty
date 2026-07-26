@@ -1,12 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import styles from './PageCommon.module.css'
 import s from './Contato.module.css'
+
+const FALLBACK = {
+  phone: '+61 450 442 869', whatsapp: '61450442869',
+  email: 'hello@thalitamedeiros.com.au', instagram: 'thalita.medeiros.hair',
+  address: '100 Wells St, Southbank VIC 3006',
+  map_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau',
+  hours_mon_fri: '9:00 – 18:00', hours_sat: '9:00 – 15:00', hours_sun: 'Closed',
+}
 
 export default function Contato() {
   const { t } = useLanguage()
   const [form, setForm] = useState({ name: '', email: '', service: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [contact, setContact] = useState(FALLBACK)
+
+  useEffect(() => {
+    fetch('/api/contact')
+      .then(r => r.json())
+      .then(d => d && !d.error && setContact(d))
+      .catch(() => {})
+  }, [])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -36,14 +52,14 @@ export default function Contato() {
             <div className={s.infoCol}>
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'location')}</h3>
-                <p className={s.infoText}>100 Wells St, Southbank VIC 3006</p>
+                <p className={s.infoText}>{contact.address}</p>
               </div>
 
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'directContact')}</h3>
                 <div className={s.contactLinks}>
-                  <a href="tel:+61450442869" className={s.contactLink}><span className={s.contactLinkIcon}>📞</span><span>+61 450 442 869</span></a>
-                  <a href="https://wa.me/61450442869" target="_blank" rel="noreferrer" className={s.contactLink}><span className={s.contactLinkIcon}>💬</span><span>WhatsApp</span></a>
+                  <a href={`tel:${contact.phone}`} className={s.contactLink}><span className={s.contactLinkIcon}>📞</span><span>{contact.phone}</span></a>
+                  <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className={s.contactLink}><span className={s.contactLinkIcon}>💬</span><span>WhatsApp</span></a>
                   <a href="mailto:hello@thalitamedeiros.com.au" className={s.contactLink}><span className={s.contactLinkIcon}>✉</span><span>hello@thalitamedeiros.com.au</span></a>
                   <a href="https://instagram.com/thalita.medeiros.hair" target="_blank" rel="noreferrer" className={s.contactLink}><span className={s.contactLinkIcon}>📷</span><span>@thalita.medeiros.hair</span></a>
                 </div>
@@ -52,15 +68,15 @@ export default function Contato() {
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'hours')}</h3>
                 <div className={s.hours}>
-                  <div className={s.hoursRow}><span>{t('contato', 'monFri')}</span><span>9h–18h</span></div>
-                  <div className={s.hoursRow}><span>{t('contato', 'sat')}</span><span>9h–15h</span></div>
-                  <div className={s.hoursRow}><span>{t('contato', 'sun')}</span><span>{t('contato', 'closed')}</span></div>
+                  <div className={s.hoursRow}><span>{t('contato', 'monFri')}</span><span>{contact.hours_mon_fri}</span></div>
+                  <div className={s.hoursRow}><span>{t('contato', 'sat')}</span><span>{contact.hours_sat}</span></div>
+                  <div className={s.hoursRow}><span>{t('contato', 'sun')}</span><span>{contact.hours_sun}</span></div>
                 </div>
               </div>
 
               <div className={s.mapEmbed}>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau"
+                  src={contact.map_url || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau'}
                   width="100%"
                   height="260"
                   style={{ border: 0, borderRadius: 6 }}
@@ -116,7 +132,7 @@ export default function Contato() {
         <div className={s.inner}>
           <h2 className={s.bookTitle}>{t('contato', 'bookTitle')}</h2>
           <p className={s.bookText}>{t('contato', 'bookText')}</p>
-          <a href="https://wa.me/61450442869?text=Olá Thalita! Gostaria de agendar uma consulta." target="_blank" rel="noreferrer" className={s.whatsappBtn}>
+          <a href={`https://wa.me/${contact.whatsapp}?text=Olá Thalita! Gostaria de agendar uma consulta.`} target="_blank" rel="noreferrer" className={s.whatsappBtn}>
             {t('contato', 'whatsappBtn')}
           </a>
         </div>

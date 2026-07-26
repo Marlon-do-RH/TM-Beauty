@@ -1,32 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import ci from './ContactInfo.module.css'
 import { IconPhone, IconMail, IconInstagram, IconWhatsApp, IconMapPin, IconClock, IconEye, IconCheck } from '../../components/AdminIcons'
 
 const INITIAL = {
-  phone: '+61 450 442 869',
-  whatsapp: '61450442869',
-  email: 'hello@thalitamedeiros.com.au',
-  instagram: 'thalita.medeiros.hair',
-  address: '100 Wells St, Southbank VIC 3006',
-  mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau',
-  hoursMonFri: '9:00 – 18:00',
-  hoursSat: '9:00 – 15:00',
-  hoursSun: 'Closed',
-  bookingNote: 'Book via WhatsApp or fill in the contact form. I will confirm your appointment within 24 hours.',
+  phone: '+61 450 442 869', whatsapp: '61450442869',
+  email: 'hello@thalitamedeiros.com.au', instagram: 'thalita.medeiros.hair',
+  address: '100 Wells St, Southbank VIC 3006', map_url: '',
+  hours_mon_fri: '9:00 – 18:00', hours_sat: '9:00 – 15:00', hours_sun: 'Closed',
+  booking_note: 'Book via WhatsApp or fill in the contact form.',
 }
 
 export default function ContactInfo() {
   const [data, setData] = useState(INITIAL)
   const [saved, setSaved] = useState(false)
 
+  useEffect(() => {
+    fetch('/api/contact')
+      .then(r => r.json())
+      .then(d => d && !d.error && setData(d))
+      .catch(() => {})
+  }, [])
+
   const set = (key, val) => {
     setData(d => ({ ...d, [key]: val }))
     setSaved(false)
   }
 
-  const handleSave = e => {
+  const handleSave = async e => {
     e.preventDefault()
+    await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
   }
@@ -89,16 +92,16 @@ export default function ContactInfo() {
             </div>
             <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
               <label className={styles.label}>Google Maps Embed URL</label>
-              <input className={styles.input} value={data.mapUrl} onChange={e => set('mapUrl', e.target.value)} placeholder="https://www.google.com/maps/embed?pb=..." />
+              <input className={styles.input} value={data.map_url || ''} onChange={e => set('map_url', e.target.value)} placeholder="https://www.google.com/maps/embed?pb=..." />
               <p className={ci.hint}>
                 No Google Maps: Compartilhar → Incorporar mapa → copiar o src=&ldquo;...&rdquo; do iframe
               </p>
             </div>
-            {data.mapUrl && (
+            {data.map_url && (
               <div className={ci.mapPreview} style={{ gridColumn: '1 / -1' }}>
                 <p className={ci.previewLabel}>Pré-visualização do mapa</p>
                 <iframe
-                  src={data.mapUrl}
+                  src={data.map_url}
                   width="100%"
                   height="280"
                   style={{ border: 0, borderRadius: 6 }}
@@ -118,15 +121,15 @@ export default function ContactInfo() {
           <div className={ci.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Segunda — Sexta</label>
-              <input className={styles.input} value={data.hoursMonFri} onChange={e => set('hoursMonFri', e.target.value)} placeholder="9:00 – 18:00" />
+              <input className={styles.input} value={data.hours_mon_fri || ''} onChange={e => set('hours_mon_fri', e.target.value)} placeholder="9:00 – 18:00" />
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Sábado</label>
-              <input className={styles.input} value={data.hoursSat} onChange={e => set('hoursSat', e.target.value)} placeholder="9:00 – 15:00" />
+              <input className={styles.input} value={data.hours_sat || ''} onChange={e => set('hours_sat', e.target.value)} placeholder="9:00 – 15:00" />
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Domingo</label>
-              <input className={styles.input} value={data.hoursSun} onChange={e => set('hoursSun', e.target.value)} placeholder="Fechado" />
+              <input className={styles.input} value={data.hours_sun || ''} onChange={e => set('hours_sun', e.target.value)} placeholder="Fechado" />
             </div>
           </div>
         </section>
@@ -139,8 +142,8 @@ export default function ContactInfo() {
               <textarea
                 rows={3}
                 className={styles.textarea}
-                value={data.bookingNote}
-                onChange={e => set('bookingNote', e.target.value)}
+                value={data.booking_note || ''}
+                onChange={e => set('booking_note', e.target.value)}
               />
             </div>
           </div>
@@ -158,7 +161,7 @@ export default function ContactInfo() {
             <div className={ci.previewRow}><IconMapPin size={14} className={ci.previewIconSvg} /><span>{data.address}</span></div>
             <div className={ci.previewRow}>
               <IconClock size={14} className={ci.previewIconSvg} />
-              <span>Seg–Sex: {data.hoursMonFri} · Sáb: {data.hoursSat} · Dom: {data.hoursSun}</span>
+              <span>Seg–Sex: {data.hours_mon_fri} · Sáb: {data.hours_sat} · Dom: {data.hours_sun}</span>
             </div>
           </div>
         </section>

@@ -1,22 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 import s from './AntesDepois.module.css'
 
-const pairs = [
-  { category: 'Nanoplastia', label: 'Cabelo cacheado → liso sedoso' },
-  { category: 'Botox', label: 'Volume excessivo → fios controlados' },
-  { category: 'Nanoplastia', label: 'Frizz intenso → brilho natural' },
-  { category: 'Deep Treatment', label: 'Pontas ressecadas → fios hidratados' },
-  { category: 'Botox', label: 'Cabelo ondulado → levemente alisado' },
-  { category: 'Nanoplastia', label: 'Dano químico → restauração completa' },
+const FALLBACK_PAIRS = [
+  { category: 'Nanoplastia', caption: 'Cabelo cacheado → liso sedoso' },
+  { category: 'Botox', caption: 'Volume excessivo → fios controlados' },
+  { category: 'Nanoplastia', caption: 'Frizz intenso → brilho natural' },
+  { category: 'Deep Treatment', caption: 'Pontas ressecadas → fios hidratados' },
+  { category: 'Botox', caption: 'Cabelo ondulado → levemente alisado' },
+  { category: 'Nanoplastia', caption: 'Dano químico → restauração completa' },
 ]
 
 export default function AntesDepois() {
   const { t } = useLanguage()
   const categories = [t('antesDepois', 'all'), 'Nanoplastia', 'Botox', 'Deep Treatment']
   const [active, setActive] = useState(categories[0])
+  const [pairs, setPairs] = useState(FALLBACK_PAIRS)
+
+  useEffect(() => {
+    fetch('/api/gallery?section=gallery')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) && data.length > 0 && setPairs(data.map(d => ({ ...d, label: d.caption }))))
+      .catch(() => {})
+  }, [])
 
   const filtered = active === categories[0] ? pairs : pairs.filter(p => p.category === active)
 
@@ -46,18 +54,18 @@ export default function AntesDepois() {
 
           <div className={s.grid}>
             {filtered.map((p, i) => (
-              <div key={i} className={s.pairCard}>
+              <div key={p.id || i} className={s.pairCard}>
                 <div className={s.pairImages}>
-                  <div className={s.pairImg}>
+                  <div className={s.pairImg} style={p.before_url ? { backgroundImage: `url(${p.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                     <span className={s.pairTag}>{t('antesDepois', 'before')}</span>
                   </div>
-                  <div className={`${s.pairImg} ${s.pairImgAfter}`}>
+                  <div className={`${s.pairImg} ${s.pairImgAfter}`} style={p.after_url ? { backgroundImage: `url(${p.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                     <span className={s.pairTag}>{t('antesDepois', 'after')}</span>
                   </div>
                 </div>
                 <div className={s.pairInfo}>
                   <span className={s.pairCategory}>{p.category}</span>
-                  <p className={s.pairLabel}>{p.label}</p>
+                  <p className={s.pairLabel}>{p.caption || p.label}</p>
                 </div>
               </div>
             ))}

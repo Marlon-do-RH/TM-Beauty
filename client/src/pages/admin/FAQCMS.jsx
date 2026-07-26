@@ -1,62 +1,73 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import f from './FAQCMS.module.css'
 import { IconEdit, IconTrash, IconX, IconCheck, IconChevronUp, IconChevronDown } from '../../components/AdminIcons'
 
-const INITIAL_FAQ = [
-  { id: 1, question: 'Quanto tempo dura o tratamento de Nanoplastia?', answer: 'O tratamento de Nanoplastia dura em média 3 a 4 horas.' },
-  { id: 2, question: 'Posso lavar o cabelo no mesmo dia após o tratamento?', answer: 'Para a Nanoplastia, recomendamos esperar pelo menos 72 horas.' },
-  { id: 3, question: 'O tratamento é adequado para cabelos coloridos?', answer: 'Sim! A Nanoplastia e o Botox Capilar são seguros para cabelos coloridos.' },
-  { id: 4, question: 'Com que frequência devo repetir o tratamento?', answer: 'A Nanoplastia tem durabilidade de 6 a 8 meses. O Botox Capilar dura em média 3 a 4 meses.' },
-  { id: 5, question: 'Os tratamentos contêm formol?', answer: 'Não. Todos os tratamentos são livres de formol e formoldeído.' },
-  { id: 6, question: 'Preciso fazer alguma preparação antes do tratamento?', answer: 'Recomendamos vir com o cabelo limpo, sem produtos como leave-in, óleo ou spray.' },
-]
-
 export default function FAQCMS() {
-  const [faqs, setFaqs] = useState(INITIAL_FAQ)
+  const [faqs, setFaqs] = useState([])
+  const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(null)
   const [editData, setEditData] = useState({})
   const [newQ, setNewQ] = useState('')
   const [newA, setNewA] = useState('')
+
+  useEffect(() => {
+    fetch('/api/faq')
+      .then(r => r.json())
+      .then(data => { setFaqs(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
 
   const startEdit = faq => {
     setEditing(faq.id)
     setEditData({ question: faq.question, answer: faq.answer })
   }
 
-  const saveEdit = id => {
-    setFaqs(list => list.map(x => x.id === id ? { ...x, ...editData } : x))
+  const saveEdit = async id => {
+    const res = await fetch(`/api/faq/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editData) })
+    const data = await res.json()
+    setFaqs(list => list.map(x => x.id === id ? data : x))
     setEditing(null)
   }
 
-  const remove = id => setFaqs(list => list.filter(x => x.id !== id))
+  const remove = async id => {
+    await fetch(`/api/faq/${id}`, { method: 'DELETE' })
+    setFaqs(list => list.filter(x => x.id !== id))
+  }
 
-  const addFaq = e => {
+  const addFaq = async e => {
     e.preventDefault()
     if (!newQ.trim() || !newA.trim()) return
-    setFaqs(list => [...list, { id: Date.now(), question: newQ, answer: newA }])
+    const sort_order = faqs.length + 1
+    const res = await fetch('/api/faq', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: newQ, answer: newA, sort_order }) })
+    const data = await res.json()
+    setFaqs(list => [...list, data])
     setNewQ('')
     setNewA('')
   }
 
-  const moveUp = id => {
-    setFaqs(list => {
-      const idx = list.findIndex(x => x.id === id)
-      if (idx === 0) return list
-      const arr = [...list]
-      ;[arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
-      return arr
-    })
+  const moveUp = async id => {
+    const idx = faqs.findIndex(x => x.id === id)
+    if (idx === 0) return
+    const arr = [...faqs]
+    ;[arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
+    setFaqs(arr)
+    await Promise.all([
+      fetch(`/api/faq/${arr[idx - 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx }) }),
+      fetch(`/api/faq/${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
+    ])
   }
 
-  const moveDown = id => {
-    setFaqs(list => {
-      const idx = list.findIndex(x => x.id === id)
-      if (idx === list.length - 1) return list
-      const arr = [...list]
-      ;[arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
-      return arr
-    })
+  const moveDown = async id => {
+    const idx = faqs.findIndex(x => x.id === id)
+    if (idx === faqs.length - 1) return
+    const arr = [...faqs]
+    ;[arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
+    setFaqs(arr)
+    await Promise.all([
+      fetch(`/api/faq/${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
+      fetch(`/api/faq/${arr[idx + 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 2 }) }),
+    ])
   }
 
   return (
@@ -64,7 +75,7 @@ export default function FAQCMS() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>FAQ</h1>
-          <p className={styles.pageSubtitle}>Gerencie as perguntas frequentes do site</p>
+          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : 'Gerencie as perguntas frequentes do site'}</p>
         </div>
       </div>
 

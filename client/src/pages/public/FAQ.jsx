@@ -1,21 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import styles from './PageCommon.module.css'
 import s from './FAQ.module.css'
 import BookingButton from '../../components/BookingButton'
 
+const FALLBACK_FAQS = [
+  { q: 'q1', a: 'a1' }, { q: 'q2', a: 'a2' }, { q: 'q3', a: 'a3' },
+  { q: 'q4', a: 'a4' }, { q: 'q5', a: 'a5' }, { q: 'q6', a: 'a6' },
+]
+
 export default function FAQ() {
   const { t } = useLanguage()
   const [open, setOpen] = useState(null)
+  const [faqs, setFaqs] = useState(null)
 
-  const faqs = [
-    { q: t('faq', 'q1'), a: t('faq', 'a1') },
-    { q: t('faq', 'q2'), a: t('faq', 'a2') },
-    { q: t('faq', 'q3'), a: t('faq', 'a3') },
-    { q: t('faq', 'q4'), a: t('faq', 'a4') },
-    { q: t('faq', 'q5'), a: t('faq', 'a5') },
-    { q: t('faq', 'q6'), a: t('faq', 'a6') },
-  ]
+  useEffect(() => {
+    fetch('/api/faq')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) && data.length > 0 && setFaqs(data))
+      .catch(() => {})
+  }, [])
+
+  const items = faqs
+    ? faqs.map(f => ({ q: f.question, a: f.answer }))
+    : FALLBACK_FAQS.map(f => ({ q: t('faq', f.q), a: t('faq', f.a) }))
 
   return (
     <div>
@@ -30,7 +38,7 @@ export default function FAQ() {
       <section className={s.faqSection}>
         <div className={s.inner}>
           <div className={s.faqList}>
-            {faqs.map((faq, i) => (
+            {items.map((faq, i) => (
               <div key={i} className={`${s.faqItem} ${open === i ? s.faqItemOpen : ''}`}>
                 <button className={s.faqQuestion} onClick={() => setOpen(open === i ? null : i)}>
                   <span>{faq.q}</span>

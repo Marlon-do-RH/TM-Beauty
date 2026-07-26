@@ -1,28 +1,69 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './Admin.module.css'
 import g from './GalleryCMS.module.css'
 import { IconTrash, IconCamera, IconImage } from '../../components/AdminIcons'
 
-const INITIAL = [
-  { id: 1, category: 'Nanoplastia', caption: 'Cabelo cacheado — liso sedoso', date: '2024-05-10' },
-  { id: 2, category: 'Botox', caption: 'Volume controlado', date: '2024-05-15' },
-  { id: 3, category: 'Deep Treatment', caption: 'Fios hidratados', date: '2024-05-20' },
-]
-
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 const categories = ['Nanoplastia', 'Botox', 'Deep Treatment']
 
-export default function GalleryCMS() {
-  const [items, setItems] = useState(INITIAL)
-  const [form, setForm] = useState({ category: 'Nanoplastia', caption: '' })
-  const [filter, setFilter] = useState('all')
+async function uploadToCloudinary(file, folder = 'tm-beauty/gallery') {
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('upload_preset', UPLOAD_PRESET)
+  fd.append('folder', folder)
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: fd })
+  const data = await res.json()
+  if (!data.secure_url) throw new Error(data.error?.message || 'Upload failed')
+  return data.secure_url
+}
 
-  const addItem = e => {
+export default function GalleryCMS() {
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [form, setForm] = useState({ category: 'Nanoplastia', caption: '' })
+  const [beforeFile, setBeforeFile] = useState(null)
+  const [afterFile, setAfterFile] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  const [filter, setFilter] = useState('all')
+  const beforeRef = useRef()
+  const afterRef = useRef()
+
+  useEffect(() => {
+    fetch('/api/gallery')
+      .then(r => r.json())
+      .then(data => { setItems(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const addItem = async e => {
     e.preventDefault()
-    setItems(it => [...it, { ...form, id: Date.now(), date: new Date().toISOString().slice(0, 10) }])
-    setForm(f => ({ ...f, caption: '' }))
+    setUploading(true)
+    try {
+      const [before_url, after_url] = await Promise.all([
+        beforeFile ? uploadToCloudinary(beforeFile) : Promise.resolve(''),
+        afterFile  ? uploadToCloudinary(afterFile)  : Promise.resolve(''),
+      ])
+      const payload = { category: form.category, caption: form.caption, before_url, after_url, section: 'gallery' }
+      const res = await fetch('/api/gallery', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const data = await res.json()
+      setItems(it => [...it, data])
+      setForm(f => ({ ...f, caption: '' }))
+      setBeforeFile(null)
+      setAfterFile(null)
+      if (beforeRef.current) beforeRef.current.value = ''
+      if (afterRef.current) afterRef.current.value = ''
+    } catch (err) {
+      alert('Erro ao fazer upload: ' + err.message)
+    } finally {
+      setUploading(false)
+    }
   }
 
-  const remove = id => setItems(it => it.filter(x => x.id !== id))
+  const remove = async id => {
+    await fetch(`/api/gallery/${id}`, { method: 'DELETE' })
+    setItems(it => it.filter(x => x.id !== id))
+  }
 
   const filtered = filter === 'all' ? items : items.filter(x => x.category === filter)
 
@@ -31,7 +72,7 @@ export default function GalleryCMS() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Galeria</h1>
-          <p className={styles.pageSubtitle}>Gerencie as fotos de antes &amp; depois</p>
+          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : 'Gerencie as fotos de antes & depois'}</p>
         </div>
       </div>
 
@@ -52,21 +93,23 @@ export default function GalleryCMS() {
           </div>
 
           <div className={g.uploadRow}>
-            <div className={g.uploadBox}>
+            <label className={g.uploadBox}>
               <span className={g.uploadIconWrap}><IconCamera size={22} /></span>
-              <span className={g.uploadLabel}>Foto — Antes</span>
+              <span className={g.uploadLabel}>{beforeFile ? beforeFile.name : 'Foto — Antes'}</span>
               <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
-              <input type="file" accept="image/*" className={g.fileInput} />
-            </div>
-            <div className={g.uploadBox}>
+              <input ref={beforeRef} type="file" accept="image/*" className={g.fileInput} onChange={e => setBeforeFile(e.target.files[0] || null)} />
+            </label>
+            <label className={g.uploadBox}>
               <span className={g.uploadIconWrap}><IconImage size={22} /></span>
-              <span className={g.uploadLabel}>Foto — Depois</span>
+              <span className={g.uploadLabel}>{afterFile ? afterFile.name : 'Foto — Depois'}</span>
               <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
-              <input type="file" accept="image/*" className={g.fileInput} />
-            </div>
+              <input ref={afterRef} type="file" accept="image/*" className={g.fileInput} onChange={e => setAfterFile(e.target.files[0] || null)} />
+            </label>
           </div>
 
-          <button type="submit" className={styles.submitBtn}>Adicionar à Galeria</button>
+          <button type="submit" className={styles.submitBtn} disabled={uploading}>
+            {uploading ? 'Enviando...' : 'Adicionar à Galeria'}
+          </button>
         </form>
       </div>
 
@@ -82,10 +125,10 @@ export default function GalleryCMS() {
         {filtered.map(item => (
           <div key={item.id} className={g.galleryCard}>
             <div className={g.galleryImages}>
-              <div className={g.imgBox}>
+              <div className={g.imgBox} style={item.before_url ? { backgroundImage: `url(${item.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                 <span className={g.imgTag}>Antes</span>
               </div>
-              <div className={`${g.imgBox} ${g.imgBoxAfter}`}>
+              <div className={`${g.imgBox} ${g.imgBoxAfter}`} style={item.after_url ? { backgroundImage: `url(${item.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                 <span className={g.imgTag}>Depois</span>
               </div>
             </div>
@@ -93,7 +136,7 @@ export default function GalleryCMS() {
               <span className={g.cardCategory}>{item.category}</span>
               <p className={g.cardCaption}>{item.caption}</p>
               <div className={g.cardFooter}>
-                <span className={g.cardDate}>{item.date}</span>
+                <span className={g.cardDate}>{item.created_at?.slice(0, 10) || ''}</span>
                 <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
                   <IconTrash size={12} /> Remover
                 </button>

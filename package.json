@@ -1,0 +1,8 @@
+{
+  "name": "tm-beauty",
+  "version": "1.0.0",
+  "description": "TM Beauty – API serverless functions",
+  "dependencies": {
+    "@supabase/supabase-js": "^2"
+  }
+}

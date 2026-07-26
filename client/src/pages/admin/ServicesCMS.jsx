@@ -1,15 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import sv from './ServicesCMS.module.css'
 import { IconEdit, IconTrash, IconX, IconCheck } from '../../components/AdminIcons'
 
-const INITIAL_SERVICES = [
-  { id: 1, name: 'Brazilian Nanoplastia', description: 'Alisamento avançado sem formol com nanopartículas. Resultado liso, sedoso e duradouro por até 8 meses.', price: 280, priceMin: 280, priceMax: 450, duration: '3–4', durationUnit: 'horas', active: true },
-  { id: 2, name: 'Brazilian Botox', description: 'Hidratação profunda e redução de volume. Elimina frizz e dura até 4 meses.', price: 220, priceMin: 220, priceMax: 350, duration: '2–3', durationUnit: 'horas', active: true },
-  { id: 3, name: 'Deep Treatment', description: 'Tratamento reconstrutivo intensivo que devolve força, brilho e elasticidade aos fios danificados.', price: 180, priceMin: 180, priceMax: 280, duration: '1–2', durationUnit: 'horas', active: true },
-]
-
-const EMPTY = { name: '', description: '', price: '', priceMin: '', priceMax: '', duration: '', durationUnit: 'horas', active: true }
+const EMPTY = { name: '', description: '', price: '', price_min: '', price_max: '', duration: '', duration_unit: 'horas', active: true }
 
 function ServiceModal({ initial, onSave, onClose, mode }) {
   const [form, setForm] = useState(initial)
@@ -38,16 +32,16 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
 
             <div className={styles.field}>
               <label className={styles.label}>Preço de tabela (R$) *</label>
-              <input required type="number" min="0" className={styles.input} value={form.price} onChange={e => set('price', e.target.value)} placeholder="280" />
+              <input required type="number" min="0" className={styles.input} value={form.price_min || ''} onChange={e => set('price_min', e.target.value)} placeholder="280" />
               <p className={sv.hint}>Exibido como &ldquo;a partir de&rdquo;</p>
             </div>
 
             <div className={styles.field}>
               <label className={styles.label}>Faixa de preço (opcional)</label>
               <div className={sv.rangeRow}>
-                <input type="number" min="0" className={styles.input} value={form.priceMin} onChange={e => set('priceMin', e.target.value)} placeholder="Mín" />
+                <input type="number" min="0" className={styles.input} value={form.price_min || ''} onChange={e => set('price_min', e.target.value)} placeholder="Mín" />
                 <span className={sv.rangeSep}>–</span>
-                <input type="number" min="0" className={styles.input} value={form.priceMax} onChange={e => set('priceMax', e.target.value)} placeholder="Máx" />
+                <input type="number" min="0" className={styles.input} value={form.price_max || ''} onChange={e => set('price_max', e.target.value)} placeholder="Máx" />
               </div>
             </div>
 
@@ -55,7 +49,7 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
               <label className={styles.label}>Duração *</label>
               <div className={sv.rangeRow}>
                 <input required className={styles.input} value={form.duration} onChange={e => set('duration', e.target.value)} placeholder="1–2" />
-                <select className={styles.select} value={form.durationUnit} onChange={e => set('durationUnit', e.target.value)}>
+                <select className={styles.select} value={form.duration_unit} onChange={e => set('duration_unit', e.target.value)}>
                   <option value="horas">horas</option>
                   <option value="minutos">minutos</option>
                 </select>
@@ -91,27 +85,55 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
 }
 
 export default function ServicesCMS() {
-  const [services, setServices] = useState(INITIAL_SERVICES)
+  const [services, setServices] = useState([])
+  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(null)
 
-  const handleSave = form => {
+  useEffect(() => {
+    fetch('/api/services')
+      .then(r => r.json())
+      .then(data => { setServices(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const handleSave = async form => {
+    const payload = {
+      name: form.name, description: form.description,
+      price_min: Number(form.price_min) || Number(form.price) || 0,
+      price_max: Number(form.price_max) || 0,
+      duration: form.duration, duration_unit: form.duration_unit,
+      active: form.active,
+    }
     if (modal.mode === 'create') {
-      setServices(s => [...s, { ...form, price: Number(form.price), priceMin: Number(form.priceMin) || 0, priceMax: Number(form.priceMax) || 0, id: Date.now() }])
+      const res = await fetch('/api/services', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const data = await res.json()
+      setServices(s => [...s, data])
     } else {
-      setServices(s => s.map(x => x.id === form.id ? { ...form, price: Number(form.price) } : x))
+      const res = await fetch(`/api/services/${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const data = await res.json()
+      setServices(s => s.map(x => x.id === form.id ? data : x))
     }
     setModal(null)
   }
 
-  const remove = id => setServices(s => s.filter(x => x.id !== id))
-  const toggle = id => setServices(s => s.map(x => x.id === id ? { ...x, active: !x.active } : x))
+  const remove = async id => {
+    await fetch(`/api/services/${id}`, { method: 'DELETE' })
+    setServices(s => s.filter(x => x.id !== id))
+  }
+
+  const toggle = async id => {
+    const svc = services.find(x => x.id === id)
+    const res = await fetch(`/api/services/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !svc.active }) })
+    const data = await res.json()
+    setServices(s => s.map(x => x.id === id ? data : x))
+  }
 
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Serviços & Preços</h1>
-          <p className={styles.pageSubtitle}>Gerencie os serviços, preços e duração exibidos no site</p>
+          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : 'Gerencie os serviços, preços e duração exibidos no site'}</p>
         </div>
         <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', svc: EMPTY })}>
           Novo Serviço
@@ -139,13 +161,13 @@ export default function ServicesCMS() {
               <div className={sv.metaItem}>
                 <span className={sv.metaLabel}>Preço</span>
                 <span className={sv.metaValue}>
-                  R$ {svc.price}
-                  {svc.priceMax > svc.price && <span className={sv.metaRange}> – R$ {svc.priceMax}</span>}
+                  R$ {svc.price_min}
+                  {svc.price_max > svc.price_min && <span className={sv.metaRange}> – R$ {svc.price_max}</span>}
                 </span>
               </div>
               <div className={sv.metaItem}>
                 <span className={sv.metaLabel}>Duração</span>
-                <span className={sv.metaValue}>{svc.duration} {svc.durationUnit}</span>
+                <span className={sv.metaValue}>{svc.duration} {svc.duration_unit}</span>
               </div>
             </div>
 
