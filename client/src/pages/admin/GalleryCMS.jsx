@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './Admin.module.css'
 import g from './GalleryCMS.module.css'
-import { IconTrash, IconCamera, IconImage } from '../../components/AdminIcons'
+import { IconTrash, IconCamera, IconImage, IconStar } from '../../components/AdminIcons'
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'rhknykmy'
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'tm_beauty_upload'
@@ -73,6 +73,21 @@ export default function GalleryCMS() {
     setItems(it => it.filter(x => x.id !== id))
   }
 
+  const toggleFeatured = async item => {
+    const newVal = !item.featured
+    const res = await fetch(`/api/gallery/${item.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ featured: newVal }),
+    })
+    const updated = await res.json()
+    setItems(it => it.map(x => {
+      if (x.id === updated.id) return updated
+      if (newVal && x.category === item.category) return { ...x, featured: false }
+      return x
+    }))
+  }
+
   const filtered = filter === 'all' ? items : items.filter(x => x.category === filter)
 
   return (
@@ -131,7 +146,7 @@ export default function GalleryCMS() {
 
       <div className={g.galleryGrid}>
         {filtered.map(item => (
-          <div key={item.id} className={g.galleryCard}>
+          <div key={item.id} className={`${g.galleryCard} ${item.featured ? g.isFeatured : ''}`}>
             <div className={g.galleryImages}>
               <div className={g.imgBox} style={item.before_url ? { backgroundImage: `url(${item.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                 <span className={g.imgTag}>Antes</span>
@@ -145,9 +160,18 @@ export default function GalleryCMS() {
               <p className={g.cardCaption}>{item.caption}</p>
               <div className={g.cardFooter}>
                 <span className={g.cardDate}>{item.created_at?.slice(0, 10) || ''}</span>
-                <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
-                  <IconTrash size={12} /> Remover
-                </button>
+                <div className={g.cardActions}>
+                  <button
+                    className={`${styles.actionBtn} ${item.featured ? g.featuredBtn : ''}`}
+                    onClick={() => toggleFeatured(item)}
+                    title={item.featured ? 'Featured on home page — click to unfeature' : 'Set as featured on home page'}
+                  >
+                    <IconStar size={13} /> {item.featured ? 'Featured' : 'Feature'}
+                  </button>
+                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
+                    <IconTrash size={12} /> Remover
+                  </button>
+                </div>
               </div>
             </div>
           </div>

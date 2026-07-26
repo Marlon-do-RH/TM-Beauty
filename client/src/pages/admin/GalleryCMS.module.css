@@ -123,6 +123,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cardActions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.featuredBtn {
+  color: var(--gold-dark) !important;
+  border-color: var(--gold) !important;
+  background: rgba(201, 164, 109, 0.1) !important;
+}
+
+.galleryCard.isFeatured {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201, 164, 109, 0.3);
 }
 
 .cardDate {

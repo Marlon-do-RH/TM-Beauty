@@ -13,6 +13,23 @@ module.exports = async (req, res) => {
   const { id } = req.query
 
   if (req.method === 'PUT') {
+    // If setting featured=true, unset all other items in the same category first
+    if (req.body.featured === true) {
+      const { data: existing } = await supabase
+        .from('gallery')
+        .select('category')
+        .eq('id', id)
+        .single()
+
+      if (existing?.category) {
+        await supabase
+          .from('gallery')
+          .update({ featured: false })
+          .eq('category', existing.category)
+          .neq('id', id)
+      }
+    }
+
     const { data, error } = await supabase
       .from('gallery')
       .update(req.body)
