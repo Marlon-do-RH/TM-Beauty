@@ -8,11 +8,19 @@ const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'tm_beaut
 const categories = ['Nanoplastia', 'Botox', 'Deep Treatment']
 
 async function uploadToCloudinary(file, folder = 'tm-beauty/gallery') {
+  // Get a server-side signature — no preset needed
+  const { signature, timestamp, api_key, cloud_name } = await fetch(
+    `/api/sign-upload?folder=${encodeURIComponent(folder)}`
+  ).then(r => r.json())
+
   const fd = new FormData()
   fd.append('file', file)
-  fd.append('upload_preset', UPLOAD_PRESET)
+  fd.append('api_key', api_key)
+  fd.append('timestamp', String(timestamp))
   fd.append('folder', folder)
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: fd })
+  fd.append('signature', signature)
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, { method: 'POST', body: fd })
   const data = await res.json()
   if (!data.secure_url) throw new Error(data.error?.message || 'Upload failed')
   return data.secure_url
