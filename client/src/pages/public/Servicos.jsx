@@ -67,7 +67,11 @@ export default function Servicos() {
                     <span className={s.servicePrice}>{t('servicos', 'from')} {sv.price}</span>
                     <span className={s.serviceDuration}>⏱ {sv.duration}</span>
                   </div>
-                  <BookingButton label={t('servicos', 'bookThis')} variant="primary" />
+                  <BookingButton
+                    label={t('servicos', 'bookThis')}
+                    variant="primary"
+                    to={`/agendar?service=${sv.key}`}
+                  />
                 </div>
               </div>
             )

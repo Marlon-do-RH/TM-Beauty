@@ -15,6 +15,7 @@ import Produtos from './pages/public/Produtos'
 import Avaliacoes from './pages/public/Avaliacoes'
 import FAQ from './pages/public/FAQ'
 import Contato from './pages/public/Contato'
+import Booking from './pages/public/Booking'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Appointments from './pages/admin/Appointments'
@@ -57,6 +58,7 @@ function App() {
             <Route path="/avaliacoes" element={<Avaliacoes />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contato" element={<Contato />} />
+            <Route path="/agendar" element={<Booking />} />
           </Route>
 
           <Route path="/admin/login" element={<LoginPage />} />

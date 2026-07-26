@@ -98,7 +98,7 @@ export default function Navbar() {
           </div>
 
           {/* Book Now */}
-          <Link to="/contato" className={styles.bookBtn}>
+          <Link to="/agendar" className={styles.bookBtn}>
             {t('nav', 'bookNow')}
           </Link>
 

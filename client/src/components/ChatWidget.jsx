@@ -127,7 +127,7 @@ export default function ChatWidget() {
   }
 
   const handleBook = () =>
-    addMessage(s.book, s.reply_book, () => navigate('/contato'))
+    addMessage(s.book, s.reply_book, () => navigate('/agendar'))
 
   const handleServices = () =>
     addMessage(s.services, s.reply_services, () => navigate('/servicos'))

@@ -5,6 +5,14 @@ import { IconEdit, IconTrash, IconX, IconCheck, IconCalendar, IconSearch } from 
 
 const SERVICES = ['Brazilian Nanoplastia', 'Brazilian Botox', 'Deep Treatment']
 
+const PERIODS = [
+  { id: 'morning',   label: 'Manhã' },
+  { id: 'afternoon', label: 'Tarde' },
+  { id: 'evening',   label: 'Noite' },
+]
+
+const periodLabel = (id) => PERIODS.find(p => p.id === id)?.label || id || '—'
+
 const STATUS_MAP = {
   pending:   { label: 'Pendente',   bg: '#FEF3E2', color: '#C0862E' },
   confirmed: { label: 'Confirmado', bg: '#EAF5EF', color: '#287A5B' },
@@ -12,7 +20,7 @@ const STATUS_MAP = {
   cancelled: { label: 'Cancelado',  bg: '#FEF2F2', color: '#C0392B' },
 }
 
-const EMPTY = { name: '', email: '', phone: '', service: SERVICES[0], date: '', time: '', status: 'pending', notes: '' }
+const EMPTY = { name: '', email: '', phone: '', service: SERVICES[0], date: '', time: 'morning', status: 'pending', notes: '', flexible: false }
 
 function Modal({ title, onClose, children }) {
   return (
@@ -60,8 +68,10 @@ function BookingForm({ initial, onSave, onCancel, mode }) {
           <input type="date" required className={styles.input} value={form.date} onChange={e => set('date', e.target.value)} />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Horário *</label>
-          <input type="time" required className={styles.input} value={form.time} onChange={e => set('time', e.target.value)} />
+          <label className={styles.label}>Período *</label>
+          <select required className={styles.select} value={form.time} onChange={e => set('time', e.target.value)}>
+            {PERIODS.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
+          </select>
         </div>
         <div className={styles.field}>
           <label className={styles.label}>Status</label>
@@ -70,8 +80,14 @@ function BookingForm({ initial, onSave, onCancel, mode }) {
           </select>
         </div>
         <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
-          <label className={styles.label}>Observações</label>
-          <textarea rows={3} className={styles.textarea} value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Alergias, preferências, primeira vez..." />
+          <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: 8, textTransform: 'none', letterSpacing: 0 }}>
+            <input type="checkbox" checked={!!form.flexible} onChange={e => set('flexible', e.target.checked)} />
+            Cliente flexível com data/horário
+          </label>
+        </div>
+        <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+          <label className={styles.label}>Observações / Detalhes</label>
+          <textarea rows={3} className={styles.textarea} value={form.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="Alergias, preferências, primeira vez..." />
         </div>
       </div>
       <div className={a.formActions}>
@@ -92,7 +108,7 @@ function DeleteConfirm({ booking, onConfirm, onCancel }) {
         <IconTrash size={22} />
       </div>
       <p className={a.deleteText}>
-        Tem certeza que deseja excluir o agendamento de <strong>{booking.name}</strong> ({booking.service} — {booking.date} às {booking.time})?
+        Tem certeza que deseja excluir o agendamento de <strong>{booking.name}</strong> ({booking.service} — {booking.date}, {periodLabel(booking.time)})?
       </p>
       <p className={a.deleteHint}>Esta ação não pode ser desfeita.</p>
       <div className={a.formActions}>
@@ -129,6 +145,7 @@ export default function Appointments() {
   const handleCreate = async form => {
     const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
     const data = await res.json()
+    if (!res.ok) { alert(data.error || 'Erro ao criar agendamento'); return }
     setAppts(prev => [data, ...prev])
     setModal(null)
   }
@@ -211,23 +228,27 @@ export default function Appointments() {
                 <th>Cliente</th>
                 <th>Serviço</th>
                 <th>Data</th>
-                <th>Horário</th>
+                <th>Período</th>
+                <th>Flexível</th>
                 <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map(ap => {
-                const st = STATUS_MAP[ap.status]
+                const st = STATUS_MAP[ap.status] || STATUS_MAP.pending
                 return (
                   <tr key={ap.id}>
                     <td>
                       <div className={styles.tdName}>{ap.name}</div>
                       {ap.phone && <div className={a.tdSub}>{ap.phone}</div>}
+                      {ap.email && <div className={a.tdSub}>{ap.email}</div>}
+                      {ap.notes && <div className={a.tdSub} title={ap.notes}>{ap.notes.length > 40 ? ap.notes.slice(0, 40) + '…' : ap.notes}</div>}
                     </td>
                     <td>{ap.service}</td>
                     <td>{ap.date}</td>
-                    <td>{ap.time}</td>
+                    <td>{periodLabel(ap.time)}</td>
+                    <td>{ap.flexible ? 'Sim' : 'Não'}</td>
                     <td>
                       <span className={styles.badge} style={{ background: st.bg, color: st.color }}>
                         {st.label}

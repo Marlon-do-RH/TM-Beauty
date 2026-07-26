@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import styles from './BookingButton.module.css'
 
-export default function BookingButton({ label, variant = 'primary', to = '/contato', onClick }) {
+export default function BookingButton({ label, variant = 'primary', to = '/agendar', onClick }) {
   const { t } = useLanguage()
   const text = label ?? t('common', 'bookNow')
 
