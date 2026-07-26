@@ -151,20 +151,20 @@ export default function Appointments() {
   }
 
   const handleEdit = async form => {
-    const res = await fetch(`/api/appointments/${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+    const res = await fetch(`/api/appointments?id=${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
     const data = await res.json()
     setAppts(prev => prev.map(x => x.id === form.id ? data : x))
     setModal(null)
   }
 
   const handleDelete = async id => {
-    await fetch(`/api/appointments/${id}`, { method: 'DELETE' })
+    await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' })
     setAppts(prev => prev.filter(x => x.id !== id))
     setModal(null)
   }
 
   const quickStatus = async (id, status) => {
-    const res = await fetch(`/api/appointments/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) })
+    const res = await fetch(`/api/appointments?id=${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) })
     const data = await res.json()
     setAppts(prev => prev.map(x => x.id === id ? data : x))
   }

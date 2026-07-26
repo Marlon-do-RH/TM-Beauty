@@ -1,8 +1,8 @@
-const supabase = require('../_supabase')
+const supabase = require('./_supabase')
 
 const cors = (res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 }
 
@@ -12,22 +12,22 @@ module.exports = async (req, res) => {
 
   if (req.method === 'GET') {
     const { data, error } = await supabase
-      .from('consultations')
+      .from('contact_info')
       .select('*')
-      .order('created_at', { ascending: false })
+      .eq('id', 1)
+      .single()
     if (error) return res.status(500).json({ error: error.message })
     return res.json(data)
   }
 
-  if (req.method === 'POST') {
-    const { name, contact, service, notes, photo_url } = req.body
+  if (req.method === 'PUT') {
     const { data, error } = await supabase
-      .from('consultations')
-      .insert({ name, contact, service, notes, photo_url, status: 'new' })
+      .from('contact_info')
+      .upsert({ ...req.body, id: 1, updated_at: new Date().toISOString() })
       .select()
       .single()
     if (error) return res.status(500).json({ error: error.message })
-    return res.status(201).json(data)
+    return res.json(data)
   }
 
   res.status(405).json({ error: 'Method not allowed' })

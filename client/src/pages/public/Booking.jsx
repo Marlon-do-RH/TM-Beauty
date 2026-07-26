@@ -49,7 +49,7 @@ export default function Booking() {
     if (!date) { setBooked([]); return }
     setLoadingSlots(true)
     setPeriod('')
-    fetch(`/api/appointments/availability?date=${date}`)
+    fetch(`/api/appointments?view=availability&date=${date}`)
       .then(r => r.json())
       .then(data => setBooked(Array.isArray(data.booked) ? data.booked : []))
       .catch(() => setBooked([]))

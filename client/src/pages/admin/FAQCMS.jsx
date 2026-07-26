@@ -24,14 +24,14 @@ export default function FAQCMS() {
   }
 
   const saveEdit = async id => {
-    const res = await fetch(`/api/faq/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editData) })
+    const res = await fetch(`/api/faq?id=${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editData) })
     const data = await res.json()
     setFaqs(list => list.map(x => x.id === id ? data : x))
     setEditing(null)
   }
 
   const remove = async id => {
-    await fetch(`/api/faq/${id}`, { method: 'DELETE' })
+    await fetch(`/api/faq?id=${id}`, { method: 'DELETE' })
     setFaqs(list => list.filter(x => x.id !== id))
   }
 
@@ -53,8 +53,8 @@ export default function FAQCMS() {
     ;[arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
     setFaqs(arr)
     await Promise.all([
-      fetch(`/api/faq/${arr[idx - 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx }) }),
-      fetch(`/api/faq/${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
+      fetch(`/api/faq?id=${arr[idx - 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx }) }),
+      fetch(`/api/faq?id=${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
     ])
   }
 
@@ -65,8 +65,8 @@ export default function FAQCMS() {
     ;[arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
     setFaqs(arr)
     await Promise.all([
-      fetch(`/api/faq/${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
-      fetch(`/api/faq/${arr[idx + 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 2 }) }),
+      fetch(`/api/faq?id=${arr[idx].id}`,     { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 1 }) }),
+      fetch(`/api/faq?id=${arr[idx + 1].id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sort_order: idx + 2 }) }),
     ])
   }
 

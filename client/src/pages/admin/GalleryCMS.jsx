@@ -69,13 +69,13 @@ export default function GalleryCMS() {
   }
 
   const remove = async id => {
-    await fetch(`/api/gallery/${id}`, { method: 'DELETE' })
+    await fetch(`/api/gallery?id=${id}`, { method: 'DELETE' })
     setItems(it => it.filter(x => x.id !== id))
   }
 
   const toggleFeatured = async item => {
     const newVal = !item.featured
-    const res = await fetch(`/api/gallery/${item.id}`, {
+    const res = await fetch(`/api/gallery?id=${item.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ featured: newVal }),

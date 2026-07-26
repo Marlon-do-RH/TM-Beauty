@@ -109,7 +109,7 @@ export default function ServicesCMS() {
       const data = await res.json()
       setServices(s => [...s, data])
     } else {
-      const res = await fetch(`/api/services/${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const res = await fetch(`/api/services?id=${form.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       const data = await res.json()
       setServices(s => s.map(x => x.id === form.id ? data : x))
     }
@@ -117,13 +117,13 @@ export default function ServicesCMS() {
   }
 
   const remove = async id => {
-    await fetch(`/api/services/${id}`, { method: 'DELETE' })
+    await fetch(`/api/services?id=${id}`, { method: 'DELETE' })
     setServices(s => s.filter(x => x.id !== id))
   }
 
   const toggle = async id => {
     const svc = services.find(x => x.id === id)
-    const res = await fetch(`/api/services/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !svc.active }) })
+    const res = await fetch(`/api/services?id=${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !svc.active }) })
     const data = await res.json()
     setServices(s => s.map(x => x.id === id ? data : x))
   }

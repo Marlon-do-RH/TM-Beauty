@@ -1,4 +1,4 @@
-const supabase = require('../_supabase')
+const supabase = require('./_supabase')
 
 const cors = (res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -12,17 +12,18 @@ module.exports = async (req, res) => {
 
   if (req.method === 'GET') {
     const { data, error } = await supabase
-      .from('services')
+      .from('consultations')
       .select('*')
-      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false })
     if (error) return res.status(500).json({ error: error.message })
     return res.json(data)
   }
 
   if (req.method === 'POST') {
+    const { name, contact, service, notes, photo_url } = req.body
     const { data, error } = await supabase
-      .from('services')
-      .insert(req.body)
+      .from('consultations')
+      .insert({ name, contact, service, notes, photo_url, status: 'new' })
       .select()
       .single()
     if (error) return res.status(500).json({ error: error.message })
