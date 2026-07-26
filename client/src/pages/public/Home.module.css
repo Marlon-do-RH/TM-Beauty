@@ -247,15 +247,39 @@
 .beforeAfterBox {
   width: 100%;
   max-width: 500px;
-  aspect-ratio: 16/10;
-  background: linear-gradient(90deg, #ddd 50%, #f0ece8 50%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
   border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  aspect-ratio: 16/10;
+}
+
+.teaserImgBox {
   position: relative;
+  background: linear-gradient(160deg, #ddd 0%, #ccc 100%);
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
+  padding: 10px 12px;
+}
+
+.teaserImgAfter {
+  background-color: #f0ece8;
+}
+
+.teaserTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dark);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 3px 8px;
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
 }
 
 .beforeLabel,
@@ -269,6 +293,22 @@
   padding: 4px 10px;
   border-radius: 2px;
   opacity: 0.85;
+}
+
+.teaserSkeleton {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 16/10;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--sage) 25%, var(--sage-light) 50%, var(--sage) 75%);
+  background-size: 200% 100%;
+  animation: teaserShimmer 1.4s infinite;
+  border: 1px solid var(--border);
+}
+
+@keyframes teaserShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* Experience */

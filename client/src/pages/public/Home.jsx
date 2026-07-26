@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
@@ -18,6 +19,14 @@ const reviews = [
 
 export default function Home() {
   const { t } = useLanguage()
+  const [teaserPair, setTeaserPair] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/gallery?view=carousel')
+      .then(r => r.json())
+      .then(data => setTeaserPair(Array.isArray(data) && data.length > 0 ? data[0] : undefined))
+      .catch(() => setTeaserPair(undefined))
+  }, [])
 
   const stats = [
     { value: '10+', label: t('home', 'statsYears') },
@@ -86,10 +95,29 @@ export default function Home() {
           <BookingButton label={t('home', 'viewBeforeAfter')} to="/antes-depois" variant="outline" />
         </div>
         <div className={styles.teaserVisual}>
-          <div className={styles.beforeAfterBox}>
-            <div className={styles.beforeLabel}>{t('antesDepois', 'before')}</div>
-            <div className={styles.afterLabel}>{t('antesDepois', 'after')}</div>
-          </div>
+          {teaserPair === null ? (
+            <div className={styles.teaserSkeleton} />
+          ) : teaserPair === undefined ? (
+            <div className={styles.beforeAfterBox}>
+              <div className={styles.beforeLabel}>{t('antesDepois', 'before')}</div>
+              <div className={styles.afterLabel}>{t('antesDepois', 'after')}</div>
+            </div>
+          ) : (
+            <div className={styles.beforeAfterBox}>
+              <div
+                className={styles.teaserImgBox}
+                style={teaserPair.before_url ? { backgroundImage: `url(${teaserPair.before_url})` } : {}}
+              >
+                <span className={styles.teaserTag}>{t('antesDepois', 'before') || 'Before'}</span>
+              </div>
+              <div
+                className={`${styles.teaserImgBox} ${styles.teaserImgAfter}`}
+                style={teaserPair.after_url ? { backgroundImage: `url(${teaserPair.after_url})` } : {}}
+              >
+                <span className={styles.teaserTag}>{t('antesDepois', 'after') || 'After'}</span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
