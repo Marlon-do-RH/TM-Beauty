@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
-import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 
 export default function SobreThalita() {
@@ -22,7 +21,7 @@ export default function SobreThalita() {
   ]
 
   return (
-    <div>
+    <div className={styles.sobrePage}>
       <section className={styles.pageHero}>
         <div className={styles.pageHeroContent}>
           <p className={styles.eyebrow}>{t('sobre', 'eyebrow')}</p>
@@ -73,10 +72,16 @@ export default function SobreThalita() {
         </div>
       </section>
 
+      <div className={styles.sobreDivider} aria-hidden="true">
+        <span className={styles.sobreDivLine} />
+        <span className={styles.sobreDivDiamond} />
+        <span className={styles.sobreDivLine} />
+      </div>
+
       <section className={styles.valuesSection}>
         <div className={styles.inner}>
           <div className={styles.sectionHeader}>
-            <p className={styles.eyebrow}>{t('sobre', 'valuesEyebrow')}</p>
+            <p className={`${styles.eyebrow} ${styles.valuesEyebrow}`}>{t('sobre', 'valuesEyebrow')}</p>
             <h2 className={styles.sectionTitle}>{t('sobre', 'valuesTitle')}</h2>
           </div>
           <div className={styles.valuesGrid}>
@@ -89,12 +94,6 @@ export default function SobreThalita() {
             ))}
           </div>
         </div>
-      </section>
-
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>{t('sobre', 'ctaTitle')}</h2>
-        <p className={styles.ctaText}>{t('sobre', 'ctaText')}</p>
-        <BookingButton label={t('sobre', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )
