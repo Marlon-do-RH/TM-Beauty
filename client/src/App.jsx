@@ -23,6 +23,7 @@ import GalleryCMS from './pages/admin/GalleryCMS'
 import FAQCMS from './pages/admin/FAQCMS'
 import ContactInfo from './pages/admin/ContactInfo'
 import MediaCMS from './pages/admin/MediaCMS'
+import Consultations from './pages/admin/Consultations'
 
 import './index.css'
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="appointments" element={<Appointments />} />
+            <Route path="consultations" element={<Consultations />} />
             <Route path="services" element={<ServicesCMS />} />
             <Route path="gallery" element={<GalleryCMS />} />
             <Route path="media" element={<MediaCMS />} />

@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import styles from './AdminLayout.module.css'
 import {
   IconGrid, IconCalendar, IconScissors, IconImage,
-  IconCamera, IconHelpCircle, IconMapPin, IconLogOut,
+  IconCamera, IconHelpCircle, IconMapPin, IconLogOut, IconMail,
 } from '../components/AdminIcons'
 
 const navGroups = [
@@ -11,6 +11,7 @@ const navGroups = [
     items: [
       { to: '/admin', label: 'Dashboard', Icon: IconGrid, end: true },
       { to: '/admin/appointments', label: 'Appointments', Icon: IconCalendar },
+      { to: '/admin/consultations', label: 'Consultations', Icon: IconMail },
     ],
   },
   {

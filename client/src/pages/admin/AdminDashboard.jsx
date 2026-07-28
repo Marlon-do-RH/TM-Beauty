@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styles from './Admin.module.css'
-import { IconCalendar, IconAlertCircle, IconCheck, IconStar, IconScissors, IconImage, IconHelpCircle, IconChevronRight } from '../../components/AdminIcons'
+import { IconCalendar, IconAlertCircle, IconCheck, IconStar, IconScissors, IconImage, IconHelpCircle, IconChevronRight, IconMail } from '../../components/AdminIcons'
 
 const stats = [
   { label: 'Appointments this week', value: '12', Icon: IconCalendar, color: '#6B4E3D', bg: '#F2EBE3' },
@@ -84,6 +84,9 @@ export default function AdminDashboard() {
       <div className={styles.quickLinks}>
         <Link to="/admin/appointments" className={styles.quickLink}>
           <IconCalendar size={15} /> View all appointments <IconChevronRight size={14} />
+        </Link>
+        <Link to="/admin/consultations" className={styles.quickLink}>
+          <IconMail size={15} /> Consultation requests <IconChevronRight size={14} />
         </Link>
         <Link to="/admin/services" className={styles.quickLink}>
           <IconScissors size={15} /> Manage services <IconChevronRight size={14} />
