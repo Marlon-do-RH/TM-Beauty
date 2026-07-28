@@ -10,7 +10,6 @@ import Home from './pages/public/Home'
 import SobreThalita from './pages/public/SobreThalita'
 import Servicos from './pages/public/Servicos'
 import AntesDepois from './pages/public/AntesDepois'
-import OStudio from './pages/public/OStudio'
 import Produtos from './pages/public/Produtos'
 import Avaliacoes from './pages/public/Avaliacoes'
 import FAQ from './pages/public/FAQ'
@@ -53,7 +52,7 @@ function App() {
             <Route path="/sobre" element={<SobreThalita />} />
             <Route path="/servicos" element={<Servicos />} />
             <Route path="/antes-depois" element={<AntesDepois />} />
-            <Route path="/studio" element={<OStudio />} />
+            <Route path="/studio" element={<Navigate to="/sobre" replace />} />
             <Route path="/produtos" element={<Produtos />} />
             <Route path="/avaliacoes" element={<Avaliacoes />} />
             <Route path="/faq" element={<FAQ />} />

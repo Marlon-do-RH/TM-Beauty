@@ -5,8 +5,8 @@ import { IconUpload, IconLink, IconX, IconCamera } from '../../components/AdminI
 
 const SECTIONS = [
   { id: 'hero',       label: 'Home — Foto Principal (Hero)',       description: 'Imagem de destaque exibida na página inicial ao lado do título.', single: true },
-  { id: 'studio',     label: 'O Studio — Fotos do Espaço',         description: 'Galeria de fotos do ambiente do studio exibidas na página "O Studio".', single: false },
-  { id: 'about',      label: 'Sobre Thalita — Foto do Perfil',     description: 'Foto exibida na página "Sobre Thalita".', single: true },
+  { id: 'studio',     label: 'About Us (studio photos)',           description: 'Galeria de fotos do espaço exibida na página About Us.', single: false },
+  { id: 'about',      label: 'About Us (profile)',                 description: 'Foto de perfil exibida na página About Us.', single: true },
   { id: 'experience', label: 'A Experiência — Foto do Ambiente',   description: 'Imagem de ambiente usada na seção "A Experiência".', single: true },
 ]
 
