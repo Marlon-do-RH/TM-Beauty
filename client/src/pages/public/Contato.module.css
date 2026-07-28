@@ -276,45 +276,6 @@
   color: var(--dark-soft);
 }
 
-/* Book CTA */
-.bookSection {
-  background: var(--chocolate);
-  padding: 80px 24px;
-  text-align: center;
-}
-
-.bookTitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  color: var(--sage);
-  margin-bottom: 12px;
-}
-
-.bookText {
-  font-size: 0.88rem;
-  color: rgba(232, 222, 212, 0.7);
-  margin-bottom: 32px;
-}
-
-.whatsappBtn {
-  display: inline-block;
-  background: #25D366;
-  color: var(--white);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 14px 36px;
-  border-radius: 2px;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.whatsappBtn:hover {
-  background: #1ebe5d;
-  transform: translateY(-2px);
-}
-
 @media (max-width: 960px) {
   .contactGrid {
     grid-template-columns: 1fr;

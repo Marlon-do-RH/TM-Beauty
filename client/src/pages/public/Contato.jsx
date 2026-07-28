@@ -264,16 +264,6 @@ export default function Contato() {
           </div>
         </div>
       </section>
-
-      <section className={s.bookSection}>
-        <div className={s.inner}>
-          <h2 className={s.bookTitle}>{t('contato', 'bookTitle')}</h2>
-          <p className={s.bookText}>{t('contato', 'bookText')}</p>
-          <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent('Hi Thalita! I would like to book a consultation.')}`} target="_blank" rel="noreferrer" className={s.whatsappBtn}>
-            {t('contato', 'whatsappBtn')}
-          </a>
-        </div>
-      </section>
     </div>
   )
 }
