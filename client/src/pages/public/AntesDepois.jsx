@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
-import BookingButton from '../../components/BookingButton'
 import styles from './PageCommon.module.css'
 import s from './AntesDepois.module.css'
 
@@ -85,12 +84,6 @@ export default function AntesDepois() {
             </div>
           )}
         </div>
-      </section>
-
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>{t('antesDepois', 'ctaTitle')}</h2>
-        <p className={styles.ctaText}>{t('antesDepois', 'ctaText')}</p>
-        <BookingButton label={t('antesDepois', 'ctaBtn')} variant="primary" />
       </section>
     </div>
   )
