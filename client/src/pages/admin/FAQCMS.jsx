@@ -75,7 +75,7 @@ export default function FAQCMS() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>FAQ</h1>
-          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : 'Gerencie as perguntas frequentes do site'}</p>
+          <p className={styles.pageSubtitle}>{loading ? 'Loading...' : 'Manage frequently asked questions on the site'}</p>
         </div>
       </div>
 
@@ -83,11 +83,11 @@ export default function FAQCMS() {
         {faqs.map((faq, i) => (
           <div key={faq.id} className={f.faqItem}>
             <div className={f.faqOrder}>
-              <button className={f.orderBtn} onClick={() => moveUp(faq.id)} disabled={i === 0} aria-label="Mover para cima">
+              <button className={f.orderBtn} onClick={() => moveUp(faq.id)} disabled={i === 0} aria-label="Move up">
                 <IconChevronUp size={12} />
               </button>
               <span className={f.orderNum}>{i + 1}</span>
-              <button className={f.orderBtn} onClick={() => moveDown(faq.id)} disabled={i === faqs.length - 1} aria-label="Mover para baixo">
+              <button className={f.orderBtn} onClick={() => moveDown(faq.id)} disabled={i === faqs.length - 1} aria-label="Move down">
                 <IconChevronDown size={12} />
               </button>
             </div>
@@ -119,19 +119,19 @@ export default function FAQCMS() {
             <div className={f.faqActions}>
               {editing === faq.id ? (
                 <>
-                  <button className={styles.actionBtn} onClick={() => saveEdit(faq.id)} title="Salvar">
+                  <button className={styles.actionBtn} onClick={() => saveEdit(faq.id)} title="Save">
                     <IconCheck size={13} />
                   </button>
-                  <button className={styles.actionBtn} onClick={() => setEditing(null)} title="Cancelar">
+                  <button className={styles.actionBtn} onClick={() => setEditing(null)} title="Cancel">
                     <IconX size={13} />
                   </button>
                 </>
               ) : (
                 <>
-                  <button className={styles.actionBtn} onClick={() => startEdit(faq)} title="Editar">
+                  <button className={styles.actionBtn} onClick={() => startEdit(faq)} title="Edit">
                     <IconEdit size={13} />
                   </button>
-                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(faq.id)} title="Excluir">
+                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(faq.id)} title="Delete">
                     <IconTrash size={13} />
                   </button>
                 </>
@@ -142,17 +142,17 @@ export default function FAQCMS() {
       </div>
 
       <div className={styles.form}>
-        <p className={styles.formTitle}>Nova Pergunta</p>
+        <p className={styles.formTitle}>New Question</p>
         <form onSubmit={addFaq}>
           <div className={styles.field} style={{ marginBottom: 12 }}>
-            <label className={styles.label}>Pergunta</label>
-            <input required className={styles.input} value={newQ} onChange={e => setNewQ(e.target.value)} placeholder="Digite a pergunta..." />
+            <label className={styles.label}>Question</label>
+            <input required className={styles.input} value={newQ} onChange={e => setNewQ(e.target.value)} placeholder="Enter the question..." />
           </div>
           <div className={styles.field} style={{ marginBottom: 12 }}>
-            <label className={styles.label}>Resposta</label>
-            <textarea required rows={4} className={styles.textarea} value={newA} onChange={e => setNewA(e.target.value)} placeholder="Digite a resposta..." />
+            <label className={styles.label}>Answer</label>
+            <textarea required rows={4} className={styles.textarea} value={newA} onChange={e => setNewA(e.target.value)} placeholder="Enter the answer..." />
           </div>
-          <button type="submit" className={styles.submitBtn}>Adicionar Pergunta</button>
+          <button type="submit" className={styles.submitBtn}>Add Question</button>
         </form>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { IconPhone, IconWhatsApp, IconMail, IconInstagram } from '../../components/AdminIcons'
 import styles from './PageCommon.module.css'
 import s from './Contato.module.css'
 
@@ -7,9 +8,25 @@ const FALLBACK = {
   phone: '+61 450 442 869', whatsapp: '61450442869',
   email: 'hello@thalitamedeiros.com.au', instagram: 'thalita.medeiros.hair',
   address: '100 Wells St, Southbank VIC 3006',
-  map_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau',
-  hours_mon_fri: '9:00 – 18:00', hours_sat: '9:00 – 15:00', hours_sun: 'Closed',
+  map_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1sen!2sau!4v1784464790192!5m2!1sen!2sau',
+  hours_mon: '9:00 – 18:00',
+  hours_tue: '9:00 – 18:00',
+  hours_wed: '9:00 – 18:00',
+  hours_thu: '9:00 – 18:00',
+  hours_fri: '9:00 – 18:00',
+  hours_sat: '9:00 – 15:00',
+  hours_sun: 'Closed',
 }
+
+const HOURS_DAYS = [
+  { key: 'hours_mon', labelKey: 'monday' },
+  { key: 'hours_tue', labelKey: 'tuesday' },
+  { key: 'hours_wed', labelKey: 'wednesday' },
+  { key: 'hours_thu', labelKey: 'thursday' },
+  { key: 'hours_fri', labelKey: 'friday' },
+  { key: 'hours_sat', labelKey: 'saturday' },
+  { key: 'hours_sun', labelKey: 'sunday' },
+]
 
 export default function Contato() {
   const { t } = useLanguage()
@@ -20,7 +37,22 @@ export default function Contato() {
   useEffect(() => {
     fetch('/api/contact')
       .then(r => r.json())
-      .then(d => d && !d.error && setContact(d))
+      .then(d => {
+        if (!d || d.error) return
+        // Migrate legacy mon–fri blob if per-day fields are empty
+        const weekday = d.hours_mon_fri || FALLBACK.hours_mon
+        setContact({
+          ...FALLBACK,
+          ...d,
+          hours_mon: d.hours_mon || weekday,
+          hours_tue: d.hours_tue || weekday,
+          hours_wed: d.hours_wed || weekday,
+          hours_thu: d.hours_thu || weekday,
+          hours_fri: d.hours_fri || weekday,
+          hours_sat: d.hours_sat || FALLBACK.hours_sat,
+          hours_sun: d.hours_sun || FALLBACK.hours_sun,
+        })
+      })
       .catch(() => {})
   }, [])
 
@@ -48,7 +80,6 @@ export default function Contato() {
       <section className={s.contactSection}>
         <div className={s.inner}>
           <div className={s.contactGrid}>
-            {/* Info */}
             <div className={s.infoCol}>
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'location')}</h3>
@@ -58,25 +89,40 @@ export default function Contato() {
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'directContact')}</h3>
                 <div className={s.contactLinks}>
-                  <a href={`tel:${contact.phone}`} className={s.contactLink}><span className={s.contactLinkIcon}>📞</span><span>{contact.phone}</span></a>
-                  <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className={s.contactLink}><span className={s.contactLinkIcon}>💬</span><span>WhatsApp</span></a>
-                  <a href="mailto:hello@thalitamedeiros.com.au" className={s.contactLink}><span className={s.contactLinkIcon}>✉</span><span>hello@thalitamedeiros.com.au</span></a>
-                  <a href="https://instagram.com/thalita.medeiros.hair" target="_blank" rel="noreferrer" className={s.contactLink}><span className={s.contactLinkIcon}>📷</span><span>@thalita.medeiros.hair</span></a>
+                  <a href={`tel:${contact.phone}`} className={s.contactLink}>
+                    <span className={s.contactLinkIcon}><IconPhone size={18} /></span>
+                    <span>{contact.phone}</span>
+                  </a>
+                  <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className={s.contactLink}>
+                    <span className={s.contactLinkIcon}><IconWhatsApp size={18} /></span>
+                    <span>WhatsApp</span>
+                  </a>
+                  <a href={`mailto:${contact.email}`} className={s.contactLink}>
+                    <span className={s.contactLinkIcon}><IconMail size={18} /></span>
+                    <span>{contact.email}</span>
+                  </a>
+                  <a href={`https://instagram.com/${contact.instagram}`} target="_blank" rel="noreferrer" className={s.contactLink}>
+                    <span className={s.contactLinkIcon}><IconInstagram size={18} /></span>
+                    <span>@{contact.instagram}</span>
+                  </a>
                 </div>
               </div>
 
               <div className={s.infoBlock}>
                 <h3 className={s.infoTitle}>{t('contato', 'hours')}</h3>
                 <div className={s.hours}>
-                  <div className={s.hoursRow}><span>{t('contato', 'monFri')}</span><span>{contact.hours_mon_fri}</span></div>
-                  <div className={s.hoursRow}><span>{t('contato', 'sat')}</span><span>{contact.hours_sat}</span></div>
-                  <div className={s.hoursRow}><span>{t('contato', 'sun')}</span><span>{contact.hours_sun}</span></div>
+                  {HOURS_DAYS.map(day => (
+                    <div key={day.key} className={s.hoursRow}>
+                      <span>{t('contato', day.labelKey)}</span>
+                      <span>{contact[day.key]}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               <div className={s.mapEmbed}>
                 <iframe
-                  src={contact.map_url || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1spt-BR!2sau!4v1784464790192!5m2!1spt-BR!2sau'}
+                  src={contact.map_url || FALLBACK.map_url}
                   width="100%"
                   height="260"
                   style={{ border: 0, borderRadius: 6 }}
@@ -88,7 +134,6 @@ export default function Contato() {
               </div>
             </div>
 
-            {/* Form */}
             <div className={s.formCol}>
               <h2 className={s.formTitle}>{t('contato', 'formTitle')}</h2>
               <p className={s.formSub}>{t('contato', 'formSub')}</p>
@@ -132,7 +177,7 @@ export default function Contato() {
         <div className={s.inner}>
           <h2 className={s.bookTitle}>{t('contato', 'bookTitle')}</h2>
           <p className={s.bookText}>{t('contato', 'bookText')}</p>
-          <a href={`https://wa.me/${contact.whatsapp}?text=Olá Thalita! Gostaria de agendar uma consulta.`} target="_blank" rel="noreferrer" className={s.whatsappBtn}>
+          <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent('Hi Thalita! I would like to book a consultation.')}`} target="_blank" rel="noreferrer" className={s.whatsappBtn}>
             {t('contato', 'whatsappBtn')}
           </a>
         </div>

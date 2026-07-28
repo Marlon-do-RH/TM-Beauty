@@ -7,25 +7,25 @@ import {
 
 const navGroups = [
   {
-    label: 'Gestão',
+    label: 'Management',
     items: [
       { to: '/admin', label: 'Dashboard', Icon: IconGrid, end: true },
-      { to: '/admin/appointments', label: 'Agendamentos', Icon: IconCalendar },
+      { to: '/admin/appointments', label: 'Appointments', Icon: IconCalendar },
     ],
   },
   {
-    label: 'Conteúdo',
+    label: 'Content',
     items: [
-      { to: '/admin/services', label: 'Serviços & Preços', Icon: IconScissors },
-      { to: '/admin/gallery', label: 'Galeria', Icon: IconImage },
-      { to: '/admin/media', label: 'Fotos do Site', Icon: IconCamera },
+      { to: '/admin/services', label: 'Services & Pricing', Icon: IconScissors },
+      { to: '/admin/gallery', label: 'Gallery', Icon: IconImage },
+      { to: '/admin/media', label: 'Site Photos', Icon: IconCamera },
       { to: '/admin/faq', label: 'FAQ', Icon: IconHelpCircle },
     ],
   },
   {
-    label: 'Configurações',
+    label: 'Settings',
     items: [
-      { to: '/admin/contact-info', label: 'Informações de Contato', Icon: IconMapPin },
+      { to: '/admin/contact-info', label: 'Contact Information', Icon: IconMapPin },
     ],
   },
 ]
@@ -74,7 +74,7 @@ export default function AdminLayout() {
 
         <button className={styles.logoutBtn} onClick={handleLogout}>
           <IconLogOut size={14} />
-          Sair
+          Log out
         </button>
       </aside>
 

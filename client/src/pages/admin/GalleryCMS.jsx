@@ -62,7 +62,7 @@ export default function GalleryCMS() {
       if (beforeRef.current) beforeRef.current.value = ''
       if (afterRef.current) afterRef.current.value = ''
     } catch (err) {
-      alert('Erro ao fazer upload: ' + err.message)
+      alert('Upload error: ' + err.message)
     } finally {
       setUploading(false)
     }
@@ -94,44 +94,44 @@ export default function GalleryCMS() {
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>Galeria</h1>
-          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : 'Gerencie as fotos de antes & depois'}</p>
+          <h1 className={styles.pageTitle}>Gallery</h1>
+          <p className={styles.pageSubtitle}>{loading ? 'Loading...' : 'Manage before & after photos'}</p>
         </div>
       </div>
 
       <div className={styles.form}>
-        <p className={styles.formTitle}>Adicionar Par de Fotos</p>
+        <p className={styles.formTitle}>Add Photo Pair</p>
         <form onSubmit={addItem}>
           <div className={styles.formRow}>
             <div className={styles.field}>
-              <label className={styles.label}>Categoria</label>
+              <label className={styles.label}>Category</label>
               <select className={styles.select} value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
                 {categories.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
             <div className={styles.field} style={{ flex: 2 }}>
-              <label className={styles.label}>Legenda</label>
-              <input required className={styles.input} value={form.caption} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))} placeholder="Ex: Cabelo cacheado — liso sedoso" />
+              <label className={styles.label}>Caption</label>
+              <input required className={styles.input} value={form.caption} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))} placeholder="e.g. Curly hair — silky straight" />
             </div>
           </div>
 
           <div className={g.uploadRow}>
             <label className={g.uploadBox}>
               <span className={g.uploadIconWrap}><IconCamera size={22} /></span>
-              <span className={g.uploadLabel}>{beforeFile ? beforeFile.name : 'Foto — Antes'}</span>
-              <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
+              <span className={g.uploadLabel}>{beforeFile ? beforeFile.name : 'Photo — Before'}</span>
+              <span className={g.uploadSub}>Drag or click to select</span>
               <input ref={beforeRef} type="file" accept="image/*" className={g.fileInput} onChange={e => setBeforeFile(e.target.files[0] || null)} />
             </label>
             <label className={g.uploadBox}>
               <span className={g.uploadIconWrap}><IconImage size={22} /></span>
-              <span className={g.uploadLabel}>{afterFile ? afterFile.name : 'Foto — Depois'}</span>
-              <span className={g.uploadSub}>Arraste ou clique para selecionar</span>
+              <span className={g.uploadLabel}>{afterFile ? afterFile.name : 'Photo — After'}</span>
+              <span className={g.uploadSub}>Drag or click to select</span>
               <input ref={afterRef} type="file" accept="image/*" className={g.fileInput} onChange={e => setAfterFile(e.target.files[0] || null)} />
             </label>
           </div>
 
           <button type="submit" className={styles.submitBtn} disabled={uploading}>
-            {uploading ? 'Enviando...' : 'Adicionar à Galeria'}
+            {uploading ? 'Uploading...' : 'Add to Gallery'}
           </button>
         </form>
       </div>
@@ -139,7 +139,7 @@ export default function GalleryCMS() {
       <div className={styles.filterRow}>
         {['all', ...categories].map(c => (
           <button key={c} className={`${styles.filterBtn} ${filter === c ? styles.filterBtnActive : ''}`} onClick={() => setFilter(c)}>
-            {c === 'all' ? 'Todos' : c}
+            {c === 'all' ? 'All' : c}
           </button>
         ))}
       </div>
@@ -149,10 +149,10 @@ export default function GalleryCMS() {
           <div key={item.id} className={`${g.galleryCard} ${item.featured ? g.isFeatured : ''}`}>
             <div className={g.galleryImages}>
               <div className={g.imgBox} style={item.before_url ? { backgroundImage: `url(${item.before_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                <span className={g.imgTag}>Antes</span>
+                <span className={g.imgTag}>Before</span>
               </div>
               <div className={`${g.imgBox} ${g.imgBoxAfter}`} style={item.after_url ? { backgroundImage: `url(${item.after_url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                <span className={g.imgTag}>Depois</span>
+                <span className={g.imgTag}>After</span>
               </div>
             </div>
             <div className={g.cardInfo}>
@@ -169,7 +169,7 @@ export default function GalleryCMS() {
                     <IconStar size={13} /> {item.featured ? 'Featured' : 'Feature'}
                   </button>
                   <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
-                    <IconTrash size={12} /> Remover
+                    <IconTrash size={12} /> Remove
                   </button>
                 </div>
               </div>

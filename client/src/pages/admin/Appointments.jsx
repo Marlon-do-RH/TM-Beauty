@@ -6,18 +6,32 @@ import { IconEdit, IconTrash, IconX, IconCheck, IconCalendar, IconSearch } from 
 const SERVICES = ['Brazilian Nanoplastia', 'Brazilian Botox', 'Deep Treatment']
 
 const PERIODS = [
-  { id: 'morning',   label: 'Manhã' },
-  { id: 'afternoon', label: 'Tarde' },
-  { id: 'evening',   label: 'Noite' },
+  { id: 'morning',   label: 'Morning' },
+  { id: 'afternoon', label: 'Afternoon' },
+  { id: 'evening',   label: 'Night' },
 ]
 
-const periodLabel = (id) => PERIODS.find(p => p.id === id)?.label || id || '—'
+// Accept English ids and legacy Portuguese labels from older records
+const PERIOD_ALIASES = {
+  morning: 'Morning', afternoon: 'Afternoon', evening: 'Night',
+  Manhã: 'Morning', Tarde: 'Afternoon', Noite: 'Night',
+  manha: 'Morning', tarde: 'Afternoon', noite: 'Night',
+}
+
+const PERIOD_IDS = {
+  morning: 'morning', afternoon: 'afternoon', evening: 'evening',
+  Manhã: 'morning', Tarde: 'afternoon', Noite: 'evening',
+  manha: 'morning', tarde: 'afternoon', noite: 'evening',
+}
+
+const periodLabel = (id) => PERIOD_ALIASES[id] || PERIODS.find(p => p.id === id)?.label || id || '—'
+const normalizePeriod = (id) => PERIOD_IDS[id] || id || 'morning'
 
 const STATUS_MAP = {
-  pending:   { label: 'Pendente',   bg: '#FEF3E2', color: '#C0862E' },
-  confirmed: { label: 'Confirmado', bg: '#EAF5EF', color: '#287A5B' },
-  completed: { label: 'Concluído',  bg: '#EAF3FF', color: '#2563EB' },
-  cancelled: { label: 'Cancelado',  bg: '#FEF2F2', color: '#C0392B' },
+  pending:   { label: 'Pending',   bg: '#FEF3E2', color: '#C0862E' },
+  confirmed: { label: 'Confirmed', bg: '#EAF5EF', color: '#287A5B' },
+  completed: { label: 'Completed',  bg: '#EAF3FF', color: '#2563EB' },
+  cancelled: { label: 'Cancelled',  bg: '#FEF2F2', color: '#C0392B' },
 }
 
 const EMPTY = { name: '', email: '', phone: '', service: SERVICES[0], date: '', time: 'morning', status: 'pending', notes: '', flexible: false }
@@ -28,7 +42,7 @@ function Modal({ title, onClose, children }) {
       <div className={a.modal}>
         <div className={a.modalHeader}>
           <h2 className={a.modalTitle}>{title}</h2>
-          <button className={a.modalClose} onClick={onClose} aria-label="Fechar">
+          <button className={a.modalClose} onClick={onClose} aria-label="Close">
             <IconX size={14} />
           </button>
         </div>
@@ -39,36 +53,36 @@ function Modal({ title, onClose, children }) {
 }
 
 function BookingForm({ initial, onSave, onCancel, mode }) {
-  const [form, setForm] = useState(initial)
+  const [form, setForm] = useState({ ...initial, time: normalizePeriod(initial.time) })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   return (
     <form onSubmit={e => { e.preventDefault(); onSave(form) }}>
       <div className={a.formGrid}>
         <div className={styles.field}>
-          <label className={styles.label}>Nome da cliente *</label>
-          <input required className={styles.input} value={form.name} onChange={e => set('name', e.target.value)} placeholder="Nome completo" />
+          <label className={styles.label}>Client name *</label>
+          <input required className={styles.input} value={form.name} onChange={e => set('name', e.target.value)} placeholder="Full name" />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>E-mail</label>
-          <input type="email" className={styles.input} value={form.email} onChange={e => set('email', e.target.value)} placeholder="email@exemplo.com" />
+          <label className={styles.label}>Email</label>
+          <input type="email" className={styles.input} value={form.email} onChange={e => set('email', e.target.value)} placeholder="email@example.com" />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Telefone</label>
+          <label className={styles.label}>Phone</label>
           <input className={styles.input} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+61 400 000 000" />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Serviço *</label>
+          <label className={styles.label}>Service *</label>
           <select required className={styles.select} value={form.service} onChange={e => set('service', e.target.value)}>
             {SERVICES.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Data *</label>
+          <label className={styles.label}>Date *</label>
           <input type="date" required className={styles.input} value={form.date} onChange={e => set('date', e.target.value)} />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Período *</label>
+          <label className={styles.label}>Period *</label>
           <select required className={styles.select} value={form.time} onChange={e => set('time', e.target.value)}>
             {PERIODS.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
           </select>
@@ -82,19 +96,19 @@ function BookingForm({ initial, onSave, onCancel, mode }) {
         <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
           <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: 8, textTransform: 'none', letterSpacing: 0 }}>
             <input type="checkbox" checked={!!form.flexible} onChange={e => set('flexible', e.target.checked)} />
-            Cliente flexível com data/horário
+            Client is flexible with date/time
           </label>
         </div>
         <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
-          <label className={styles.label}>Observações / Detalhes</label>
-          <textarea rows={3} className={styles.textarea} value={form.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="Alergias, preferências, primeira vez..." />
+          <label className={styles.label}>Notes / Details</label>
+          <textarea rows={3} className={styles.textarea} value={form.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="Allergies, preferences, first visit..." />
         </div>
       </div>
       <div className={a.formActions}>
-        <button type="button" className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
+        <button type="button" className={a.cancelBtn} onClick={onCancel}>Cancel</button>
         <button type="submit" className={styles.submitBtn}>
           <IconCheck size={14} />
-          {mode === 'create' ? 'Criar Agendamento' : 'Salvar Alterações'}
+          {mode === 'create' ? 'Create Appointment' : 'Save Changes'}
         </button>
       </div>
     </form>
@@ -108,14 +122,14 @@ function DeleteConfirm({ booking, onConfirm, onCancel }) {
         <IconTrash size={22} />
       </div>
       <p className={a.deleteText}>
-        Tem certeza que deseja excluir o agendamento de <strong>{booking.name}</strong> ({booking.service} — {booking.date}, {periodLabel(booking.time)})?
+        Are you sure you want to delete the appointment for <strong>{booking.name}</strong> ({booking.service} — {booking.date}, {periodLabel(booking.time)})?
       </p>
-      <p className={a.deleteHint}>Esta ação não pode ser desfeita.</p>
+      <p className={a.deleteHint}>This action cannot be undone.</p>
       <div className={a.formActions}>
-        <button className={a.cancelBtn} onClick={onCancel}>Cancelar</button>
+        <button className={a.cancelBtn} onClick={onCancel}>Cancel</button>
         <button className={a.deleteBtn} onClick={onConfirm}>
           <IconTrash size={13} />
-          Excluir Permanentemente
+          Delete Permanently
         </button>
       </div>
     </div>
@@ -145,7 +159,7 @@ export default function Appointments() {
   const handleCreate = async form => {
     const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
     const data = await res.json()
-    if (!res.ok) { alert(data.error || 'Erro ao criar agendamento'); return }
+    if (!res.ok) { alert(data.error || 'Error creating appointment'); return }
     setAppts(prev => [data, ...prev])
     setModal(null)
   }
@@ -175,11 +189,11 @@ export default function Appointments() {
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>Agendamentos</h1>
-          <p className={styles.pageSubtitle}>{loading ? 'Carregando...' : `${appts.length} agendamento(s) no total`}</p>
+          <h1 className={styles.pageTitle}>Appointments</h1>
+          <p className={styles.pageSubtitle}>{loading ? 'Loading...' : `${appts.length} appointment(s) total`}</p>
         </div>
         <button className={styles.primaryBtn} onClick={() => setModal({ mode: 'create', booking: EMPTY })}>
-          Novo Agendamento
+          New Appointment
         </button>
       </div>
 
@@ -194,7 +208,7 @@ export default function Appointments() {
 
       <div className={a.toolBar}>
         <div className={styles.filterRow}>
-          <button className={`${styles.filterBtn} ${filter === 'all' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('all')}>Todos</button>
+          <button className={`${styles.filterBtn} ${filter === 'all' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('all')}>All</button>
           {Object.entries(STATUS_MAP).map(([k, v]) => (
             <button key={k} className={`${styles.filterBtn} ${filter === k ? styles.filterBtnActive : ''}`} onClick={() => setFilter(k)}>
               {v.label}
@@ -208,7 +222,7 @@ export default function Appointments() {
           <input
             className={`${styles.input} ${a.searchInput}`}
             style={{ paddingLeft: 36 }}
-            placeholder="Buscar por nome, e-mail ou serviço..."
+            placeholder="Search by name, email, or service..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -219,19 +233,19 @@ export default function Appointments() {
         {filtered.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyStateIcon}><IconCalendar size={32} /></div>
-            <p>Nenhum agendamento encontrado.</p>
+            <p>No appointments found.</p>
           </div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Cliente</th>
-                <th>Serviço</th>
-                <th>Data</th>
-                <th>Período</th>
-                <th>Flexível</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Period</th>
+                <th>Flexible</th>
                 <th>Status</th>
-                <th>Ações</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -248,7 +262,7 @@ export default function Appointments() {
                     <td>{ap.service}</td>
                     <td>{ap.date}</td>
                     <td>{periodLabel(ap.time)}</td>
-                    <td>{ap.flexible ? 'Sim' : 'Não'}</td>
+                    <td>{ap.flexible ? 'Yes' : 'No'}</td>
                     <td>
                       <span className={styles.badge} style={{ background: st.bg, color: st.color }}>
                         {st.label}
@@ -258,18 +272,18 @@ export default function Appointments() {
                       <div className={styles.actionBtns}>
                         {ap.status === 'pending' && (
                           <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'confirmed')}>
-                            <IconCheck size={12} /> Confirmar
+                            <IconCheck size={12} /> Confirm
                           </button>
                         )}
                         {ap.status === 'confirmed' && (
                           <button className={styles.actionBtn} onClick={() => quickStatus(ap.id, 'completed')}>
-                            <IconCheck size={12} /> Concluir
+                            <IconCheck size={12} /> Complete
                           </button>
                         )}
-                        <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', booking: { ...ap } })} title="Editar">
+                        <button className={styles.actionBtn} onClick={() => setModal({ mode: 'edit', booking: { ...ap } })} title="Edit">
                           <IconEdit size={13} />
                         </button>
-                        <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setModal({ mode: 'delete', booking: ap })} title="Excluir">
+                        <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setModal({ mode: 'delete', booking: ap })} title="Delete">
                           <IconTrash size={13} />
                         </button>
                       </div>
@@ -283,19 +297,19 @@ export default function Appointments() {
       </div>
 
       {modal?.mode === 'create' && (
-        <Modal title="Novo Agendamento" onClose={() => setModal(null)}>
+        <Modal title="New Appointment" onClose={() => setModal(null)}>
           <BookingForm initial={modal.booking} onSave={handleCreate} onCancel={() => setModal(null)} mode="create" />
         </Modal>
       )}
 
       {modal?.mode === 'edit' && (
-        <Modal title="Editar Agendamento" onClose={() => setModal(null)}>
+        <Modal title="Edit Appointment" onClose={() => setModal(null)}>
           <BookingForm initial={modal.booking} onSave={handleEdit} onCancel={() => setModal(null)} mode="edit" />
         </Modal>
       )}
 
       {modal?.mode === 'delete' && (
-        <Modal title="Excluir Agendamento" onClose={() => setModal(null)}>
+        <Modal title="Delete Appointment" onClose={() => setModal(null)}>
           <DeleteConfirm
             booking={modal.booking}
             onConfirm={() => handleDelete(modal.booking.id)}

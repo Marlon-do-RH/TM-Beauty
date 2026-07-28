@@ -10,9 +10,9 @@ const SERVICES = [
 ]
 
 const PERIODS = [
-  { id: 'morning',   label: 'Morning',   hint: '9:00 – 12:00' },
-  { id: 'afternoon', label: 'Afternoon', hint: '12:00 – 17:00' },
-  { id: 'evening',   label: 'Night',     hint: '17:00 – 20:00' },
+  { id: 'morning',   hint: '9:00 – 12:00' },
+  { id: 'afternoon', hint: '12:00 – 17:00' },
+  { id: 'evening',   hint: '17:00 – 20:00' },
 ]
 
 const TOTAL = 5
@@ -20,6 +20,13 @@ const TOTAL = 5
 function todayISO() {
   const d = new Date()
   return d.toISOString().slice(0, 10)
+}
+
+function fill(template, vars) {
+  return Object.entries(vars).reduce(
+    (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+    template,
+  )
 }
 
 export default function Booking() {
@@ -44,7 +51,6 @@ export default function Booking() {
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
 
-  // Load availability when date changes
   useEffect(() => {
     if (!date) { setBooked([]); return }
     setLoadingSlots(true)
@@ -56,7 +62,8 @@ export default function Booking() {
       .finally(() => setLoadingSlots(false))
   }, [date])
 
-  const periodLabel = (id) => PERIODS.find(p => p.id === id)?.label || id
+  const periodLabel = (id) => t('booking', id) || id
+  const stepLabel = (n) => fill(t('booking', 'stepOf'), { n, total: TOTAL })
 
   const canNext = () => {
     if (step === 1) return !!service
@@ -86,10 +93,10 @@ export default function Booking() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Booking failed')
+      if (!res.ok) throw new Error(data.error || t('booking', 'failBooking'))
       setDone(true)
     } catch (err) {
-      setError(err.message || 'Something went wrong. Please try again.')
+      setError(err.message || t('booking', 'failGeneric'))
     } finally {
       setSubmitting(false)
     }
@@ -101,12 +108,15 @@ export default function Booking() {
         <div className={styles.card}>
           <div className={styles.success}>
             <div className={styles.checkCircle}>✓</div>
-            <h1 className={styles.successTitle}>Booking request sent!</h1>
+            <h1 className={styles.successTitle}>{t('booking', 'successTitle')}</h1>
             <p className={styles.successText}>
-              We received your request for <strong>{service}</strong> on <strong>{date}</strong> ({periodLabel(period)}).
-              We will confirm as soon as possible. A confirmation email will be sent later.
+              {fill(t('booking', 'successText'), {
+                service,
+                date,
+                period: periodLabel(period),
+              })}
             </p>
-            <Link to="/" className={styles.homeLink}>Back to Home</Link>
+            <Link to="/" className={styles.homeLink}>{t('common', 'backHome')}</Link>
           </div>
         </div>
       </div>
@@ -118,8 +128,8 @@ export default function Booking() {
       <div className={styles.card}>
         <div className={styles.header}>
           <div>
-            <p className={styles.eyebrow}>{t('common', 'bookNow') || 'Book'}</p>
-            <h1 className={styles.title}>Book Your Appointment</h1>
+            <p className={styles.eyebrow}>{t('common', 'bookNow')}</p>
+            <h1 className={styles.title}>{t('booking', 'title')}</h1>
           </div>
           <div className={styles.progress}>
             {Array.from({ length: TOTAL }, (_, i) => (
@@ -128,12 +138,11 @@ export default function Booking() {
           </div>
         </div>
 
-        {/* Step 1 — Service */}
         {step === 1 && (
           <div className={styles.body}>
-            <p className={styles.stepLabel}>Step 1 of {TOTAL}</p>
-            <h2 className={styles.stepTitle}>Which service?</h2>
-            <p className={styles.stepSub}>Select the treatment you would like to book.</p>
+            <p className={styles.stepLabel}>{stepLabel(1)}</p>
+            <h2 className={styles.stepTitle}>{t('booking', 'step1Title')}</h2>
+            <p className={styles.stepSub}>{t('booking', 'step1Sub')}</p>
             <div className={styles.serviceList}>
               {SERVICES.map(s => (
                 <button
@@ -149,14 +158,13 @@ export default function Booking() {
           </div>
         )}
 
-        {/* Step 2 — Date + period */}
         {step === 2 && (
           <div className={styles.body}>
-            <p className={styles.stepLabel}>Step 2 of {TOTAL}</p>
-            <h2 className={styles.stepTitle}>Choose a date & time of day</h2>
-            <p className={styles.stepSub}>Slots already booked by another customer will not be available.</p>
+            <p className={styles.stepLabel}>{stepLabel(2)}</p>
+            <h2 className={styles.stepTitle}>{t('booking', 'step2Title')}</h2>
+            <p className={styles.stepSub}>{t('booking', 'step2Sub')}</p>
 
-            <label className={styles.label}>Date</label>
+            <label className={styles.label}>{t('booking', 'dateLabel')}</label>
             <input
               type="date"
               className={styles.input}
@@ -167,9 +175,9 @@ export default function Booking() {
 
             {date && (
               <>
-                <label className={styles.label} style={{ marginTop: 20 }}>Time of day</label>
+                <label className={styles.label} style={{ marginTop: 20 }}>{t('booking', 'timeOfDayLabel')}</label>
                 {loadingSlots ? (
-                  <p className={styles.hint}>Checking availability…</p>
+                  <p className={styles.hint}>{t('booking', 'checkingSlots')}</p>
                 ) : (
                   <div className={styles.periodGrid}>
                     {PERIODS.map(p => {
@@ -182,8 +190,8 @@ export default function Booking() {
                           className={`${styles.periodBtn} ${period === p.id ? styles.periodSelected : ''} ${taken ? styles.periodTaken : ''}`}
                           onClick={() => !taken && setPeriod(p.id)}
                         >
-                          <span className={styles.periodName}>{p.label}</span>
-                          <span className={styles.periodHint}>{taken ? 'Unavailable' : p.hint}</span>
+                          <span className={styles.periodName}>{periodLabel(p.id)}</span>
+                          <span className={styles.periodHint}>{taken ? t('booking', 'unavailable') : p.hint}</span>
                         </button>
                       )
                     })}
@@ -194,73 +202,68 @@ export default function Booking() {
           </div>
         )}
 
-        {/* Step 3 — Flexible */}
         {step === 3 && (
           <div className={styles.body}>
-            <p className={styles.stepLabel}>Step 3 of {TOTAL}</p>
-            <h2 className={styles.stepTitle}>Are you flexible?</h2>
-            <p className={styles.stepSub}>
-              Let us know if you can adjust the date or time of day if needed.
-            </p>
+            <p className={styles.stepLabel}>{stepLabel(3)}</p>
+            <h2 className={styles.stepTitle}>{t('booking', 'step3Title')}</h2>
+            <p className={styles.stepSub}>{t('booking', 'step3Sub')}</p>
             <label className={styles.checkRow}>
               <input
                 type="checkbox"
                 checked={flexible}
                 onChange={e => setFlexible(e.target.checked)}
               />
-              <span>Yes, I am flexible with the date and/or time of day</span>
+              <span>{t('booking', 'flexibleCheck')}</span>
             </label>
           </div>
         )}
 
-        {/* Step 4 — Contact */}
         {step === 4 && (
           <div className={styles.body}>
-            <p className={styles.stepLabel}>Step 4 of {TOTAL}</p>
-            <h2 className={styles.stepTitle}>Your contact details</h2>
-            <p className={styles.stepSub}>We need at least a name and a phone number or email.</p>
+            <p className={styles.stepLabel}>{stepLabel(4)}</p>
+            <h2 className={styles.stepTitle}>{t('booking', 'step4Title')}</h2>
+            <p className={styles.stepSub}>{t('booking', 'step4Sub')}</p>
             <div className={styles.fields}>
               <div className={styles.field}>
-                <label className={styles.label}>Name *</label>
-                <input className={styles.input} value={name} onChange={e => setName(e.target.value)} placeholder="Full name" />
+                <label className={styles.label}>{t('booking', 'nameLabel')}</label>
+                <input className={styles.input} value={name} onChange={e => setName(e.target.value)} placeholder={t('booking', 'namePlaceholder')} />
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Phone</label>
+                <label className={styles.label}>{t('booking', 'phoneLabel')}</label>
                 <input className={styles.input} value={phone} onChange={e => setPhone(e.target.value)} placeholder="+61 450 000 000" />
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Email</label>
+                <label className={styles.label}>{t('booking', 'emailLabel')}</label>
                 <input type="email" className={styles.input} value={email} onChange={e => setEmail(e.target.value)} placeholder="email@example.com" />
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Details / notes</label>
+                <label className={styles.label}>{t('booking', 'detailsLabel')}</label>
                 <textarea
                   className={styles.textarea}
                   rows={3}
                   value={details}
                   onChange={e => setDetails(e.target.value)}
-                  placeholder="Anything we should know about your hair or preferences…"
+                  placeholder={t('booking', 'detailsPlaceholder')}
                 />
               </div>
             </div>
           </div>
         )}
 
-        {/* Step 5 — Summary */}
         {step === 5 && (
           <div className={styles.body}>
-            <p className={styles.stepLabel}>Step 5 of {TOTAL}</p>
-            <h2 className={styles.stepTitle}>Review your request</h2>
-            <p className={styles.stepSub}>Please confirm everything looks correct before sending.</p>
+            <p className={styles.stepLabel}>{stepLabel(5)}</p>
+            <h2 className={styles.stepTitle}>{t('booking', 'step5Title')}</h2>
+            <p className={styles.stepSub}>{t('booking', 'step5Sub')}</p>
             <dl className={styles.summary}>
-              <div><dt>Service</dt><dd>{service}</dd></div>
-              <div><dt>Date</dt><dd>{date}</dd></div>
-              <div><dt>Time of day</dt><dd>{periodLabel(period)}</dd></div>
-              <div><dt>Flexible</dt><dd>{flexible ? 'Yes' : 'No'}</dd></div>
-              <div><dt>Name</dt><dd>{name}</dd></div>
-              {phone && <div><dt>Phone</dt><dd>{phone}</dd></div>}
-              {email && <div><dt>Email</dt><dd>{email}</dd></div>}
-              {details && <div><dt>Details</dt><dd>{details}</dd></div>}
+              <div><dt>{t('booking', 'summaryService')}</dt><dd>{service}</dd></div>
+              <div><dt>{t('booking', 'summaryDate')}</dt><dd>{date}</dd></div>
+              <div><dt>{t('booking', 'summaryTime')}</dt><dd>{periodLabel(period)}</dd></div>
+              <div><dt>{t('booking', 'summaryFlexible')}</dt><dd>{flexible ? t('booking', 'yes') : t('booking', 'no')}</dd></div>
+              <div><dt>{t('booking', 'summaryName')}</dt><dd>{name}</dd></div>
+              {phone && <div><dt>{t('booking', 'summaryPhone')}</dt><dd>{phone}</dd></div>}
+              {email && <div><dt>{t('booking', 'summaryEmail')}</dt><dd>{email}</dd></div>}
+              {details && <div><dt>{t('booking', 'summaryDetails')}</dt><dd>{details}</dd></div>}
             </dl>
             {error && <p className={styles.error}>{error}</p>}
           </div>
@@ -269,7 +272,7 @@ export default function Booking() {
         <div className={styles.footer}>
           {step > 1 && (
             <button type="button" className={styles.backBtn} onClick={() => { setStep(s => s - 1); setError('') }}>
-              Back
+              {t('booking', 'back')}
             </button>
           )}
           {step < TOTAL ? (
@@ -279,7 +282,7 @@ export default function Booking() {
               disabled={!canNext()}
               onClick={() => setStep(s => s + 1)}
             >
-              Next →
+              {t('booking', 'next')}
             </button>
           ) : (
             <button
@@ -288,7 +291,7 @@ export default function Booking() {
               disabled={submitting}
               onClick={handleSubmit}
             >
-              {submitting ? 'Sending…' : 'Submit Booking'}
+              {submitting ? t('booking', 'sending') : t('booking', 'submit')}
             </button>
           )}
         </div>

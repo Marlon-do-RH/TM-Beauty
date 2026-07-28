@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
-  const { t, lang, switchLang, LANGS } = useLanguage()
+  const { t } = useLanguage()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [langOpen, setLangOpen] = useState(false)
   const location = useLocation()
-  const langRef = useRef(null)
 
   const navLinks = [
     { to: '/', label: t('nav', 'home') },
@@ -29,20 +27,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false)
-    setLangOpen(false)
   }, [location.pathname])
-
-  useEffect(() => {
-    const handleClick = e => {
-      if (langRef.current && !langRef.current.contains(e.target)) {
-        setLangOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [])
-
-  const currentLang = LANGS.find(l => l.code === lang)
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
@@ -66,42 +51,10 @@ export default function Navbar() {
         </ul>
 
         <div className={styles.actions}>
-          {/* Language switcher */}
-          <div className={styles.langWrapper} ref={langRef}>
-            <button
-              className={styles.langBtn}
-              onClick={() => setLangOpen(v => !v)}
-              aria-label="Select language"
-              title="Select language"
-            >
-              <span className={styles.langFlag}>{currentLang?.flag}</span>
-              <span className={styles.langCode}>{lang.toUpperCase()}</span>
-              <span className={`${styles.langChevron} ${langOpen ? styles.langChevronOpen : ''}`}>▾</span>
-            </button>
-
-            {langOpen && (
-              <div className={styles.langDropdown}>
-                {LANGS.map(l => (
-                  <button
-                    key={l.code}
-                    className={`${styles.langOption} ${lang === l.code ? styles.langOptionActive : ''}`}
-                    onClick={() => { switchLang(l.code); setLangOpen(false) }}
-                  >
-                    <span>{l.flag}</span>
-                    <span>{l.label}</span>
-                    {lang === l.code && <span className={styles.langCheck}>✓</span>}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Book Now */}
           <Link to="/agendar" className={styles.bookBtn}>
             {t('nav', 'bookNow')}
           </Link>
 
-          {/* Admin login — subtle lock icon */}
           <Link
             to="/admin/login"
             className={styles.adminBtn}

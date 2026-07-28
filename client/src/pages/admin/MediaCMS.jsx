@@ -4,10 +4,10 @@ import m from './MediaCMS.module.css'
 import { IconUpload, IconLink, IconX, IconCamera } from '../../components/AdminIcons'
 
 const SECTIONS = [
-  { id: 'hero',       label: 'Home — Foto Principal (Hero)',       description: 'Imagem de destaque exibida na página inicial ao lado do título.', single: true },
-  { id: 'studio',     label: 'About Us (studio photos)',           description: 'Galeria de fotos do espaço exibida na página About Us.', single: false },
-  { id: 'about',      label: 'About Us (profile)',                 description: 'Foto de perfil exibida na página About Us.', single: true },
-  { id: 'experience', label: 'A Experiência — Foto do Ambiente',   description: 'Imagem de ambiente usada na seção "A Experiência".', single: true },
+  { id: 'hero',       label: 'Home — Hero Photo',                  description: 'Featured image shown on the home page next to the title.', single: true },
+  { id: 'studio',     label: 'About Us (studio photos)',           description: 'Studio photo gallery shown on the About Us page.', single: false },
+  { id: 'about',      label: 'About Us (profile)',                 description: 'Profile photo shown on the About Us page.', single: true },
+  { id: 'experience', label: 'The Experience — Atmosphere Photo',  description: 'Atmosphere image used in the "The Experience" section.', single: true },
 ]
 
 async function cloudinaryUpload(file) {
@@ -31,7 +31,7 @@ function PhotoCard({ photo, onDelete }) {
     <div className={m.photoCard}>
       <img src={photo.url} alt={photo.caption || 'Photo'} className={m.photoImg} />
       {photo.caption && <p className={m.photoCaption}>{photo.caption}</p>}
-      <button className={m.photoDelete} onClick={onDelete} title="Remover foto" aria-label="Remover foto">
+      <button className={m.photoDelete} onClick={onDelete} title="Remove photo" aria-label="Remove photo">
         <IconX size={12} />
       </button>
     </div>
@@ -95,10 +95,10 @@ function UploadZone({ sectionId, single, onSaved }) {
     <div className={m.uploadZone}>
       <div className={m.uploadTabs}>
         <button className={`${m.uploadTab} ${tab === 'file' ? m.uploadTabActive : ''}`} type="button" onClick={() => setTab('file')}>
-          <IconUpload size={13} /> Upload de arquivo
+          <IconUpload size={13} /> Upload file
         </button>
         <button className={`${m.uploadTab} ${tab === 'url' ? m.uploadTabActive : ''}`} type="button" onClick={() => setTab('url')}>
-          <IconLink size={13} /> Colar URL
+          <IconLink size={13} /> Paste URL
         </button>
       </div>
 
@@ -110,8 +110,8 @@ function UploadZone({ sectionId, single, onSaved }) {
             ) : (
               <>
                 <span className={m.dropIconWrap}><IconCamera size={28} /></span>
-                <span className={m.dropText}>Clique ou arraste uma foto aqui</span>
-                <span className={m.dropHint}>JPG, PNG, WEBP — até 50MB</span>
+                <span className={m.dropText}>Click or drag a photo here</span>
+                <span className={m.dropHint}>JPG, PNG, WEBP — up to 50MB</span>
               </>
             )}
             <input ref={fileRef} type="file" accept="image/*" className={m.fileInput} onChange={handleFile} />
@@ -121,7 +121,7 @@ function UploadZone({ sectionId, single, onSaved }) {
             <input
               type="url"
               className={styles.input}
-              placeholder="https://exemplo.com/foto.jpg"
+              placeholder="https://example.com/photo.jpg"
               value={url}
               onChange={e => { setUrl(e.target.value); setPreview(e.target.value) }}
             />
@@ -132,12 +132,12 @@ function UploadZone({ sectionId, single, onSaved }) {
         <div className={m.captionRow}>
           <input
             className={styles.input}
-            placeholder="Legenda (opcional)"
+            placeholder="Caption (optional)"
             value={caption}
             onChange={e => setCaption(e.target.value)}
           />
           <button type="button" className={styles.submitBtn} style={{ marginTop: 0 }} onClick={handleAdd} disabled={!canAdd}>
-            {saving ? 'Salvando…' : 'Adicionar Foto'}
+            {saving ? 'Saving…' : 'Add Photo'}
           </button>
         </div>
         {error && <p style={{ color: '#c0392b', fontSize: '0.8rem', marginTop: 8 }}>{error}</p>}
@@ -184,8 +184,8 @@ export default function MediaCMS() {
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>Fotos do Site</h1>
-          <p className={styles.pageSubtitle}>Gerencie as imagens exibidas em cada seção do site público</p>
+          <h1 className={styles.pageTitle}>Site Photos</h1>
+          <p className={styles.pageSubtitle}>Manage the images shown in each section of the public site</p>
         </div>
       </div>
 
@@ -200,7 +200,7 @@ export default function MediaCMS() {
                 onClick={() => setActiveSection(s.id)}
               >
                 <span className={m.sectionBtnLabel}>{s.label}</span>
-                <span className={m.sectionBtnCount}>{loading ? '…' : `${count} foto${count !== 1 ? 's' : ''}`}</span>
+                <span className={m.sectionBtnCount}>{loading ? '…' : `${count} photo${count !== 1 ? 's' : ''}`}</span>
               </button>
             )
           })}
@@ -211,12 +211,12 @@ export default function MediaCMS() {
             <div>
               <h2 className={m.panelTitle}>{current.label}</h2>
               <p className={m.panelDesc}>{current.description}</p>
-              {current.single && <span className={m.badge}>Aceita 1 foto — nova foto substitui a anterior</span>}
+              {current.single && <span className={m.badge}>Accepts 1 photo — a new photo replaces the previous one</span>}
             </div>
           </div>
 
           {loading ? (
-            <p style={{ padding: '24px', color: 'var(--dark-soft)', fontSize: '0.85rem' }}>Carregando…</p>
+            <p style={{ padding: '24px', color: 'var(--dark-soft)', fontSize: '0.85rem' }}>Loading…</p>
           ) : (
             <>
               {sectionPhotos.length > 0 && (
@@ -238,7 +238,7 @@ export default function MediaCMS() {
                     className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
                     onClick={() => handleDelete(sectionPhotos[0])}
                   >
-                    <IconX size={12} /> Remover foto atual e adicionar nova
+                    <IconX size={12} /> Remove current photo and add a new one
                   </button>
                 </div>
               )}

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import translations from './translations'
 
 const LANGS = [
@@ -11,18 +11,14 @@ const LANGS = [
 const LanguageContext = createContext(null)
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => {
-    try {
-      return localStorage.getItem('tm_lang') || 'en'
-    } catch {
-      return 'en'
-    }
-  })
+  // Language switching parked — site is English-only for now
+  const lang = 'en'
 
-  const switchLang = code => {
-    setLang(code)
-    try { localStorage.setItem('tm_lang', code) } catch {}
-  }
+  useEffect(() => {
+    try { localStorage.removeItem('tm_lang') } catch {}
+  }, [])
+
+  const switchLang = () => {}
 
   const t = (section, key) => {
     const sectionData = translations[lang]?.[section]

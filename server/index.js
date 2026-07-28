@@ -39,20 +39,20 @@ let appointments = [
 ]
 
 let services = [
-  { id: 1, name: 'Brazilian Nanoplastia', description: 'Alisamento avançado sem formol.', price: 280, duration: '3–4 horas' },
-  { id: 2, name: 'Brazilian Botox', description: 'Hidratação profunda e redução de volume.', price: 220, duration: '2–3 horas' },
-  { id: 3, name: 'Deep Treatment', description: 'Tratamento reconstrutivo intensivo.', price: 180, duration: '1–2 horas' },
+  { id: 1, name: 'Brazilian Nanoplastia', description: 'Advanced formaldehyde-free straightening.', price: 280, duration: '3–4 hours' },
+  { id: 2, name: 'Brazilian Botox', description: 'Deep hydration and volume control.', price: 220, duration: '2–3 hours' },
+  { id: 3, name: 'Deep Treatment', description: 'Intensive reconstructive treatment.', price: 180, duration: '1–2 hours' },
 ]
 
 let gallery = [
-  { id: 1, category: 'Nanoplastia', caption: 'Cabelo cacheado → liso sedoso', date: '2024-05-10' },
-  { id: 2, category: 'Botox', caption: 'Volume controlado', date: '2024-05-15' },
+  { id: 1, category: 'Nanoplastia', caption: 'Curly hair → silky straight', date: '2024-05-10' },
+  { id: 2, category: 'Botox', caption: 'Volume controlled', date: '2024-05-15' },
 ]
 
 let faq = [
-  { id: 1, question: 'Quanto tempo dura o tratamento de Nanoplastia?', answer: 'O tratamento de Nanoplastia dura em média 3 a 4 horas.' },
-  { id: 2, question: 'Posso lavar o cabelo no mesmo dia?', answer: 'Para a Nanoplastia, recomendamos esperar pelo menos 72 horas.' },
-  { id: 3, question: 'Os tratamentos contêm formol?', answer: 'Não. Todos os tratamentos são livres de formol.' },
+  { id: 1, question: 'How long does a Nanoplastia treatment take?', answer: 'A Nanoplastia treatment takes about 3 to 4 hours on average.' },
+  { id: 2, question: 'Can I wash my hair the same day?', answer: 'For Nanoplastia, we recommend waiting at least 72 hours before washing.' },
+  { id: 3, question: 'Do the treatments contain formaldehyde?', answer: 'No. All treatments are formaldehyde-free.' },
 ]
 
 let nextId = 100

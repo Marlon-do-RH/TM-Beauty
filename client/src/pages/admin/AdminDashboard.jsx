@@ -3,10 +3,10 @@ import styles from './Admin.module.css'
 import { IconCalendar, IconAlertCircle, IconCheck, IconStar, IconScissors, IconImage, IconHelpCircle, IconChevronRight } from '../../components/AdminIcons'
 
 const stats = [
-  { label: 'Agendamentos esta semana', value: '12', Icon: IconCalendar, color: '#6B4E3D', bg: '#F2EBE3' },
-  { label: 'Pendentes de confirmação', value: '4', Icon: IconAlertCircle, color: '#C0862E', bg: '#FEF3E2' },
-  { label: 'Concluídos este mês', value: '38', Icon: IconCheck, color: '#287A5B', bg: '#EAF5EF' },
-  { label: 'Clientes novas', value: '7', Icon: IconStar, color: '#7B5EA7', bg: '#F3EEFB' },
+  { label: 'Appointments this week', value: '12', Icon: IconCalendar, color: '#6B4E3D', bg: '#F2EBE3' },
+  { label: 'Pending confirmation', value: '4', Icon: IconAlertCircle, color: '#C0862E', bg: '#FEF3E2' },
+  { label: 'Completed this month', value: '38', Icon: IconCheck, color: '#287A5B', bg: '#EAF5EF' },
+  { label: 'New clients', value: '7', Icon: IconStar, color: '#7B5EA7', bg: '#F3EEFB' },
 ]
 
 const recentAppts = [
@@ -17,10 +17,10 @@ const recentAppts = [
 ]
 
 const statusColors = {
-  pending:   { bg: '#FEF3E2', color: '#C0862E', label: 'Pendente' },
-  confirmed: { bg: '#EAF5EF', color: '#287A5B', label: 'Confirmado' },
-  completed: { bg: '#EAF3FF', color: '#2563EB', label: 'Concluído' },
-  cancelled: { bg: '#FEF2F2', color: '#C0392B', label: 'Cancelado' },
+  pending:   { bg: '#FEF3E2', color: '#C0862E', label: 'Pending' },
+  confirmed: { bg: '#EAF5EF', color: '#287A5B', label: 'Confirmed' },
+  completed: { bg: '#EAF3FF', color: '#2563EB', label: 'Completed' },
+  cancelled: { bg: '#FEF2F2', color: '#C0392B', label: 'Cancelled' },
 }
 
 export default function AdminDashboard() {
@@ -29,10 +29,10 @@ export default function AdminDashboard() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Dashboard</h1>
-          <p className={styles.pageSubtitle}>Bem-vinda de volta, Thalita.</p>
+          <p className={styles.pageSubtitle}>Welcome back, Thalita.</p>
         </div>
         <Link to="/admin/appointments" className={styles.primaryBtn}>
-          Novo Agendamento
+          New Appointment
         </Link>
       </div>
 
@@ -48,15 +48,15 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className={styles.sectionTitle}>Agendamentos Recentes</div>
+      <div className={styles.sectionTitle}>Recent Appointments</div>
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Cliente</th>
-              <th>Serviço</th>
-              <th>Data</th>
-              <th>Horário</th>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Time</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -83,16 +83,16 @@ export default function AdminDashboard() {
 
       <div className={styles.quickLinks}>
         <Link to="/admin/appointments" className={styles.quickLink}>
-          <IconCalendar size={15} /> Ver todos os agendamentos <IconChevronRight size={14} />
+          <IconCalendar size={15} /> View all appointments <IconChevronRight size={14} />
         </Link>
         <Link to="/admin/services" className={styles.quickLink}>
-          <IconScissors size={15} /> Gerenciar serviços <IconChevronRight size={14} />
+          <IconScissors size={15} /> Manage services <IconChevronRight size={14} />
         </Link>
         <Link to="/admin/gallery" className={styles.quickLink}>
-          <IconImage size={15} /> Atualizar galeria <IconChevronRight size={14} />
+          <IconImage size={15} /> Update gallery <IconChevronRight size={14} />
         </Link>
         <Link to="/admin/faq" className={styles.quickLink}>
-          <IconHelpCircle size={15} /> Editar FAQ <IconChevronRight size={14} />
+          <IconHelpCircle size={15} /> Edit FAQ <IconChevronRight size={14} />
         </Link>
       </div>
     </div>

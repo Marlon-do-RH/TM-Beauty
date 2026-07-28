@@ -4,7 +4,7 @@ import styles from './PageCommon.module.css'
 import s from './FAQ.module.css'
 import BookingButton from '../../components/BookingButton'
 
-const FALLBACK_FAQS = [
+const FAQ_KEYS = [
   { q: 'q1', a: 'a1' }, { q: 'q2', a: 'a2' }, { q: 'q3', a: 'a3' },
   { q: 'q4', a: 'a4' }, { q: 'q5', a: 'a5' }, { q: 'q6', a: 'a6' },
 ]
@@ -12,18 +12,20 @@ const FALLBACK_FAQS = [
 export default function FAQ() {
   const { t } = useLanguage()
   const [open, setOpen] = useState(null)
-  const [faqs, setFaqs] = useState(null)
+  const [faqs, setFaqs] = useState(null) // null = loading
 
   useEffect(() => {
     fetch('/api/faq')
       .then(r => r.json())
-      .then(data => Array.isArray(data) && data.length > 0 && setFaqs(data))
-      .catch(() => {})
+      .then(data => setFaqs(Array.isArray(data) ? data : []))
+      .catch(() => setFaqs([]))
   }, [])
 
-  const items = faqs
-    ? faqs.map(f => ({ q: f.question, a: f.answer }))
-    : FALLBACK_FAQS.map(f => ({ q: t('faq', f.q), a: t('faq', f.a) }))
+  const items = faqs === null
+    ? null
+    : faqs.length > 0
+      ? faqs.map(f => ({ q: f.question, a: f.answer }))
+      : FAQ_KEYS.map(f => ({ q: t('faq', f.q), a: t('faq', f.a) }))
 
   return (
     <div>
@@ -38,7 +40,7 @@ export default function FAQ() {
       <section className={s.faqSection}>
         <div className={s.inner}>
           <div className={s.faqList}>
-            {items.map((faq, i) => (
+            {items === null ? null : items.map((faq, i) => (
               <div key={i} className={`${s.faqItem} ${open === i ? s.faqItemOpen : ''}`}>
                 <button className={s.faqQuestion} onClick={() => setOpen(open === i ? null : i)}>
                   <span>{faq.q}</span>

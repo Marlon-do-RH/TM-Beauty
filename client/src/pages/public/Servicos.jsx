@@ -26,7 +26,7 @@ export default function Servicos() {
     return {
       ...sk,
       price: live ? `R$ ${live.price_min}` : (sk.key === 'nano' ? 'R$ 280' : sk.key === 'botox' ? 'R$ 220' : 'R$ 180'),
-      duration: live ? `${live.duration}${live.duration_unit === 'horas' ? 'h' : 'min'}` : (sk.key === 'nano' ? '3–4h' : sk.key === 'botox' ? '2–3h' : '1–2h'),
+      duration: live ? `${live.duration}${live.duration_unit === 'horas' || live.duration_unit === 'hours' ? 'h' : 'min'}` : (sk.key === 'nano' ? '3–4h' : sk.key === 'botox' ? '2–3h' : '1–2h'),
     }
   })
 

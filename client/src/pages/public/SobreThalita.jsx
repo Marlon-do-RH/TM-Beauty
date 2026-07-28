@@ -5,12 +5,12 @@ import styles from './PageCommon.module.css'
 import s from './OStudio.module.css'
 
 const STATIC_CAPTIONS = [
-  'Área de tratamento principal',
-  'Estação de lavagem',
-  'Área de espera',
-  'Produtos selecionados',
-  'Detalhes do espaço',
-  'O ambiente completo',
+  'Main treatment area',
+  'Wash station',
+  'Waiting area',
+  'Selected products',
+  'Space details',
+  'The full studio environment',
 ]
 
 const CARD_SIZES = ['large', 'small', 'small', 'small', 'small', 'large']
