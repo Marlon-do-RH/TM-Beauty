@@ -13,10 +13,16 @@ const FALLBACK_PAIRS = [
   { category: 'Nanoplastia', caption: 'Dano químico → restauração completa' },
 ]
 
+const FILTERS = [
+  { id: 'all', labelKey: 'all' },
+  { id: 'Nanoplastia' },
+  { id: 'Botox' },
+  { id: 'Deep Treatment' },
+]
+
 export default function AntesDepois() {
   const { t } = useLanguage()
-  const categories = [t('antesDepois', 'all'), 'Nanoplastia', 'Botox', 'Deep Treatment']
-  const [active, setActive] = useState(categories[0])
+  const [active, setActive] = useState('all')
   const [pairs, setPairs] = useState(null)
 
   useEffect(() => {
@@ -26,7 +32,9 @@ export default function AntesDepois() {
       .catch(() => setPairs(FALLBACK_PAIRS))
   }, [])
 
-  const filtered = pairs ? (active === categories[0] ? pairs : pairs.filter(p => p.category === active)) : []
+  const filtered = pairs
+    ? (active === 'all' ? pairs : pairs.filter(p => p.category === active))
+    : []
 
   return (
     <div>
@@ -41,13 +49,13 @@ export default function AntesDepois() {
       <section className={s.gallerySection}>
         <div className={s.inner}>
           <div className={s.filterRow}>
-            {categories.map(c => (
+            {FILTERS.map(f => (
               <button
-                key={c}
-                className={`${s.filterBtn} ${active === c ? s.filterBtnActive : ''}`}
-                onClick={() => setActive(c)}
+                key={f.id}
+                className={`${s.filterBtn} ${active === f.id ? s.filterBtnActive : ''}`}
+                onClick={() => setActive(f.id)}
               >
-                {c}
+                {f.labelKey ? t('antesDepois', f.labelKey) : f.id}
               </button>
             ))}
           </div>
