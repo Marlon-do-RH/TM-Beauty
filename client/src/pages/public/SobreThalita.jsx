@@ -9,11 +9,9 @@ const STATIC_CAPTIONS = [
   'Wash station',
   'Waiting area',
   'Selected products',
-  'Space details',
-  'The full studio environment',
 ]
 
-const CARD_SIZES = ['large', 'small', 'small', 'small', 'small', 'large']
+const CARD_SIZES = ['large', 'small', 'small', 'large']
 
 export default function SobreThalita() {
   const { t } = useLanguage()
