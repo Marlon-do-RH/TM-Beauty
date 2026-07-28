@@ -156,6 +156,72 @@
   min-height: 120px;
 }
 
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px dashed var(--border);
+  border-radius: 2px;
+  padding: 28px 20px;
+  cursor: pointer;
+  color: var(--dark-soft);
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+  position: relative;
+}
+
+.uploadArea:hover {
+  border-color: var(--gold);
+  background: rgba(201, 164, 109, 0.04);
+}
+
+.uploadDone {
+  border-color: var(--gold);
+  background: rgba(201, 164, 109, 0.06);
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.uploadHint {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--chocolate);
+}
+
+.uploadTypes {
+  font-size: 0.72rem;
+  color: rgba(74, 52, 40, 0.5);
+}
+
+.uploadFileName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  word-break: break-all;
+  padding: 0 12px;
+}
+
+.formError {
+  font-size: 0.82rem;
+  color: #a33;
+  margin: 0;
+}
+
+.submitBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .submitBtn {
   background: var(--gold);
   color: var(--white);

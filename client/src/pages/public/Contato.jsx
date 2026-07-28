@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
-import { IconPhone, IconWhatsApp, IconMail, IconInstagram } from '../../components/AdminIcons'
+import { IconPhone, IconWhatsApp, IconMail, IconInstagram, IconUpload } from '../../components/AdminIcons'
 import styles from './PageCommon.module.css'
 import s from './Contato.module.css'
 
@@ -28,10 +28,36 @@ const HOURS_DAYS = [
   { key: 'hours_sun', labelKey: 'sunday' },
 ]
 
+const MAX_BYTES = 50 * 1024 * 1024
+
+async function uploadToCloudinary(file) {
+  const sigRes = await fetch('/api/sign-upload?folder=tm-beauty/consultations')
+  if (!sigRes.ok) throw new Error('Could not get upload signature')
+  const { signature, timestamp, api_key, cloud_name } = await sigRes.json()
+
+  const body = new FormData()
+  body.append('file', file)
+  body.append('signature', signature)
+  body.append('timestamp', timestamp)
+  body.append('api_key', api_key)
+  body.append('folder', 'tm-beauty/consultations')
+
+  const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, {
+    method: 'POST',
+    body,
+  })
+  if (!uploadRes.ok) throw new Error('Upload failed')
+  const data = await uploadRes.json()
+  return data.secure_url
+}
+
 export default function Contato() {
   const { t } = useLanguage()
   const [form, setForm] = useState({ name: '', email: '', service: '', message: '' })
+  const [file, setFile] = useState(null)
   const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [contact, setContact] = useState(FALLBACK)
 
   useEffect(() => {
@@ -39,7 +65,6 @@ export default function Contato() {
       .then(r => r.json())
       .then(d => {
         if (!d || d.error) return
-        // Migrate legacy mon–fri blob if per-day fields are empty
         const weekday = d.hours_mon_fri || FALLBACK.hours_mon
         setContact({
           ...FALLBACK,
@@ -56,9 +81,53 @@ export default function Contato() {
       .catch(() => {})
   }, [])
 
-  const handleSubmit = e => {
+  const handleFileChange = (e) => {
+    const picked = e.target.files?.[0] || null
+    setSubmitError('')
+    if (picked && picked.size > MAX_BYTES) {
+      setFile(null)
+      setSubmitError(t('contato', 'uploadError'))
+      e.target.value = ''
+      return
+    }
+    setFile(picked)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
+    setSubmitting(true)
+    setSubmitError('')
+    try {
+      let photo_url = null
+      if (file) {
+        try {
+          photo_url = await uploadToCloudinary(file)
+        } catch {
+          setSubmitError(t('contato', 'uploadError'))
+          setSubmitting(false)
+          return
+        }
+      }
+
+      const res = await fetch('/api/consultations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          contact: form.email.trim(),
+          service: form.service || null,
+          notes: form.message.trim(),
+          photo_url,
+        }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || t('contato', 'submitError'))
+      setSent(true)
+    } catch (err) {
+      setSubmitError(err.message || t('contato', 'submitError'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const serviceOptions = [
@@ -165,7 +234,30 @@ export default function Contato() {
                     <label className={s.label}>{t('contato', 'message')}</label>
                     <textarea required rows={5} className={s.textarea} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder={t('contato', 'messagePlaceholder')} />
                   </div>
-                  <button type="submit" className={s.submitBtn}>{t('contato', 'send')}</button>
+                  <div className={s.field}>
+                    <label className={s.label}>{t('contato', 'mediaLabel')}</label>
+                    <label className={`${s.uploadArea} ${file ? s.uploadDone : ''}`}>
+                      <input
+                        type="file"
+                        accept="image/*,video/*"
+                        className={s.fileInput}
+                        onChange={handleFileChange}
+                      />
+                      {file ? (
+                        <span className={s.uploadFileName}>{file.name}</span>
+                      ) : (
+                        <>
+                          <IconUpload size={28} />
+                          <span className={s.uploadHint}>{t('contato', 'mediaHint')}</span>
+                          <span className={s.uploadTypes}>{t('contato', 'mediaTypes')}</span>
+                        </>
+                      )}
+                    </label>
+                  </div>
+                  {submitError && <p className={s.formError}>{submitError}</p>}
+                  <button type="submit" className={s.submitBtn} disabled={submitting}>
+                    {submitting ? t('contato', 'sending') : t('contato', 'send')}
+                  </button>
                 </form>
               )}
             </div>
