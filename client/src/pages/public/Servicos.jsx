@@ -78,12 +78,6 @@ export default function Servicos() {
           })}
         </div>
       </section>
-
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>{t('servicos', 'noSure')}</h2>
-        <p className={styles.ctaText}>{t('servicos', 'noSureText')}</p>
-        <BookingButton label={t('servicos', 'freeConsult')} variant="primary" to="/contato" />
-      </section>
     </div>
   )
 }
