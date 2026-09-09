@@ -20,26 +20,71 @@
 }
 
 .gallerySection {
-  padding: 80px 0;
+  padding: 64px 0 80px;
+  overflow: hidden;
 }
 
-.galleryGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 260px;
+.galleryHeader {
+  max-width: 1280px;
+  margin: 0 auto 36px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 48s linear infinite;
+}
+
+.marqueeGroup {
+  display: flex;
+  flex-shrink: 0;
   gap: 16px;
+  padding-right: 16px;
+}
+
+.marquee:hover .marqueeTrack,
+.marquee:focus-within .marqueeTrack {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .photoCard {
   position: relative;
+  flex: 0 0 clamp(240px, 28vw, 380px);
+  height: clamp(260px, 32vw, 360px);
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid var(--border);
-}
-
-.photoCardLarge {
-  grid-column: span 2;
-  grid-row: span 2;
 }
 
 .photoPlaceholder {
@@ -53,6 +98,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 .photoCaption {
@@ -111,27 +157,72 @@
 }
 
 @media (max-width: 960px) {
-  .galleryGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .photoCardLarge {
-    grid-column: span 2;
-    grid-row: span 1;
-  }
-
   .locationGrid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
+
+  .photoCard {
+    flex-basis: clamp(220px, 55vw, 300px);
+    height: 280px;
+  }
+
+  .marqueeTrack {
+    animation-duration: 36s;
+  }
 }
 
 @media (max-width: 560px) {
-  .galleryGrid {
-    grid-template-columns: 1fr;
+  .gallerySection {
+    padding: 48px 0 64px;
   }
 
-  .photoCardLarge {
-    grid-column: span 1;
+  .photoCard {
+    flex-basis: 78vw;
+    height: 240px;
+  }
+
+  .marqueeTrack {
+    animation-duration: 28s;
+  }
+
+  .marqueeGroup {
+    gap: 12px;
+    padding-right: 12px;
+  }
+
+  .marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+    padding: 0 24px;
+  }
+
+  .marquee {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .marqueeGroup:nth-child(2) {
+    display: none;
   }
 }

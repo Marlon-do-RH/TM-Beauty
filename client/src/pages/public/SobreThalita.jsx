@@ -11,7 +11,7 @@ const STATIC_CAPTIONS = [
   'Selected products',
 ]
 
-const CARD_SIZES = ['large', 'small', 'small', 'large']
+const SLOT_COUNT = 4
 
 export default function SobreThalita() {
   const { t } = useLanguage()
@@ -30,6 +30,13 @@ export default function SobreThalita() {
       .catch(() => {})
   }, [])
 
+  const studioSlots = Array.from({ length: SLOT_COUNT }, (_, i) => {
+    const photo = studioPhotos[i]
+    return {
+      url: photo?.url || null,
+      caption: photo?.caption || STATIC_CAPTIONS[i],
+    }
+  })
   const values = [
     { icon: '✦', title: t('sobre', 'v1Title'), desc: t('sobre', 'v1Desc') },
     { icon: '♡', title: t('sobre', 'v2Title'), desc: t('sobre', 'v2Desc') },
@@ -113,23 +120,36 @@ export default function SobreThalita() {
         </div>
       </section>
 
-      <section className={s.gallerySection}>
-        <div className={s.inner}>
-          <div className={s.galleryGrid}>
-            {CARD_SIZES.map((size, i) => {
-              const photo = studioPhotos[i]
-              const caption = photo?.caption || STATIC_CAPTIONS[i]
-              return (
-                <div key={i} className={`${s.photoCard} ${size === 'large' ? s.photoCardLarge : ''}`}>
-                  {photo ? (
-                    <img src={photo.url} alt={caption} className={s.photoImg} />
-                  ) : (
-                    <div className={s.photoPlaceholder} />
-                  )}
-                  <p className={s.photoCaption}>{caption}</p>
-                </div>
-              )
-            })}
+      <section className={s.gallerySection} aria-label={t('studio', 'title')}>
+        <div className={s.galleryHeader}>
+          <p className={styles.eyebrow}>{t('studio', 'eyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('studio', 'title')}</h2>
+        </div>
+        <div className={s.marquee}>
+          <div className={s.marqueeTrack}>
+            {[0, 1].map(copy => (
+              <div
+                key={copy}
+                className={s.marqueeGroup}
+                aria-hidden={copy === 1 || undefined}
+              >
+                {studioSlots.map((slot, i) => (
+                  <div key={`${copy}-${slot.caption}-${i}`} className={s.photoCard}>
+                    {slot.url ? (
+                      <img
+                        src={slot.url}
+                        alt={copy === 1 ? '' : slot.caption}
+                        className={s.photoImg}
+                        draggable={false}
+                      />
+                    ) : (
+                      <div className={s.photoPlaceholder} />
+                    )}
+                    <p className={s.photoCaption}>{slot.caption}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
