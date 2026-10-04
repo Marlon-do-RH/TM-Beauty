@@ -31,8 +31,8 @@ export default function AdminDashboard() {
           <h1 className={styles.pageTitle}>Dashboard</h1>
           <p className={styles.pageSubtitle}>Welcome back, Thalita.</p>
         </div>
-        <Link to="/admin/appointments" className={styles.primaryBtn}>
-          New Appointment
+        <Link to="/admin/consultations" className={styles.primaryBtn}>
+          Consultation requests
         </Link>
       </div>
 
@@ -82,9 +82,6 @@ export default function AdminDashboard() {
       </div>
 
       <div className={styles.quickLinks}>
-        <Link to="/admin/appointments" className={styles.quickLink}>
-          <IconCalendar size={15} /> View all appointments <IconChevronRight size={14} />
-        </Link>
         <Link to="/admin/consultations" className={styles.quickLink}>
           <IconMail size={15} /> Consultation requests <IconChevronRight size={14} />
         </Link>

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LanguageProvider } from './i18n/LanguageContext'
+import { AdminAuthProvider } from './context/AdminAuth'
 import PublicLayout from './layouts/PublicLayout'
 import AdminLayout from './layouts/AdminLayout'
 import LoginPage from './pages/LoginPage'
@@ -47,7 +48,8 @@ function App() {
     <LanguageProvider>
       {showSplash && <SplashScreen onDone={handleSplashDone} />}
       <BrowserRouter>
-        <Routes>
+        <AdminAuthProvider>
+          <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<SobreThalita />} />
@@ -75,7 +77,8 @@ function App() {
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </AdminAuthProvider>
       </BrowserRouter>
     </LanguageProvider>
   )

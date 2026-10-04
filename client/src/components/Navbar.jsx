@@ -1,12 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
+import { useAdminAuth } from '../context/AdminAuth'
+import AdminLoginModal from './AdminLoginModal'
+import AdminChip from './AdminChip'
+import { IconLock } from './AdminIcons'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const { t } = useLanguage()
+  const { isAdmin, logout } = useAdminAuth()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
+  const [chipOpen, setChipOpen] = useState(false)
+  const [origin, setOrigin] = useState({ x: 90, y: 6 })
+  const lockRef = useRef(null)
   const location = useLocation()
 
   const navLinks = [
@@ -27,7 +36,27 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false)
+    setChipOpen(false)
   }, [location.pathname])
+
+  const originFromLock = () => {
+    const el = lockRef.current
+    if (!el) return { x: 90, y: 6 }
+    const r = el.getBoundingClientRect()
+    return {
+      x: ((r.left + r.width / 2) / window.innerWidth) * 100,
+      y: ((r.top + r.height / 2) / window.innerHeight) * 100,
+    }
+  }
+
+  const onLockClick = () => {
+    if (isAdmin) {
+      setChipOpen(v => !v)
+      return
+    }
+    setOrigin(originFromLock())
+    setLoginOpen(true)
+  }
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
@@ -55,17 +84,28 @@ export default function Navbar() {
             {t('nav', 'bookNow')}
           </Link>
 
-          <Link
-            to="/admin/login"
-            className={styles.adminBtn}
-            title={t('nav', 'adminLogin')}
-            aria-label="Admin login"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-          </Link>
+          <div className={styles.adminWrap}>
+            <button
+              ref={lockRef}
+              type="button"
+              className={`${styles.adminBtn} ${isAdmin ? styles.adminBtnOn : ''}`}
+              title={isAdmin ? 'Admin tools' : t('nav', 'adminLogin')}
+              aria-label={isAdmin ? 'Admin tools' : 'Admin login'}
+              aria-expanded={isAdmin ? chipOpen : loginOpen}
+              onClick={onLockClick}
+            >
+              <IconLock size={14} />
+            </button>
+            {isAdmin && chipOpen && (
+              <AdminChip
+                onClose={() => setChipOpen(false)}
+                onLogout={() => {
+                  logout()
+                  setChipOpen(false)
+                }}
+              />
+            )}
+          </div>
         </div>
 
         <button
@@ -78,6 +118,10 @@ export default function Navbar() {
           <span className={menuOpen ? styles.barOpen : ''} />
         </button>
       </div>
+
+      {loginOpen && !isAdmin && (
+        <AdminLoginModal origin={origin} onClose={() => setLoginOpen(false)} />
+      )}
     </nav>
   )
 }

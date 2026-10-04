@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useAdminAuth } from '../../context/AdminAuth'
 import BookingButton from '../../components/BookingButton'
+import { EditOverlay, ReplaceBtn, DeleteBtn, HiddenFileButton } from '../../components/InlineEdit'
+import {
+  uploadToCloudinary,
+  saveSiteMedia,
+  deleteSiteMedia,
+} from '../../lib/uploadMedia'
+import { IconPlus } from '../../components/AdminIcons'
 import styles from './PageCommon.module.css'
 import s from './OStudio.module.css'
+import ie from '../../components/InlineEdit.module.css'
 
 const STATIC_CAPTIONS = [
   'Main treatment area',
@@ -15,20 +24,86 @@ const CARD_SIZES = ['large', 'small', 'small', 'large']
 
 export default function SobreThalita() {
   const { t } = useLanguage()
-  const [profilePhoto, setProfilePhoto] = useState(null)
+  const { isAdmin } = useAdminAuth()
+  const [profile, setProfile] = useState(null)
   const [studioPhotos, setStudioPhotos] = useState([])
+  const [busy, setBusy] = useState(null)
 
-  useEffect(() => {
+  const loadPhotos = () => {
     fetch('/api/site-media?section=about')
       .then(r => r.json())
-      .then(data => Array.isArray(data) && data.length > 0 && setProfilePhoto(data[0].url))
+      .then(data => Array.isArray(data) && data.length > 0 && setProfile(data[0]))
       .catch(() => {})
 
     fetch('/api/site-media?section=studio')
       .then(r => r.json())
       .then(data => Array.isArray(data) && setStudioPhotos(data))
       .catch(() => {})
-  }, [])
+  }
+
+  useEffect(() => { loadPhotos() }, [])
+
+  const replaceProfile = async (file) => {
+    setBusy('profile')
+    try {
+      const url = await uploadToCloudinary(file, 'tm-beauty/media')
+      if (profile?.id) await deleteSiteMedia(profile.id)
+      const saved = await saveSiteMedia({ section_id: 'about', url })
+      setProfile(saved)
+    } catch (err) {
+      alert(err.message || 'Could not update photo')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const replaceStudio = async (photo, file, caption) => {
+    setBusy(photo?.id || 'studio-add')
+    try {
+      const url = await uploadToCloudinary(file, 'tm-beauty/media')
+      if (photo?.id) await deleteSiteMedia(photo.id)
+      const saved = await saveSiteMedia({
+        section_id: 'studio',
+        url,
+        caption: caption || photo?.caption || null,
+      })
+      setStudioPhotos(list => {
+        if (!photo?.id) return [...list, saved]
+        return list.map(p => (p.id === photo.id ? saved : p))
+      })
+    } catch (err) {
+      alert(err.message || 'Could not update photo')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const addStudio = async (file) => {
+    setBusy('studio-add')
+    try {
+      const url = await uploadToCloudinary(file, 'tm-beauty/media')
+      const saved = await saveSiteMedia({ section_id: 'studio', url })
+      setStudioPhotos(list => [...list, saved])
+    } catch (err) {
+      alert(err.message || 'Could not add photo')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const removeStudio = async (photo) => {
+    if (!photo?.id) return
+    if (!window.confirm('Remove this studio photo?')) return
+    setBusy(photo.id)
+    try {
+      await deleteSiteMedia(photo.id)
+      setStudioPhotos(list => list.filter(p => p.id !== photo.id))
+    } catch (err) {
+      alert(err.message || 'Could not delete photo')
+    } finally {
+      setBusy(null)
+    }
+  }
 
   const values = [
     { icon: '✦', title: t('sobre', 'v1Title'), desc: t('sobre', 'v1Desc') },
@@ -36,6 +111,8 @@ export default function SobreThalita() {
     { icon: '◈', title: t('sobre', 'v3Title'), desc: t('sobre', 'v3Desc') },
     { icon: '✧', title: t('sobre', 'v4Title'), desc: t('sobre', 'v4Desc') },
   ]
+
+  const mosaicCount = isAdmin ? Math.max(studioPhotos.length, 4) : 4
 
   return (
     <div className={styles.sobrePage}>
@@ -50,20 +127,28 @@ export default function SobreThalita() {
       <section className={styles.bioSection}>
         <div className={styles.bioGrid}>
           <div className={styles.bioVisual}>
-            {profilePhoto ? (
-              <img
-                src={profilePhoto}
-                alt="Thalita Medeiros"
-                className={styles.bioProfileImg}
-              />
-            ) : (
-              <div className={styles.bioImgPlaceholder}>
-                <div className={styles.bioImgBadge}>
-                  <span>Thalita Medeiros</span>
-                  <span className={styles.bioImgSub}>Brazilian Hair Specialist</span>
+            <div className={styles.bioFrame}>
+              {profile?.url ? (
+                <img
+                  src={profile.url}
+                  alt="Thalita Medeiros"
+                  className={styles.bioProfileImg}
+                />
+              ) : (
+                <div className={styles.bioImgPlaceholder}>
+                  <div className={styles.bioImgBadge}>
+                    <span>Thalita Medeiros</span>
+                    <span className={styles.bioImgSub}>Brazilian Hair Specialist</span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {isAdmin && (
+                <EditOverlay>
+                  <ReplaceBtn onFile={replaceProfile} disabled={!!busy} title="Replace profile photo" />
+                </EditOverlay>
+              )}
+              {busy === 'profile' && <div className={ie.busy} />}
+            </div>
           </div>
           <div className={styles.bioContent}>
             <p className={styles.eyebrow}>{t('sobre', 'storyEyebrow')}</p>
@@ -116,20 +201,53 @@ export default function SobreThalita() {
       <section className={s.gallerySection}>
         <div className={s.inner}>
           <div className={s.galleryGrid}>
-            {CARD_SIZES.map((size, i) => {
+            {Array.from({ length: mosaicCount }, (_, i) => {
               const photo = studioPhotos[i]
-              const caption = photo?.caption || STATIC_CAPTIONS[i]
+              const caption = photo?.caption || STATIC_CAPTIONS[i] || 'Studio photo'
+              const size = CARD_SIZES[i] || 'small'
+              const key = photo?.id || `slot-${i}`
               return (
-                <div key={i} className={`${s.photoCard} ${size === 'large' ? s.photoCardLarge : ''}`}>
+                <div key={key} className={`${s.photoCard} ${size === 'large' ? s.photoCardLarge : ''}`}>
                   {photo ? (
                     <img src={photo.url} alt={caption} className={s.photoImg} />
                   ) : (
                     <div className={s.photoPlaceholder} />
                   )}
                   <p className={s.photoCaption}>{caption}</p>
+                  {isAdmin && (
+                    <EditOverlay>
+                      {photo ? (
+                        <>
+                          <ReplaceBtn
+                            onFile={(file) => replaceStudio(photo, file, caption)}
+                            disabled={!!busy}
+                          />
+                          <DeleteBtn onClick={() => removeStudio(photo)} disabled={!!busy} />
+                        </>
+                      ) : (
+                        <ReplaceBtn
+                          title="Add photo"
+                          onFile={(file) => replaceStudio(null, file, STATIC_CAPTIONS[i])}
+                          disabled={!!busy}
+                        />
+                      )}
+                    </EditOverlay>
+                  )}
+                  {(busy === photo?.id || (busy === 'studio-add' && !photo)) && <div className={ie.busy} />}
                 </div>
               )
             })}
+            {isAdmin && (
+              <HiddenFileButton
+                className={ie.addTile}
+                title="Add studio photo"
+                disabled={!!busy}
+                onFile={addStudio}
+              >
+                <IconPlus size={18} />
+                Add photo
+              </HiddenFileButton>
+            )}
           </div>
         </div>
       </section>

@@ -47,6 +47,7 @@
 }
 
 .pairCard {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
@@ -106,6 +107,77 @@
   font-size: 0.82rem;
   color: var(--dark-soft);
   line-height: 1.5;
+}
+
+.cardEdit {
+  margin-top: 10px;
+}
+
+.adminBar {
+  margin: -16px 0 32px;
+}
+
+.addPairBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 2px;
+  padding: 10px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.addForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.addInput {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--chocolate);
+}
+
+.fileLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chocolate);
+  border: 1px dashed var(--gold);
+  padding: 9px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fileLabel input {
+  display: none;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--dark-soft);
 }
 
 @media (max-width: 960px) {

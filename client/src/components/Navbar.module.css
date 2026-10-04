@@ -211,6 +211,10 @@
   transform: translateY(-1px);
 }
 
+.adminWrap {
+  position: relative;
+}
+
 /* Admin login */
 .adminBtn {
   display: flex;
@@ -221,12 +225,20 @@
   border-radius: 4px;
   color: var(--text-muted);
   border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .adminBtn:hover {
   color: var(--chocolate);
   border-color: var(--chocolate);
+  background: var(--sage-light);
+}
+
+.adminBtnOn {
+  color: var(--gold);
+  border-color: var(--gold);
   background: var(--sage-light);
 }
 

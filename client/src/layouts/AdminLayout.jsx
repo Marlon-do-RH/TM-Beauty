@@ -1,7 +1,8 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import styles from './AdminLayout.module.css'
+import { useAdminAuth } from '../context/AdminAuth'
 import {
-  IconGrid, IconCalendar, IconScissors, IconImage,
+  IconGrid, IconScissors, IconImage,
   IconCamera, IconHelpCircle, IconMapPin, IconLogOut, IconMail,
 } from '../components/AdminIcons'
 
@@ -10,7 +11,6 @@ const navGroups = [
     label: 'Management',
     items: [
       { to: '/admin', label: 'Dashboard', Icon: IconGrid, end: true },
-      { to: '/admin/appointments', label: 'Appointments', Icon: IconCalendar },
       { to: '/admin/consultations', label: 'Consultations', Icon: IconMail },
     ],
   },
@@ -33,10 +33,11 @@ const navGroups = [
 
 export default function AdminLayout() {
   const navigate = useNavigate()
+  const { logout } = useAdminAuth()
 
   const handleLogout = () => {
-    localStorage.removeItem('tm_token')
-    navigate('/admin/login')
+    logout()
+    navigate('/')
   }
 
   return (
