@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import styles from './Admin.module.css'
 import m from './MediaCMS.module.css'
 import { IconUpload, IconLink, IconX, IconCamera } from '../../components/AdminIcons'
+import { uploadToCloudinary } from '../../lib/uploadMedia'
 
 const SECTIONS = [
   { id: 'hero',       label: 'Home — Hero Photo',                  description: 'Featured image shown on the home page next to the title.', single: true },
@@ -9,22 +10,6 @@ const SECTIONS = [
   { id: 'about',      label: 'About Us (profile)',                 description: 'Profile photo shown on the About Us page.', single: true },
   { id: 'experience', label: 'The Experience — Atmosphere Photo',  description: 'Atmosphere image used in the "The Experience" section.', single: true },
 ]
-
-async function cloudinaryUpload(file) {
-  const sigRes = await fetch('/api/sign-upload?folder=tm-beauty/media')
-  if (!sigRes.ok) throw new Error('Could not get upload signature')
-  const { signature, timestamp, api_key, cloud_name } = await sigRes.json()
-  const form = new FormData()
-  form.append('file', file)
-  form.append('signature', signature)
-  form.append('timestamp', timestamp)
-  form.append('api_key', api_key)
-  form.append('folder', 'tm-beauty/media')
-  const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, { method: 'POST', body: form })
-  if (!uploadRes.ok) throw new Error('Cloudinary upload failed')
-  const data = await uploadRes.json()
-  return data.secure_url
-}
 
 function PhotoCard({ photo, onDelete }) {
   return (
@@ -64,7 +49,7 @@ function UploadZone({ sectionId, single, onSaved }) {
       let finalUrl
       if (tab === 'file') {
         if (!pendingFile) return
-        finalUrl = await cloudinaryUpload(pendingFile)
+        finalUrl = await uploadToCloudinary(pendingFile, 'tm-beauty/media')
       } else {
         finalUrl = url.trim()
         if (!finalUrl) return

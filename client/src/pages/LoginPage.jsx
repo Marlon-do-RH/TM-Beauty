@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAdminAuth } from '../context/AdminAuth'
 import styles from './LoginPage.module.css'
 
 export default function LoginPage() {
@@ -9,6 +10,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAdminAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -19,20 +21,10 @@ export default function LoginPage() {
     }
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-      const data = await res.json()
-      if (res.ok && data.success) {
-        localStorage.setItem('tm_token', data.token)
-        navigate('/admin')
-      } else {
-        setError(data.error || 'Invalid credentials. Please try again.')
-      }
-    } catch {
-      setError('Connection error. Please try again.')
+      await login(email, password)
+      navigate('/admin')
+    } catch (err) {
+      setError(err.message || 'Invalid credentials. Please try again.')
     } finally {
       setLoading(false)
     }

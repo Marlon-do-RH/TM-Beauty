@@ -110,8 +110,22 @@ app.post('/api/gallery', (req, res) => {
   res.status(201).json(item)
 })
 
+app.put('/api/gallery', (req, res) => {
+  const id = Number(req.query.id)
+  const idx = gallery.findIndex(g => g.id === id)
+  if (idx === -1) return res.status(404).json({ error: 'Not found.' })
+  gallery[idx] = { ...gallery[idx], ...req.body, id }
+  res.json(gallery[idx])
+})
+
 app.delete('/api/gallery/:id', (req, res) => {
   const id = Number(req.params.id)
+  gallery = gallery.filter(g => g.id !== id)
+  res.json({ success: true })
+})
+
+app.delete('/api/gallery', (req, res) => {
+  const id = Number(req.query.id)
   gallery = gallery.filter(g => g.id !== id)
   res.json({ success: true })
 })
@@ -179,6 +193,34 @@ app.put('/api/media/:section', (req, res) => {
   media[section] = req.body.photos || []
   res.json(media)
 })
+
+let siteMedia = []
+
+app.get('/api/site-media', (req, res) => {
+  const { section } = req.query
+  const data = section ? siteMedia.filter(p => p.section_id === section) : siteMedia
+  res.json(data)
+})
+
+app.post('/api/site-media', (req, res) => {
+  const { section_id, url, caption } = req.body || {}
+  if (!section_id || !url) return res.status(400).json({ error: 'section_id and url are required' })
+  const item = { id: newId(), section_id, url, caption: caption || null, created_at: new Date().toISOString() }
+  siteMedia.push(item)
+  res.status(201).json(item)
+})
+
+app.delete('/api/site-media', (req, res) => {
+  const id = Number(req.query.id)
+  siteMedia = siteMedia.filter(p => p.id !== id)
+  res.status(204).end()
+})
+
+app.get('/api/consultations', (req, res) => res.json([]))
+
+app.put('/api/consultations', (req, res) => res.json({ id: Number(req.query.id), ...req.body }))
+
+app.delete('/api/consultations', (req, res) => res.json({ success: true }))
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 

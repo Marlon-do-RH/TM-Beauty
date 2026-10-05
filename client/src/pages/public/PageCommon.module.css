@@ -84,6 +84,12 @@
   padding-top: 8px;
 }
 
+.bioFrame {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
 .bioImgPlaceholder {
   width: 100%;
   max-width: 400px;
