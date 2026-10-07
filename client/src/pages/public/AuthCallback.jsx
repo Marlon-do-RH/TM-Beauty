@@ -4,6 +4,8 @@ import { getSupabase } from '../../lib/supabaseClient'
 import { useSession } from '../../context/AdminAuth'
 import styles from './PageCommon.module.css'
 
+let pendingCallback = null
+
 export default function AuthCallback() {
   const { loginWithGoogle } = useSession()
   const navigate = useNavigate()
@@ -11,8 +13,8 @@ export default function AuthCallback() {
 
   useEffect(() => {
     let cancelled = false
-    ;(async () => {
-      try {
+    if (!pendingCallback) {
+      pendingCallback = (async () => {
         const supabase = await getSupabase()
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
@@ -29,13 +31,23 @@ export default function AuthCallback() {
         }
 
         if (!accessToken) throw new Error('Google did not return a session.')
-        if (cancelled) return
         const result = await loginWithGoogle(accessToken)
-        navigate(result.role === 'customer' ? '/profile' : '/', { replace: true })
-      } catch (err) {
+        await supabase.auth.signOut({ scope: 'local' }).catch(() => {})
+        return result
+      })()
+    }
+
+    pendingCallback
+      .then((result) => {
+        if (!cancelled) {
+          navigate(result.role === 'customer' ? '/profile' : '/', { replace: true })
+        }
+      })
+      .catch((err) => {
+        pendingCallback = null
         if (!cancelled) setError(err.message || 'Google sign-in failed.')
-      }
-    })()
+      })
+
     return () => { cancelled = true }
   }, [loginWithGoogle, navigate])
 

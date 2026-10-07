@@ -14,8 +14,8 @@ export async function getSupabase() {
   }
   client = createClient(data.url, data.anonKey, {
     auth: {
-      persistSession: false,
-      detectSessionInUrl: true,
+      persistSession: true,
+      detectSessionInUrl: false,
       flowType: 'pkce',
     },
   })
