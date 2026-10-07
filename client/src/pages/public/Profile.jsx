@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSession } from '../../context/AdminAuth'
+import { FIRST_VISIT_CODE, FIRST_VISIT_PERCENT } from '../../lib/coupon'
 import styles from './PageCommon.module.css'
 import s from './Profile.module.css'
-
-const CODE = 'WELCOME10'
 
 export default function Profile() {
   const { isCustomer, isAdmin, user, logout, requestLogin, redeemCoupon } = useSession()
@@ -23,7 +22,7 @@ export default function Profile() {
             <p className={styles.pageSubtitle}>
               {isAdmin
                 ? 'You are signed in as admin. Customer profiles and coupons are for client accounts.'
-                : 'Sign in or register to see your details and redeem a first-visit coupon.'}
+                : 'Sign in or register to see your details and redeem 15% off your first booking.'}
             </p>
           </div>
         </section>
@@ -37,7 +36,7 @@ export default function Profile() {
     if (!redeemed) {
       try { await redeemCoupon() } catch { /* still allow copy */ }
     }
-    try { await navigator.clipboard.writeText(CODE) } catch { /* empty */ }
+    try { await navigator.clipboard.writeText(FIRST_VISIT_CODE) } catch { /* empty */ }
   }
 
   return (
@@ -53,8 +52,8 @@ export default function Profile() {
       <section className={s.section}>
         <div className={s.card}>
           <p className={s.label}>First-timer coupon</p>
-          <p className={s.status}>{redeemed ? 'Redeemed — use this code at booking' : 'Available — 10% off your first visit'}</p>
-          <p className={s.code}>{CODE}</p>
+          <p className={s.status}>{redeemed ? 'Redeemed — use this code at booking' : `Available — ${FIRST_VISIT_PERCENT}% off your first booking`}</p>
+          <p className={s.code}>{FIRST_VISIT_CODE}</p>
           <div className={s.actions}>
             <button type="button" className={s.primary} onClick={copyAndBook}>
               {redeemed ? 'Copy code' : 'Redeem & copy'}

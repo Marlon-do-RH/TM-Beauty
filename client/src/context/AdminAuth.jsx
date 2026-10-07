@@ -126,7 +126,9 @@ export function AdminAuthProvider({ children }) {
     setLoginRequested(false)
   }, [])
 
-  const requestLogin = useCallback(() => setLoginRequested(true), [])
+  const requestLogin = useCallback((opts) => {
+    setLoginRequested(opts?.register ? 'register' : true)
+  }, [])
   const clearLoginRequest = useCallback(() => setLoginRequested(false), [])
   const dismissCoupon = useCallback(() => setCouponEligible(false), [])
 

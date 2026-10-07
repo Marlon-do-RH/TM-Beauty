@@ -1,0 +1,2 @@
+export const FIRST_VISIT_CODE = 'WELCOME15'
+export const FIRST_VISIT_PERCENT = 15
