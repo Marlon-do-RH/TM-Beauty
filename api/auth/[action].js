@@ -1,9 +1,29 @@
 const { cors, supabase, newToken, customerPayload, adminPayload, DEMO_ADMIN, bcrypt } = require('./_shared')
 
+function publicKeys(res) {
+  const url = process.env.SUPABASE_URL || ''
+  const anonKey = process.env.SUPABASE_ANON_KEY || ''
+  if (!url || !anonKey) {
+    return res.status(500).json({
+      error: 'Missing SUPABASE_URL or SUPABASE_ANON_KEY on the server. Add them in Vercel project environment variables.',
+    })
+  }
+  return res.json({ url, anonKey })
+}
+
 module.exports = async (req, res) => {
   cors(res)
   if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed.' })
+
+  const action = String(req.query.action || '')
+
+  if (req.method === 'GET' && (action === 'supabase-public' || action === 'google')) {
+    return publicKeys(res)
+  }
+
+  if (action !== 'google' || req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed.' })
+  }
 
   const access_token = req.body?.access_token
   if (!access_token) return res.status(400).json({ error: 'Missing Google session.' })
