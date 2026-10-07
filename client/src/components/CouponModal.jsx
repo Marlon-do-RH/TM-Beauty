@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '../context/AdminAuth'
 import styles from './CouponModal.module.css'
@@ -19,7 +20,7 @@ export default function CouponModal({ onClose }) {
     }
   }
 
-  return (
+  return createPortal(
     <div className={styles.overlay} onClick={onClose} role="presentation">
       <div className={styles.card} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="coupon-title">
         <p className={styles.eyebrow}>Welcome gift</p>
@@ -33,6 +34,7 @@ export default function CouponModal({ onClose }) {
           <button type="button" className={styles.later} onClick={onClose}>Later</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
