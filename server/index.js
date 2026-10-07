@@ -75,6 +75,21 @@ app.post('/api/auth/register', (req, res) => {
   return res.status(201).json(customerPayload(row))
 })
 
+app.get('/api/auth/supabase-public', (req, res) => {
+  const url = process.env.SUPABASE_URL || ''
+  const anonKey = process.env.SUPABASE_ANON_KEY || ''
+  if (!url || !anonKey) {
+    return res.status(500).json({
+      error: 'Missing SUPABASE_URL or SUPABASE_ANON_KEY on the server. Add them in Vercel project environment variables.',
+    })
+  }
+  return res.json({ url, anonKey })
+})
+
+app.post('/api/auth/google', (req, res) => {
+  return res.status(501).json({ error: 'Google sign-in uses Supabase in production. Run against the deployed API.' })
+})
+
 app.post('/api/auth/redeem-coupon', (req, res) => {
   const header = req.headers.authorization || ''
   const token = String(header).replace(/^Bearer\s+/i, '').trim() || req.body?.token

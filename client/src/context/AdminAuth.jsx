@@ -72,6 +72,20 @@ export function AdminAuthProvider({ children }) {
     return applyAuth(data)
   }, [])
 
+  const loginWithGoogle = useCallback(async (accessToken) => {
+    const res = await fetch('/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ access_token: accessToken }),
+    })
+    let data = {}
+    try { data = await res.json() } catch { /* empty */ }
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Google sign-in failed.')
+    }
+    return applyAuth(data)
+  }, [])
+
   const register = useCallback(async ({ name, email, password }) => {
     const res = await fetch('/api/auth/register', {
       method: 'POST',
@@ -127,6 +141,7 @@ export function AdminAuthProvider({ children }) {
       token,
       user,
       login,
+      loginWithGoogle,
       register,
       logout,
       redeemCoupon,
