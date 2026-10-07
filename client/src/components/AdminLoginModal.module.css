@@ -143,6 +143,54 @@
   cursor: wait;
 }
 
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 14px;
+  color: var(--dark-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.divider span {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider em {
+  font-style: normal;
+}
+
+.google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--white);
+  color: var(--chocolate);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 11px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.google:hover:not(:disabled) {
+  border-color: var(--gold);
+}
+
+.google:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
 .switch {
   margin: 18px 0 0;
   font-size: 0.82rem;
