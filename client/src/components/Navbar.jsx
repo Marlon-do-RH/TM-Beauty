@@ -15,7 +15,6 @@ export default function Navbar() {
   const [loginOpen, setLoginOpen] = useState(false)
   const [chipOpen, setChipOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
-  const [origin, setOrigin] = useState({ x: 90, y: 6 })
   const lockRef = useRef(null)
   const location = useLocation()
 
@@ -43,21 +42,10 @@ export default function Navbar() {
 
   useEffect(() => {
     if (loginRequested && !isAdmin && !isCustomer) {
-      setOrigin(originFromLock())
       setLoginOpen(true)
       clearLoginRequest()
     }
   }, [loginRequested, isAdmin, isCustomer, clearLoginRequest])
-
-  const originFromLock = () => {
-    const el = lockRef.current
-    if (!el) return { x: 90, y: 6 }
-    const r = el.getBoundingClientRect()
-    return {
-      x: ((r.left + r.width / 2) / window.innerWidth) * 100,
-      y: ((r.top + r.height / 2) / window.innerHeight) * 100,
-    }
-  }
 
   const onAccountClick = () => {
     if (isAdmin) {
@@ -68,13 +56,13 @@ export default function Navbar() {
       setAccountOpen(v => !v)
       return
     }
-    setOrigin(originFromLock())
     setLoginOpen(true)
   }
 
   const signedIn = isAdmin || isCustomer
 
   return (
+    <>
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand}>
@@ -152,9 +140,10 @@ export default function Navbar() {
         </button>
       </div>
 
-      {loginOpen && !signedIn && (
-        <AdminLoginModal origin={origin} onClose={() => setLoginOpen(false)} />
-      )}
     </nav>
+      {loginOpen && !signedIn && (
+        <AdminLoginModal onClose={() => setLoginOpen(false)} />
+      )}
+    </>
   )
 }

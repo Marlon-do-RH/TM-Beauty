@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '../context/AdminAuth'
 import styles from './AdminLoginModal.module.css'
 
-export default function AdminLoginModal({ origin, onClose }) {
+export default function AdminLoginModal({ onClose }) {
   const { login, register } = useSession()
   const navigate = useNavigate()
   const [mode, setMode] = useState('login')
@@ -41,15 +42,12 @@ export default function AdminLoginModal({ origin, onClose }) {
     }
   }
 
-  const ox = origin?.x ?? 90
-  const oy = origin?.y ?? 6
   const isRegister = mode === 'register'
 
-  return (
+  return createPortal(
     <div className={styles.overlay} onClick={onClose} role="presentation">
       <div
         className={styles.card}
-        style={{ '--ox': `${ox}%`, '--oy': `${oy}%` }}
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -131,6 +129,7 @@ export default function AdminLoginModal({ origin, onClose }) {
           Close
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
