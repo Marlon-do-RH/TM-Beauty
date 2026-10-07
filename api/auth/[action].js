@@ -54,16 +54,28 @@ module.exports = async (req, res) => {
   const session_token = newToken()
 
   if (existing) {
-    const { data: updated, error: updErr } = await supabase
+    const update = {
+      session_token,
+      name: existing.name || name,
+      google_id,
+    }
+    let { data: updated, error: updErr } = await supabase
       .from('customers')
-      .update({
-        session_token,
-        name: existing.name || name,
-        google_id,
-      })
+      .update(update)
       .eq('id', existing.id)
       .select()
       .single()
+    if (updErr && /google_id/i.test(updErr.message)) {
+      delete update.google_id
+      const retry = await supabase
+        .from('customers')
+        .update(update)
+        .eq('id', existing.id)
+        .select()
+        .single()
+      updated = retry.data
+      updErr = retry.error
+    }
     if (updErr) return res.status(500).json({ error: updErr.message })
     return res.json(customerPayload(updated))
   }
