@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import ChatWidget from '../components/ChatWidget'
 import ConsultationModal from '../components/ConsultationModal'
 import CouponModal from '../components/CouponModal'
+import WelcomeOffer from '../components/WelcomeOffer'
 import { useSession } from '../context/AdminAuth'
 
 export const ConsultationContext = createContext(null)
@@ -35,6 +36,7 @@ export default function PublicLayout() {
       <Footer />
       <ChatWidget />
       {showModal && <ConsultationModal onClose={closeConsultation} />}
+      <WelcomeOffer />
       {isCustomer && couponEligible && <CouponModal onClose={dismissCoupon} />}
     </ConsultationContext.Provider>
   )

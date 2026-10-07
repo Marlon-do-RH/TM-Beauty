@@ -5,10 +5,10 @@ import { useSession } from '../context/AdminAuth'
 import { getSupabase } from '../lib/supabaseClient'
 import styles from './AdminLoginModal.module.css'
 
-export default function AdminLoginModal({ onClose }) {
+export default function AdminLoginModal({ onClose, initialMode = 'login' }) {
   const { login, register } = useSession()
   const navigate = useNavigate()
-  const [mode, setMode] = useState('login')
+  const [mode, setMode] = useState(initialMode === 'register' ? 'register' : 'login')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -74,7 +74,7 @@ export default function AdminLoginModal({ onClose }) {
         <h2 id="auth-title" className={styles.title}>{isRegister ? 'Create account' : 'Log in'}</h2>
         <p className={styles.sub}>
           {isRegister
-            ? 'Register to unlock your first-visit coupon and keep your details in one place.'
+            ? 'Register to unlock 15% off your first booking and keep your details in one place.'
             : 'Customers see their profile. Admin stays on this page to edit the site.'}
         </p>
 

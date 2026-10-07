@@ -30,5 +30,5 @@ module.exports = async (req, res) => {
     .single()
 
   if (updErr) return res.status(500).json({ error: updErr.message })
-  return res.json({ ...customerPayload(updated), code: 'WELCOME10' })
+  return res.json({ ...customerPayload(updated), code: 'WELCOME15' })
 }

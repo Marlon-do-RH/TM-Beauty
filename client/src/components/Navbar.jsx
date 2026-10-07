@@ -13,6 +13,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+  const [loginMode, setLoginMode] = useState('login')
   const [chipOpen, setChipOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const lockRef = useRef(null)
@@ -42,6 +43,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (loginRequested && !isAdmin && !isCustomer) {
+      setLoginMode(loginRequested === 'register' ? 'register' : 'login')
       setLoginOpen(true)
       clearLoginRequest()
     }
@@ -56,6 +58,7 @@ export default function Navbar() {
       setAccountOpen(v => !v)
       return
     }
+    setLoginMode('login')
     setLoginOpen(true)
   }
 
@@ -142,7 +145,7 @@ export default function Navbar() {
 
     </nav>
       {loginOpen && !signedIn && (
-        <AdminLoginModal onClose={() => setLoginOpen(false)} />
+        <AdminLoginModal initialMode={loginMode} onClose={() => setLoginOpen(false)} />
       )}
     </>
   )

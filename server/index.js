@@ -99,7 +99,7 @@ app.post('/api/auth/redeem-coupon', (req, res) => {
   const row = customers.find(c => c.session_token === token)
   if (!row) return res.status(401).json({ error: 'Please sign in again to redeem.' })
   if (!row.coupon_redeemed_at) row.coupon_redeemed_at = new Date().toISOString()
-  return res.json({ ...customerPayload(row), code: 'WELCOME10' })
+  return res.json({ ...customerPayload(row), code: 'WELCOME15' })
 })
 
 // ── In-memory stores ──────────────────────────────────────────────────────────
