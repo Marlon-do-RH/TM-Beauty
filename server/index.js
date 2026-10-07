@@ -18,7 +18,26 @@ const DEMO_USER = {
 
 app.get('/', (req, res) => res.json({ message: 'TM Beauty API is running.' }))
 
-app.post('/api/auth/login', (req, res) => {
+let customers = []
+let customerSeq = 200
+
+function customerPayload(row) {
+  return {
+    success: true,
+    token: row.session_token,
+    role: 'customer',
+    first_coupon_eligible: !row.coupon_redeemed_at,
+    user: {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      role: 'customer',
+      couponRedeemed: !!row.coupon_redeemed_at,
+    },
+  }
+}
+
+app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body || {}
   if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' })
   if (email.toLowerCase() === DEMO_USER.email && password === DEMO_USER.password) {
@@ -26,9 +45,46 @@ app.post('/api/auth/login', (req, res) => {
       success: true,
       user: { name: DEMO_USER.name, email: DEMO_USER.email, role: DEMO_USER.role },
       token: 'demo-token-tmbeauty-2024',
+      role: 'admin',
+      first_coupon_eligible: false,
     })
   }
-  return res.status(401).json({ error: 'Invalid credentials.' })
+  const row = customers.find(c => c.email === String(email).toLowerCase().trim())
+  if (!row || row.password !== password) return res.status(401).json({ error: 'Invalid credentials.' })
+  row.session_token = `local-${++customerSeq}`
+  return res.json(customerPayload(row))
+})
+
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, password } = req.body || {}
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' })
+  if (String(password).length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters.' })
+  const normalized = String(email).toLowerCase().trim()
+  if (customers.some(c => c.email === normalized)) {
+    return res.status(409).json({ error: 'An account with this email already exists.' })
+  }
+  const row = {
+    id: ++customerSeq,
+    email: normalized,
+    password,
+    name: (name || '').trim() || null,
+    coupon_redeemed_at: null,
+    session_token: `local-${customerSeq}`,
+  }
+  customers.push(row)
+  return res.status(201).json(customerPayload(row))
+})
+
+app.post('/api/auth/redeem-coupon', (req, res) => {
+  const header = req.headers.authorization || ''
+  const token = String(header).replace(/^Bearer\s+/i, '').trim() || req.body?.token
+  if (!token || token === 'demo-token-tmbeauty-2024') {
+    return res.status(401).json({ error: 'Sign in as a customer to redeem this coupon.' })
+  }
+  const row = customers.find(c => c.session_token === token)
+  if (!row) return res.status(401).json({ error: 'Please sign in again to redeem.' })
+  if (!row.coupon_redeemed_at) row.coupon_redeemed_at = new Date().toISOString()
+  return res.json({ ...customerPayload(row), code: 'WELCOME10' })
 })
 
 // ── In-memory stores ──────────────────────────────────────────────────────────

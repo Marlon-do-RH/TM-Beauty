@@ -21,8 +21,8 @@ export default function LoginPage() {
     }
     setLoading(true)
     try {
-      await login(email, password)
-      navigate('/admin')
+      const data = await login(email, password)
+      navigate(data.role === 'customer' ? '/profile' : '/admin')
     } catch (err) {
       setError(err.message || 'Invalid credentials. Please try again.')
     } finally {

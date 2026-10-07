@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ChatWidget from '../components/ChatWidget'
 import ConsultationModal from '../components/ConsultationModal'
+import CouponModal from '../components/CouponModal'
+import { useSession } from '../context/AdminAuth'
 
 export const ConsultationContext = createContext(null)
 
@@ -14,6 +16,7 @@ export function useConsultation() {
 
 export default function PublicLayout() {
   const { pathname } = useLocation()
+  const { couponEligible, dismissCoupon, isCustomer } = useSession()
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
@@ -32,6 +35,7 @@ export default function PublicLayout() {
       <Footer />
       <ChatWidget />
       {showModal && <ConsultationModal onClose={closeConsultation} />}
+      {isCustomer && couponEligible && <CouponModal onClose={dismissCoupon} />}
     </ConsultationContext.Provider>
   )
 }
