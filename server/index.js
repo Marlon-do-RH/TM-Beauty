@@ -75,11 +75,13 @@ app.post('/api/auth/register', (req, res) => {
   return res.status(201).json(customerPayload(row))
 })
 
-app.get('/api/auth/config', (req, res) => {
+app.get('/api/auth/supabase-public', (req, res) => {
   const url = process.env.SUPABASE_URL || ''
   const anonKey = process.env.SUPABASE_ANON_KEY || ''
   if (!url || !anonKey) {
-    return res.status(500).json({ error: 'Google sign-in is not configured on the server.' })
+    return res.status(500).json({
+      error: 'Missing SUPABASE_URL or SUPABASE_ANON_KEY on the server. Add them in Vercel project environment variables.',
+    })
   }
   return res.json({ url, anonKey })
 })
