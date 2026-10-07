@@ -1,19 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
-import { useAdminAuth } from '../context/AdminAuth'
+import { useSession } from '../context/AdminAuth'
 import AdminLoginModal from './AdminLoginModal'
 import AdminChip from './AdminChip'
-import { IconLock } from './AdminIcons'
+import { IconLock, IconUser } from './AdminIcons'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const { t } = useLanguage()
-  const { isAdmin, logout } = useAdminAuth()
+  const { isAdmin, isCustomer, logout, loginRequested, clearLoginRequest } = useSession()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
   const [chipOpen, setChipOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
   const [origin, setOrigin] = useState({ x: 90, y: 6 })
   const lockRef = useRef(null)
   const location = useLocation()
@@ -37,7 +38,16 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false)
     setChipOpen(false)
+    setAccountOpen(false)
   }, [location.pathname])
+
+  useEffect(() => {
+    if (loginRequested && !isAdmin && !isCustomer) {
+      setOrigin(originFromLock())
+      setLoginOpen(true)
+      clearLoginRequest()
+    }
+  }, [loginRequested, isAdmin, isCustomer, clearLoginRequest])
 
   const originFromLock = () => {
     const el = lockRef.current
@@ -49,14 +59,20 @@ export default function Navbar() {
     }
   }
 
-  const onLockClick = () => {
+  const onAccountClick = () => {
     if (isAdmin) {
       setChipOpen(v => !v)
+      return
+    }
+    if (isCustomer) {
+      setAccountOpen(v => !v)
       return
     }
     setOrigin(originFromLock())
     setLoginOpen(true)
   }
+
+  const signedIn = isAdmin || isCustomer
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
@@ -88,13 +104,13 @@ export default function Navbar() {
             <button
               ref={lockRef}
               type="button"
-              className={`${styles.adminBtn} ${isAdmin ? styles.adminBtnOn : ''}`}
-              title={isAdmin ? 'Admin tools' : t('nav', 'adminLogin')}
-              aria-label={isAdmin ? 'Admin tools' : 'Admin login'}
-              aria-expanded={isAdmin ? chipOpen : loginOpen}
-              onClick={onLockClick}
+              className={`${styles.adminBtn} ${signedIn ? styles.adminBtnOn : ''}`}
+              title={isAdmin ? 'Admin tools' : isCustomer ? 'Your account' : 'Log in'}
+              aria-label={isAdmin ? 'Admin tools' : isCustomer ? 'Your account' : 'Log in'}
+              aria-expanded={isAdmin ? chipOpen : isCustomer ? accountOpen : loginOpen}
+              onClick={onAccountClick}
             >
-              <IconLock size={14} />
+              {isCustomer ? <IconUser size={14} /> : <IconLock size={14} />}
             </button>
             {isAdmin && chipOpen && (
               <AdminChip
@@ -104,6 +120,23 @@ export default function Navbar() {
                   setChipOpen(false)
                 }}
               />
+            )}
+            {isCustomer && accountOpen && (
+              <div className={styles.accountMenu} role="menu">
+                <Link to="/profile" className={styles.accountItem} onClick={() => setAccountOpen(false)}>
+                  Profile
+                </Link>
+                <button
+                  type="button"
+                  className={styles.accountItem}
+                  onClick={() => {
+                    logout()
+                    setAccountOpen(false)
+                  }}
+                >
+                  Log out
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -119,7 +152,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {loginOpen && !isAdmin && (
+      {loginOpen && !signedIn && (
         <AdminLoginModal origin={origin} onClose={() => setLoginOpen(false)} />
       )}
     </nav>

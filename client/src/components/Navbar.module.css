@@ -242,6 +242,42 @@
   background: var(--sage-light);
 }
 
+.accountMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 160px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(74, 52, 40, 0.14);
+  padding: 8px;
+  z-index: 220;
+  display: flex;
+  flex-direction: column;
+}
+
+.accountItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--chocolate);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.accountItem:hover {
+  background: var(--sage-light);
+}
+
 /* Burger */
 .burger {
   display: none;

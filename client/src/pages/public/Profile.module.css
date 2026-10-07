@@ -1,0 +1,77 @@
+.section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px;
+  background: var(--white);
+}
+
+.label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 8px;
+}
+
+.status {
+  font-size: 0.95rem;
+  color: var(--chocolate);
+  margin: 0 0 16px;
+}
+
+.code {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  border: 1px dashed var(--gold);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 0 0 20px;
+  color: var(--chocolate);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primary,
+.secondary,
+.ghost {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.primary {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+}
+
+.secondary {
+  background: transparent;
+  color: var(--chocolate);
+  border: 1px solid var(--gold);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--dark-soft);
+  border: 1px solid var(--border);
+}

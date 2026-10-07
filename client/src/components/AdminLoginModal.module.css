@@ -13,43 +13,39 @@
 .card {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 32px 28px 28px;
+  border-radius: 16px;
+  padding: 36px 32px 24px;
   box-shadow: 0 24px 64px rgba(42, 26, 16, 0.28);
   transform-origin: var(--ox, 90%) var(--oy, 6%);
   animation: zoomIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  text-align: center;
 }
 
-.close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  background: none;
-  border: none;
-  font-size: 1.4rem;
-  line-height: 1;
-  color: var(--text-muted);
-  cursor: pointer;
-}
-
-.eyebrow {
-  font-size: 0.68rem;
+.mark {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 8px;
+  letter-spacing: 0.04em;
 }
 
 .title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.7rem;
+  font-size: 1.85rem;
   font-weight: 600;
   color: var(--chocolate);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 
 .sub {
@@ -71,6 +67,7 @@
 .form {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .label {
@@ -143,6 +140,43 @@
 .submit:disabled {
   opacity: 0.7;
   cursor: wait;
+}
+
+.switch {
+  margin: 18px 0 0;
+  font-size: 0.82rem;
+  color: var(--dark-soft);
+}
+
+.switch button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.closePill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  min-width: 120px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--chocolate);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.closePill:hover {
+  border-color: var(--gold);
 }
 
 @keyframes fadeIn {

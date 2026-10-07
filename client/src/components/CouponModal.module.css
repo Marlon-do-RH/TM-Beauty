@@ -1,0 +1,90 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  background: rgba(42, 26, 16, 0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(42, 26, 16, 0.28);
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 8px;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  color: var(--chocolate);
+  margin: 0 0 10px;
+}
+
+.copy {
+  font-size: 0.86rem;
+  color: var(--dark-soft);
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+.code {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--chocolate);
+  border: 1px dashed var(--gold);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 0 0 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.redeem {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 2px;
+  padding: 11px 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.later {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 11px 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--dark-soft);
+}
