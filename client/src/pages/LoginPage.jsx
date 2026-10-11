@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const { login } = useAdminAuth()
+  const { login, logout } = useAdminAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,7 +22,11 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const data = await login(email, password)
-      navigate(data.role === 'customer' ? '/profile' : '/admin')
+      if (data.role !== 'admin') {
+        logout()
+        throw new Error('This login is for staff only.')
+      }
+      navigate('/admin')
     } catch (err) {
       setError(err.message || 'Invalid credentials. Please try again.')
     } finally {

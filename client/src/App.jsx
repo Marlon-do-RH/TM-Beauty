@@ -16,8 +16,6 @@ import Avaliacoes from './pages/public/Avaliacoes'
 import FAQ from './pages/public/FAQ'
 import Contato from './pages/public/Contato'
 import Booking from './pages/public/Booking'
-import Profile from './pages/public/Profile'
-import AuthCallback from './pages/public/AuthCallback'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Appointments from './pages/admin/Appointments'
@@ -63,8 +61,8 @@ function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/agendar" element={<Booking />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/profile" element={<Navigate to="/" replace />} />
+            <Route path="/auth/callback" element={<Navigate to="/" replace />} />
           </Route>
 
           <Route path="/admin/login" element={<LoginPage />} />

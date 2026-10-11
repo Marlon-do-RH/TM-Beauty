@@ -67,10 +67,22 @@
 }
 
 .copy {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   font-size: 0.84rem;
   line-height: 1.55;
   color: var(--dark-soft);
+}
+
+.code {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--chocolate);
+  border: 1px dashed var(--gold);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 0 0 20px;
 }
 
 .cta {

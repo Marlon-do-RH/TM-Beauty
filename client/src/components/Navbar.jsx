@@ -4,18 +4,16 @@ import { useLanguage } from '../i18n/LanguageContext'
 import { useSession } from '../context/AdminAuth'
 import AdminLoginModal from './AdminLoginModal'
 import AdminChip from './AdminChip'
-import { IconLock, IconUser } from './AdminIcons'
+import { IconLock } from './AdminIcons'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const { t } = useLanguage()
-  const { isAdmin, isCustomer, logout, loginRequested, clearLoginRequest } = useSession()
+  const { isAdmin, logout, loginRequested, clearLoginRequest } = useSession()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
-  const [loginMode, setLoginMode] = useState('login')
   const [chipOpen, setChipOpen] = useState(false)
-  const [accountOpen, setAccountOpen] = useState(false)
   const lockRef = useRef(null)
   const location = useLocation()
 
@@ -38,31 +36,22 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false)
     setChipOpen(false)
-    setAccountOpen(false)
   }, [location.pathname])
 
   useEffect(() => {
-    if (loginRequested && !isAdmin && !isCustomer) {
-      setLoginMode(loginRequested === 'register' ? 'register' : 'login')
+    if (loginRequested && !isAdmin) {
       setLoginOpen(true)
       clearLoginRequest()
     }
-  }, [loginRequested, isAdmin, isCustomer, clearLoginRequest])
+  }, [loginRequested, isAdmin, clearLoginRequest])
 
   const onAccountClick = () => {
     if (isAdmin) {
       setChipOpen(v => !v)
       return
     }
-    if (isCustomer) {
-      setAccountOpen(v => !v)
-      return
-    }
-    setLoginMode('login')
     setLoginOpen(true)
   }
-
-  const signedIn = isAdmin || isCustomer
 
   return (
     <>
@@ -95,13 +84,13 @@ export default function Navbar() {
             <button
               ref={lockRef}
               type="button"
-              className={`${styles.adminBtn} ${signedIn ? styles.adminBtnOn : ''}`}
-              title={isAdmin ? 'Admin tools' : isCustomer ? 'Your account' : 'Log in'}
-              aria-label={isAdmin ? 'Admin tools' : isCustomer ? 'Your account' : 'Log in'}
-              aria-expanded={isAdmin ? chipOpen : isCustomer ? accountOpen : loginOpen}
+              className={`${styles.adminBtn} ${isAdmin ? styles.adminBtnOn : ''}`}
+              title={isAdmin ? 'Admin tools' : 'Staff log in'}
+              aria-label={isAdmin ? 'Admin tools' : 'Staff log in'}
+              aria-expanded={isAdmin ? chipOpen : loginOpen}
               onClick={onAccountClick}
             >
-              {isCustomer ? <IconUser size={14} /> : <IconLock size={14} />}
+              <IconLock size={14} />
             </button>
             {isAdmin && chipOpen && (
               <AdminChip
@@ -111,23 +100,6 @@ export default function Navbar() {
                   setChipOpen(false)
                 }}
               />
-            )}
-            {isCustomer && accountOpen && (
-              <div className={styles.accountMenu} role="menu">
-                <Link to="/profile" className={styles.accountItem} onClick={() => setAccountOpen(false)}>
-                  Profile
-                </Link>
-                <button
-                  type="button"
-                  className={styles.accountItem}
-                  onClick={() => {
-                    logout()
-                    setAccountOpen(false)
-                  }}
-                >
-                  Log out
-                </button>
-              </div>
             )}
           </div>
         </div>
@@ -144,8 +116,8 @@ export default function Navbar() {
       </div>
 
     </nav>
-      {loginOpen && !signedIn && (
-        <AdminLoginModal initialMode={loginMode} onClose={() => setLoginOpen(false)} />
+      {loginOpen && !isAdmin && (
+        <AdminLoginModal onClose={() => setLoginOpen(false)} />
       )}
     </>
   )
