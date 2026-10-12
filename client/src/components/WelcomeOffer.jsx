@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSession } from '../context/AdminAuth'
-import { FIRST_VISIT_PERCENT } from '../lib/coupon'
+import { FIRST_VISIT_CODE, FIRST_VISIT_PERCENT } from '../lib/coupon'
 import styles from './WelcomeOffer.module.css'
 
 const SEEN_KEY = 'tm_welcome_offer_seen'
@@ -20,16 +20,17 @@ function markSeen() {
 }
 
 export default function WelcomeOffer() {
-  const { isAdmin, isCustomer, requestLogin } = useSession()
+  const { isAdmin } = useSession()
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (isAdmin || isCustomer) {
+    if (isAdmin) {
       setOpen(false)
       return
     }
-    if (pathname === '/auth/callback') return
+    if (pathname === '/agendar') return
     if (alreadySeen()) return
 
     let cancelled = false
@@ -44,16 +45,16 @@ export default function WelcomeOffer() {
       cancelled = true
       clearInterval(id)
     }
-  }, [isAdmin, isCustomer, pathname])
+  }, [isAdmin, pathname])
 
   const dismiss = useCallback(() => {
     markSeen()
     setOpen(false)
   }, [])
 
-  const redeem = () => {
+  const bookNow = () => {
     dismiss()
-    requestLogin({ register: true })
+    navigate('/agendar')
   }
 
   useEffect(() => {
@@ -87,10 +88,11 @@ export default function WelcomeOffer() {
           </p>
           <p className={styles.sub}>your first booking</p>
           <p className={styles.copy}>
-            Log in or create an account to redeem. After you sign in, the discount is applied to your first booking.
+            Use this code at Acuity checkout after you log in there. It applies once, on your first booking.
           </p>
-          <button type="button" className={styles.cta} onClick={redeem}>
-            Log in to redeem
+          <p className={styles.code}>{FIRST_VISIT_CODE}</p>
+          <button type="button" className={styles.cta} onClick={bookNow}>
+            Book now
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { FIRST_VISIT_CODE } from '../../lib/coupon'
 import styles from './Booking.module.css'
 
 const ACUITY_OWNER = '40382920'
@@ -17,8 +18,8 @@ const SERVICE_TYPE_IDS = {
 
 function acuitySrc(serviceKey) {
   const typeId = SERVICE_TYPE_IDS[serviceKey]
-  if (typeId) return `${ACUITY_BASE}&appointmentType=${typeId}`
-  return ACUITY_BASE
+  const base = typeId ? `${ACUITY_BASE}&appointmentType=${typeId}` : ACUITY_BASE
+  return `${base}&coupon=${encodeURIComponent(FIRST_VISIT_CODE)}`
 }
 
 export default function Booking() {
