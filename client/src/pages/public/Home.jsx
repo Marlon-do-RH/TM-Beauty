@@ -94,7 +94,7 @@ export default function Home() {
           <p className={styles.eyebrow}>{t('home', 'beforeEyebrow')}</p>
           <h2 className={styles.teaserTitle}>{t('home', 'beforeTitle')}</h2>
           <p className={styles.teaserText}>{t('home', 'beforeText')}</p>
-          <BookingButton label={t('home', 'viewBeforeAfter')} to="/antes-depois" variant="outline" />
+          <BookingButton label={t('home', 'viewBeforeAfter')} to="/before-after" variant="outline" />
         </div>
         <div className={styles.teaserVisual}>
           {teaserPair === null ? (

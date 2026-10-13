@@ -16,22 +16,26 @@ import ie from '../../components/InlineEdit.module.css'
 const PAGE_SIZE = 6
 
 const FALLBACK_PAIRS = [
-  { category: 'Nanoplastia', caption: 'Curly hair → silky straight' },
+  { category: 'Nanoplasty', caption: 'Curly hair → silky straight' },
   { category: 'Botox', caption: 'Excess volume → controlled strands' },
-  { category: 'Nanoplastia', caption: 'Intense frizz → natural shine' },
+  { category: 'Nanoplasty', caption: 'Intense frizz → natural shine' },
   { category: 'Deep Treatment', caption: 'Dry ends → hydrated hair' },
   { category: 'Botox', caption: 'Wavy hair → lightly smoothed' },
-  { category: 'Nanoplastia', caption: 'Chemical damage → full restoration' },
+  { category: 'Nanoplasty', caption: 'Chemical damage → full restoration' },
 ]
 
 const FILTERS = [
   { id: 'all', labelKey: 'all' },
-  { id: 'Nanoplastia' },
+  { id: 'Nanoplasty' },
   { id: 'Botox' },
   { id: 'Deep Treatment' },
 ]
 
-const CATEGORIES = ['Nanoplastia', 'Botox', 'Deep Treatment']
+const CATEGORIES = ['Nanoplasty', 'Botox', 'Deep Treatment']
+
+const displayCategory = (category) => (category === 'Nanoplastia' ? 'Nanoplasty' : category)
+
+const sameCategory = (a, b) => displayCategory(a) === displayCategory(b)
 
 function fill(template, vars) {
   return Object.entries(vars).reduce(
@@ -48,7 +52,7 @@ export default function AntesDepois() {
   const [pairs, setPairs] = useState(null)
   const [busy, setBusy] = useState(null)
   const [adding, setAdding] = useState(false)
-  const [form, setForm] = useState({ category: 'Nanoplastia', caption: '' })
+  const [form, setForm] = useState({ category: 'Nanoplasty', caption: '' })
   const [beforeFile, setBeforeFile] = useState(null)
   const [afterFile, setAfterFile] = useState(null)
 
@@ -121,7 +125,7 @@ export default function AntesDepois() {
         after_url,
         section: 'gallery',
       })
-      setForm({ category: 'Nanoplastia', caption: '' })
+      setForm({ category: 'Nanoplasty', caption: '' })
       setBeforeFile(null)
       setAfterFile(null)
       setAdding(false)
@@ -134,7 +138,7 @@ export default function AntesDepois() {
   }
 
   const filtered = pairs
-    ? (active === 'all' ? pairs : pairs.filter(p => p.category === active))
+    ? (active === 'all' ? pairs : pairs.filter(p => sameCategory(p.category, active)))
     : []
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
@@ -246,7 +250,7 @@ export default function AntesDepois() {
                       </div>
                     </div>
                     <div className={s.pairInfo}>
-                      <span className={s.pairCategory}>{p.category}</span>
+                      <span className={s.pairCategory}>{displayCategory(p.category)}</span>
                       <p className={s.pairLabel}>{p.caption || p.label}</p>
                       {isAdmin && p.id && (
                         <div className={s.cardEdit}>

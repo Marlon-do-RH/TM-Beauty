@@ -54,7 +54,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<SobreThalita />} />
             <Route path="/servicos" element={<Servicos />} />
-            <Route path="/antes-depois" element={<AntesDepois />} />
+            <Route path="/before-after" element={<AntesDepois />} />
+            <Route path="/antes-depois" element={<Navigate to="/before-after" replace />} />
             <Route path="/studio" element={<Navigate to="/sobre" replace />} />
             <Route path="/produtos" element={<Produtos />} />
             <Route path="/avaliacoes" element={<Avaliacoes />} />

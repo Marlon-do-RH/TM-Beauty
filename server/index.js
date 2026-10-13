@@ -116,7 +116,7 @@ let services = [
 ]
 
 let gallery = [
-  { id: 1, category: 'Nanoplastia', caption: 'Curly hair → silky straight', date: '2024-05-10' },
+  { id: 1, category: 'Nanoplasty', caption: 'Curly hair → silky straight', date: '2024-05-10' },
   { id: 2, category: 'Botox', caption: 'Volume controlled', date: '2024-05-15' },
 ]
 
