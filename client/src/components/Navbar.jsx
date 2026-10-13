@@ -21,7 +21,7 @@ export default function Navbar() {
     { to: '/', label: t('nav', 'home') },
     { to: '/sobre', label: t('nav', 'sobre') },
     { to: '/servicos', label: t('nav', 'servicos') },
-    { to: '/antes-depois', label: t('nav', 'antesDepois') },
+    { to: '/before-after', label: t('nav', 'antesDepois') },
     { to: '/avaliacoes', label: t('nav', 'avaliacoes') },
     { to: '/faq', label: t('nav', 'faq') },
     { to: '/contato', label: t('nav', 'contato') },

@@ -4,12 +4,14 @@ import g from './GalleryCMS.module.css'
 import { IconTrash, IconCamera, IconImage, IconStar } from '../../components/AdminIcons'
 import { uploadToCloudinary } from '../../lib/uploadMedia'
 
-const categories = ['Nanoplastia', 'Botox', 'Deep Treatment']
+const categories = ['Nanoplasty', 'Botox', 'Deep Treatment']
+const displayCategory = (category) => (category === 'Nanoplastia' ? 'Nanoplasty' : category)
+const sameCategory = (a, b) => displayCategory(a) === displayCategory(b)
 
 export default function GalleryCMS() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ category: 'Nanoplastia', caption: '' })
+  const [form, setForm] = useState({ category: 'Nanoplasty', caption: '' })
   const [beforeFile, setBeforeFile] = useState(null)
   const [afterFile, setAfterFile] = useState(null)
   const [uploading, setUploading] = useState(false)
@@ -68,7 +70,7 @@ export default function GalleryCMS() {
     }))
   }
 
-  const filtered = filter === 'all' ? items : items.filter(x => x.category === filter)
+  const filtered = filter === 'all' ? items : items.filter(x => sameCategory(x.category, filter))
 
   return (
     <div className={styles.page}>
@@ -136,7 +138,7 @@ export default function GalleryCMS() {
               </div>
             </div>
             <div className={g.cardInfo}>
-              <span className={g.cardCategory}>{item.category}</span>
+              <span className={g.cardCategory}>{displayCategory(item.category)}</span>
               <p className={g.cardCaption}>{item.caption}</p>
               <div className={g.cardFooter}>
                 <span className={g.cardDate}>{item.created_at?.slice(0, 10) || ''}</span>

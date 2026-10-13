@@ -6,7 +6,8 @@ const cors = (res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 }
 
-const CATEGORIES = ['Nanoplastia', 'Botox', 'Deep Treatment']
+const CATEGORIES = ['Nanoplasty', 'Botox', 'Deep Treatment']
+const aliasesFor = (category) => (category === 'Nanoplasty' ? ['Nanoplasty', 'Nanoplastia'] : [category])
 
 module.exports = async (req, res) => {
   cors(res)
@@ -18,10 +19,11 @@ module.exports = async (req, res) => {
     if (view === 'carousel') {
       const results = []
       for (const category of CATEGORIES) {
+        const aliases = aliasesFor(category)
         const { data: featured } = await supabase
           .from('gallery')
           .select('*')
-          .eq('category', category)
+          .in('category', aliases)
           .eq('featured', true)
           .limit(1)
           .single()
@@ -34,7 +36,7 @@ module.exports = async (req, res) => {
         const { data: latest } = await supabase
           .from('gallery')
           .select('*')
-          .eq('category', category)
+          .in('category', aliases)
           .order('created_at', { ascending: false })
           .limit(1)
           .single()
