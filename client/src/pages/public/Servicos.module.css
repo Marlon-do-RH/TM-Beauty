@@ -11,6 +11,128 @@
   gap: 80px;
 }
 
+.adminBar {
+  margin-bottom: -40px;
+}
+
+.addPairBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 2px;
+  padding: 10px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.addForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.addInput {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--chocolate);
+  min-width: 140px;
+}
+
+.addTextarea {
+  flex: 1 1 100%;
+  min-width: 220px;
+  resize: vertical;
+}
+
+.fileLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chocolate);
+  border: 1px dashed var(--gold);
+  padding: 9px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fileLabel input {
+  display: none;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--dark-soft);
+}
+
+.cardEdit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.editBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--chocolate);
+}
+
+.emptyNote {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.loadingRow {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .serviceRow {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -39,6 +161,7 @@
 }
 
 .servicePlaceholder {
+  position: relative;
   width: 100%;
   aspect-ratio: 4/5;
   background: linear-gradient(160deg, var(--sage) 0%, #ddd5cc 100%);
@@ -47,6 +170,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .servicePlaceholderIcon {
@@ -133,6 +257,7 @@
   }
 
   .serviceVisual {
-    display: none;
+    display: flex;
+    max-width: 280px;
   }
 }

@@ -35,7 +35,7 @@ function ServiceModal({ initial, onSave, onClose, mode }) {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}>List price (R$) *</label>
+              <label className={styles.label}>List price (A$) *</label>
               <input required type="number" min="0" className={styles.input} value={form.price_min || ''} onChange={e => set('price_min', e.target.value)} placeholder="280" />
               <p className={sv.hint}>Displayed as &ldquo;from&rdquo;</p>
             </div>
@@ -165,8 +165,8 @@ export default function ServicesCMS() {
               <div className={sv.metaItem}>
                 <span className={sv.metaLabel}>Price</span>
                 <span className={sv.metaValue}>
-                  R$ {svc.price_min}
-                  {svc.price_max > svc.price_min && <span className={sv.metaRange}> – R$ {svc.price_max}</span>}
+                  A${svc.price_min}
+                  {svc.price_max > svc.price_min && <span className={sv.metaRange}> – A${svc.price_max}</span>}
                 </span>
               </div>
               <div className={sv.metaItem}>

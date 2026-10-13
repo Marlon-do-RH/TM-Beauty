@@ -7,9 +7,9 @@ import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
 import styles from './Home.module.css'
 
 const serviceKeys = [
-  { key: 'nano', price: 'From R$280', icon: '✦' },
-  { key: 'botox', price: 'From R$220', icon: '✧' },
-  { key: 'deep', price: 'From R$180', icon: '◈' },
+  { key: 'nano', price: 'From A$280', icon: '✦' },
+  { key: 'botox', price: 'From A$220', icon: '✧' },
+  { key: 'deep', price: 'From A$180', icon: '◈' },
 ]
 
 const reviews = [
