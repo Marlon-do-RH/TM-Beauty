@@ -110,9 +110,9 @@ let appointments = [
 ]
 
 let services = [
-  { id: 1, name: 'Brazilian Nanoplastia', description: 'Advanced formaldehyde-free straightening.', price: 280, duration: '3–4 hours' },
-  { id: 2, name: 'Brazilian Botox', description: 'Deep hydration and volume control.', price: 220, duration: '2–3 hours' },
-  { id: 3, name: 'Deep Treatment', description: 'Intensive reconstructive treatment.', price: 180, duration: '1–2 hours' },
+  { id: 1, name: 'Brazilian Nanoplastia', description: 'Advanced formaldehyde-free straightening.', price_min: 280, price_max: 0, duration: '3–4', duration_unit: 'hours', active: true, sort_order: 1 },
+  { id: 2, name: 'Brazilian Botox', description: 'Deep hydration and volume control.', price_min: 220, price_max: 0, duration: '2–3', duration_unit: 'hours', active: true, sort_order: 2 },
+  { id: 3, name: 'Deep Treatment', description: 'Intensive reconstructive treatment.', price_min: 180, price_max: 0, duration: '1–2', duration_unit: 'hours', active: true, sort_order: 3 },
 ]
 
 let gallery = [
@@ -158,9 +158,42 @@ app.delete('/api/appointments/:id', (req, res) => {
 
 app.get('/api/services', (req, res) => res.json(services))
 
+app.post('/api/services', (req, res) => {
+  const item = {
+    id: newId(),
+    name: req.body.name || '',
+    description: req.body.description || '',
+    price_min: Number(req.body.price_min) || 0,
+    price_max: Number(req.body.price_max) || 0,
+    duration: req.body.duration || '',
+    duration_unit: req.body.duration_unit || 'hours',
+    active: req.body.active !== false,
+    sort_order: req.body.sort_order || services.length + 1,
+  }
+  services.push(item)
+  res.status(201).json(item)
+})
+
 app.put('/api/services', (req, res) => {
-  services = req.body
-  res.json(services)
+  const id = Number(req.query.id)
+  if (!id) {
+    if (Array.isArray(req.body)) {
+      services = req.body
+      return res.json(services)
+    }
+    return res.status(400).json({ error: 'id is required' })
+  }
+  const idx = services.findIndex(s => s.id === id)
+  if (idx === -1) return res.status(404).json({ error: 'Not found.' })
+  services[idx] = { ...services[idx], ...req.body, id }
+  res.json(services[idx])
+})
+
+app.delete('/api/services', (req, res) => {
+  const id = Number(req.query.id)
+  if (!id) return res.status(400).json({ error: 'id is required' })
+  services = services.filter(s => s.id !== id)
+  res.json({ success: true })
 })
 
 app.put('/api/services/:id', (req, res) => {
@@ -265,7 +298,15 @@ app.put('/api/media/:section', (req, res) => {
   res.json(media)
 })
 
-let siteMedia = []
+let siteMedia = [
+  {
+    id: 90,
+    section_id: 'service:1',
+    url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80',
+    caption: 'Brazilian Nanoplastia',
+    created_at: new Date().toISOString(),
+  },
+]
 
 app.get('/api/site-media', (req, res) => {
   const { section } = req.query
