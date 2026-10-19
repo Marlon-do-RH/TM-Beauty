@@ -263,8 +263,8 @@ app.delete('/api/faq/:id', (req, res) => {
 let contactInfo = {
   phone: '+61 400 000 000',
   whatsapp: '61400000000',
-  email: 'hello@thalitamedeiros.com.au',
-  instagram: 'thalita.medeiros.hair',
+  email: 'hello.nanobythalita@gmail.com',
+  instagram: 'nanoplastybythalita',
   address: 'Melbourne, Victoria, Australia',
   mapUrl: '',
   hoursMonFri: '9:00 – 18:00',

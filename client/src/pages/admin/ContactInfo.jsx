@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import ci from './ContactInfo.module.css'
 import { IconPhone, IconMail, IconInstagram, IconWhatsApp, IconMapPin, IconClock, IconEye, IconCheck } from '../../components/AdminIcons'
+import { CONTACT_EMAIL, INSTAGRAM_HANDLE } from '../../lib/social'
 
 const HOURS_FIELDS = [
   { key: 'hours_mon', label: 'Monday', placeholder: '9:00 – 18:00' },
@@ -15,7 +16,7 @@ const HOURS_FIELDS = [
 
 const INITIAL = {
   phone: '+61 450 442 869', whatsapp: '61450442869',
-  email: 'hello@thalitamedeiros.com.au', instagram: 'thalita.medeiros.hair',
+  email: CONTACT_EMAIL, instagram: INSTAGRAM_HANDLE,
   address: '100 Wells St, Southbank VIC 3006', map_url: '',
   hours_mon: '9:00 – 18:00',
   hours_tue: '9:00 – 18:00',
@@ -115,7 +116,7 @@ export default function ContactInfo() {
               <label className={styles.label}>Instagram (without @)</label>
               <div className={ci.inputPrefix}>
                 <span className={ci.prefix}>@</span>
-                <input className={`${styles.input} ${ci.inputPrefixInput}`} value={data.instagram} onChange={e => set('instagram', e.target.value)} placeholder="thalita.medeiros.hair" />
+                <input className={`${styles.input} ${ci.inputPrefixInput}`} value={data.instagram} onChange={e => set('instagram', e.target.value)} placeholder="nanoplastybythalita" />
               </div>
             </div>
           </div>
