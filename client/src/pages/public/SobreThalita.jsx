@@ -9,6 +9,7 @@ import {
   deleteSiteMedia,
 } from '../../lib/uploadMedia'
 import { IconPlus } from '../../components/AdminIcons'
+import { CONTACT_EMAIL } from '../../lib/social'
 import styles from './PageCommon.module.css'
 import s from './OStudio.module.css'
 import ie from '../../components/InlineEdit.module.css'
@@ -262,7 +263,7 @@ export default function SobreThalita() {
               <div className={s.locationDetails}>
                 <p>📍 Melbourne, VIC, Australia</p>
                 <p>📞 +61 400 000 000</p>
-                <p>📧 hello@thalitamedeiros.com.au</p>
+                <p>📧 {CONTACT_EMAIL}</p>
                 <p>⏰ {t('studio', 'monFri')}: 9h–18h · {t('studio', 'sat')}: 9h–15h</p>
               </div>
               <BookingButton label={t('studio', 'directions')} to="/contato" variant="outline" />

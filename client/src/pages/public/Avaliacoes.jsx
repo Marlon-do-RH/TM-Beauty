@@ -1,4 +1,5 @@
 import { useLanguage } from '../../i18n/LanguageContext'
+import { INSTAGRAM_URL } from '../../lib/social'
 import styles from './PageCommon.module.css'
 import s from './Avaliacoes.module.css'
 
@@ -87,7 +88,7 @@ export default function Avaliacoes() {
             ))}
           </div>
           <div className={s.igCta}>
-            <a href="https://instagram.com/thalita.medeiros.hair" target="_blank" rel="noreferrer" className={s.igLink}>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className={s.igLink}>
               {t('avaliacoes', 'viewAll')}
             </a>
           </div>
