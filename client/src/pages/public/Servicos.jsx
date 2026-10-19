@@ -443,37 +443,30 @@ export default function Servicos() {
 
       <section className={s.guideSection}>
         <div className={s.guideInner}>
-          <p className={styles.eyebrow}>{t('servicos', 'guideEyebrow')}</p>
-          <h2 className={s.guideTitle}>{t('servicos', 'guideTitle')}</h2>
-          <table className={s.guideTable}>
-            <thead>
-              <tr>
-                <th>{t('servicos', 'guideColName')}</th>
-                <th>{t('servicos', 'guideColRange')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{t('servicos', 'guideShort')}</td>
-                <td>{t('servicos', 'guideShortRange')}</td>
-              </tr>
-              <tr>
-                <td>{t('servicos', 'guideMedium')}</td>
-                <td>{t('servicos', 'guideMediumRange')}</td>
-              </tr>
-              <tr>
-                <td>{t('servicos', 'guideLong')}</td>
-                <td>{t('servicos', 'guideLongRange')}</td>
-              </tr>
-              <tr>
-                <td>{t('servicos', 'guideExtra')}</td>
-                <td>{t('servicos', 'guideExtraRange')}</td>
-              </tr>
-            </tbody>
-          </table>
-          <h3 className={s.guideHowTitle}>{t('servicos', 'guideHowTitle')}</h3>
-          <p className={s.guideHowText}>{t('servicos', 'guideHowText')}</p>
-          <p className={s.guideNote}>{t('servicos', 'guideNote')}</p>
+          <div className={s.guideCopy}>
+            <p className={styles.eyebrow}>{t('servicos', 'guideEyebrow')}</p>
+            <h2 className={s.guideTitle}>{t('servicos', 'guideTitle')}</h2>
+            <h3 className={s.guideHowTitle}>{t('servicos', 'guideHowTitle')}</h3>
+            <p className={s.guideHowText}>{t('servicos', 'guideHowText')}</p>
+            <p className={s.guideNote}>{t('servicos', 'guideNote')}</p>
+          </div>
+          <div className={s.ruler} role="img" aria-label={t('servicos', 'guideTitle')}>
+            <div className={s.rulerLine} aria-hidden="true" />
+            <div className={s.rulerMarks}>
+              {[
+                ['guideShort', 'guideShortRange'],
+                ['guideMedium', 'guideMediumRange'],
+                ['guideLong', 'guideLongRange'],
+                ['guideExtra', 'guideExtraRange'],
+              ].map(([nameKey, rangeKey]) => (
+                <div key={nameKey} className={s.rulerMark}>
+                  <span className={s.rulerTick} />
+                  <span className={s.rulerName}>{t('servicos', nameKey)}</span>
+                  <span className={s.rulerRange}>{t('servicos', rangeKey)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>

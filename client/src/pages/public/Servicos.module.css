@@ -269,9 +269,16 @@
 }
 
 .guideInner {
-  max-width: 640px;
+  max-width: 1280px;
   margin: 0 auto;
-  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.9fr) minmax(280px, 1.2fr);
+  gap: 72px;
+  align-items: center;
+}
+
+.guideCopy {
+  text-align: left;
 }
 
 .guideTitle {
@@ -279,57 +286,16 @@
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 600;
   color: var(--chocolate);
-  margin: 0 0 36px;
+  margin: 0 0 28px;
   line-height: 1.15;
-}
-
-.guideTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 48px;
-  text-align: left;
-  background: var(--white, #fff);
-  border: 1px solid var(--border);
-}
-
-.guideTable th,
-.guideTable td {
-  padding: 14px 20px;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.guideTable th {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  background: rgba(74, 52, 40, 0.04);
-  border-bottom: 1px solid var(--border);
-}
-
-.guideTable td {
-  color: var(--dark-soft);
-  border-bottom: 1px solid var(--border);
-}
-
-.guideTable td:first-child {
-  font-weight: 600;
-  color: var(--chocolate);
-  width: 38%;
-}
-
-.guideTable tbody tr:last-child td {
-  border-bottom: none;
 }
 
 .guideHowTitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--chocolate);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
 }
 
 .guideHowText {
@@ -342,6 +308,77 @@
 .guideNote {
   font-size: 0.8rem;
   line-height: 1.6;
-  color: var(--text-muted, var(--dark-soft));
+  color: var(--text-muted);
   margin: 0;
+}
+
+.ruler {
+  position: relative;
+  padding: 8px 4px 0;
+}
+
+.rulerLine {
+  position: absolute;
+  top: 16px;
+  left: calc(12.5% - 2px);
+  right: calc(12.5% - 2px);
+  height: 1px;
+  background: var(--gold);
+}
+
+.rulerMarks {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.rulerMark {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+}
+
+.rulerTick {
+  width: 1px;
+  height: 16px;
+  background: var(--gold);
+  margin-bottom: 14px;
+}
+
+.rulerName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  line-height: 1.2;
+}
+
+.rulerRange {
+  margin-top: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--text-muted);
+  max-width: 9.5em;
+}
+
+@media (max-width: 960px) {
+  .guideInner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .rulerName {
+    font-size: 1rem;
+  }
+
+  .rulerRange {
+    font-size: 0.62rem;
+    max-width: 7.5em;
+  }
 }

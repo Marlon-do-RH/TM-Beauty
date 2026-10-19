@@ -104,8 +104,6 @@ const translations = {
       freeConsult: 'Free Consultation',
       guideEyebrow: 'A simple reference',
       guideTitle: 'Hair Length Guide',
-      guideColName: 'Hair length',
-      guideColRange: 'Length',
       guideShort: 'Short',
       guideShortRange: 'Up to 20 cm',
       guideMedium: 'Medium',
