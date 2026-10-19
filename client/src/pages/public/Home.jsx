@@ -6,20 +6,11 @@ import BookingButton from '../../components/BookingButton'
 import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
 import styles from './Home.module.css'
 
-const FALLBACK_SERVICES = [
+const serviceKeys = [
   { key: 'nano', price: 'From A$280', icon: '✦' },
   { key: 'botox', price: 'From A$220', icon: '✧' },
   { key: 'deep', price: 'From A$180', icon: '◈' },
 ]
-
-const SERVICE_ICONS = ['✦', '✧', '◈']
-
-const formatPrice = (min, max) => {
-  const nmin = Number(min) || 0
-  const nmax = Number(max) || 0
-  if (nmax > nmin) return `From A$${nmin} – A$${nmax}`
-  return `From A$${nmin}`
-}
 
 const reviews = [
   { name: 'Sarah M.', stars: 5, text: "Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring." },
@@ -31,7 +22,6 @@ export default function Home() {
   const { t } = useLanguage()
   const openConsultation = useConsultation()
   const [teaserPair, setTeaserPair] = useState(null)
-  const [liveServices, setLiveServices] = useState(null)
 
   useEffect(() => {
     fetch('/api/gallery?view=carousel')
@@ -39,32 +29,6 @@ export default function Home() {
       .then(data => setTeaserPair(Array.isArray(data) && data.length > 0 ? data[0] : undefined))
       .catch(() => setTeaserPair(undefined))
   }, [])
-
-  useEffect(() => {
-    fetch('/api/services')
-      .then(r => r.json())
-      .then(data => {
-        const list = Array.isArray(data) ? data.filter(svc => svc.active !== false) : []
-        setLiveServices(list)
-      })
-      .catch(() => setLiveServices([]))
-  }, [])
-
-  const treatments = liveServices && liveServices.length > 0
-    ? liveServices.map((svc, i) => ({
-        key: svc.id || i,
-        name: svc.name,
-        desc: svc.description || '',
-        price: formatPrice(svc.price_min, svc.price_max),
-        icon: SERVICE_ICONS[i % SERVICE_ICONS.length],
-      }))
-    : FALLBACK_SERVICES.map(s => ({
-        key: s.key,
-        name: t('servicos', s.key)?.name || t('servicos', `${s.key}.name`),
-        desc: t('servicos', s.key)?.desc || '',
-        price: s.price,
-        icon: s.icon,
-      }))
 
   const stats = [
     { value: '10+', label: t('home', 'statsYears') },
@@ -112,11 +76,11 @@ export default function Home() {
           <p className={styles.sectionSub}>{t('home', 'servicesSub')}</p>
         </div>
         <div className={styles.servicesGrid}>
-          {treatments.map(s => (
+          {serviceKeys.map(s => (
             <div key={s.key} className={styles.serviceCard}>
               <span className={styles.serviceIcon}>{s.icon}</span>
-              <h3 className={styles.serviceTitle}>{s.name}</h3>
-              <p className={styles.serviceDesc}>{s.desc}</p>
+              <h3 className={styles.serviceTitle}>{t('servicos', s.key)?.name || t('servicos', `${s.key}.name`)}</h3>
+              <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
               <p className={styles.servicePrice}>{s.price}</p>
               <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
