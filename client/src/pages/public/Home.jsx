@@ -4,6 +4,7 @@ import { useLanguage } from '../../i18n/LanguageContext'
 import { useConsultation } from '../../layouts/PublicLayout'
 import BookingButton from '../../components/BookingButton'
 import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
+import HairLengthCutter from '../../components/HairLengthCutter'
 import styles from './Home.module.css'
 
 const serviceKeys = [
@@ -160,6 +161,13 @@ export default function Home() {
               <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Hair length guide */}
+      <section className={styles.lengthSection}>
+        <div className={styles.lengthSectionInner}>
+          <HairLengthCutter />
         </div>
       </section>
 

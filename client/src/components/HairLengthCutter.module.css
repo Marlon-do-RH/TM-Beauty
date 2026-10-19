@@ -1,0 +1,471 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px 80px;
+  align-items: center;
+  width: 100%;
+}
+
+.copy {
+  text-align: left;
+  max-width: 560px;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 600;
+  color: var(--chocolate);
+  margin: 0 0 16px;
+}
+
+.sub {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--dark-soft);
+  margin-bottom: 20px;
+  max-width: 480px;
+}
+
+.prompt {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--dark-soft);
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+
+.result {
+  margin-bottom: 28px;
+  padding: 28px 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  max-width: 480px;
+  animation: resultIn 0.35s ease both;
+}
+
+@keyframes resultIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultLabel {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.resultCategory {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--chocolate);
+  margin-bottom: 4px;
+}
+
+.resultRange {
+  font-size: 0.88rem;
+  color: var(--dark-soft);
+  margin-bottom: 8px;
+}
+
+.resultCm {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  margin-bottom: 16px;
+}
+
+.howTo {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--dark-soft);
+  margin-bottom: 10px;
+}
+
+.note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 22px;
+}
+
+.resultActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.resetBtn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chocolate);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.resetBtn:hover {
+  border-color: var(--chocolate);
+  color: var(--chocolate);
+}
+
+.legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin: 0;
+  padding: 0;
+}
+
+.legend li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--dark-soft);
+  transition: background 0.2s, color 0.2s;
+}
+
+.legendActive {
+  background: rgba(201, 164, 109, 0.12);
+  color: var(--chocolate);
+  font-weight: 600;
+}
+
+.legendName {
+  font-weight: 600;
+  color: var(--chocolate);
+}
+
+.legendRange {
+  text-align: right;
+  color: var(--text-muted);
+}
+
+.legendActive .legendRange {
+  color: var(--gold-dark);
+}
+
+/* ── Interactive stage (camera zoom = SVG viewBox, not CSS scale) ── */
+
+.interactive {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: min-height 0.45s ease;
+}
+
+.interactiveZoomed {
+  cursor: default;
+  min-height: 520px;
+}
+
+.stage {
+  position: relative;
+  width: min(300px, 78vw);
+  height: 500px;
+}
+
+.stageZoomed {
+  width: min(320px, 82vw);
+  height: 520px;
+}
+
+.figureSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 10px 20px rgba(74, 52, 40, 0.12));
+  pointer-events: none;
+}
+
+/* Staggered idle sway */
+.strandGroup {
+  transform-origin: 100px 40px;
+}
+
+.sway .strandA {
+  animation: swayA 5.2s ease-in-out infinite;
+}
+
+.sway .strandB {
+  animation: swayB 4.4s ease-in-out infinite 0.15s;
+}
+
+.sway .strandC {
+  animation: swayC 4.8s ease-in-out infinite 0.35s;
+}
+
+.sway .strandD {
+  animation: swayD 5s ease-in-out infinite 0.55s;
+}
+
+@keyframes swayA {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(0.9deg); }
+}
+
+@keyframes swayB {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(-1.4deg) translateX(-1px); }
+}
+
+@keyframes swayC {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.1deg); }
+}
+
+@keyframes swayD {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(1.6deg) translateX(1.5px); }
+}
+
+.ruler {
+  position: absolute;
+  left: 2%;
+  width: 52px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 2;
+}
+
+.rulerVisible {
+  opacity: 1;
+}
+
+.rulerMark {
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.rulerMark::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 1px;
+  background: var(--border);
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.hairHit {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%234A3428' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='10' cy='9' r='4'/%3E%3Ccircle cx='10' cy='23' r='4'/%3E%3Cpath d='M13.5 11.5 L22 4 M13.5 20.5 L26 28 M14 16 L24 16'/%3E%3C/g%3E%3C/svg%3E") 8 16, crosshair;
+  transition: opacity 0.3s ease;
+}
+
+.hairHitReady {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hairHit:disabled {
+  cursor: default;
+}
+
+.hairDone {
+  opacity: 0.95;
+}
+
+.hoverGuide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: rgba(201, 164, 109, 0.9);
+  transform: translateY(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(201, 164, 109, 0.55);
+}
+
+.hoverGuide::before {
+  content: '✂';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: var(--chocolate);
+}
+
+.cutLineSvg {
+  animation: cutFlash 0.45s ease;
+}
+
+@keyframes cutFlash {
+  0% { opacity: 0; stroke-width: 0; }
+  40% { opacity: 1; stroke-width: 2.8; }
+  100% { opacity: 0.85; stroke-width: 2.2; }
+}
+
+/* Multi-clump fall */
+.fallClump {
+  transform-origin: 100px 180px;
+}
+
+.fallA {
+  animation: fallLeft 0.75s cubic-bezier(0.33, 0.05, 0.55, 1) forwards;
+}
+
+.fallB {
+  animation: fallMid 0.85s cubic-bezier(0.4, 0.05, 0.55, 1) 0.06s forwards;
+}
+
+.fallC {
+  animation: fallRight 0.8s cubic-bezier(0.36, 0.05, 0.55, 1) 0.12s forwards;
+}
+
+@keyframes fallLeft {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10px, 52px) rotate(-9deg);
+  }
+}
+
+@keyframes fallMid {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(2px, 60px) rotate(4deg);
+  }
+}
+
+@keyframes fallRight {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(12px, 48px) rotate(11deg);
+  }
+}
+
+@media (max-width: 860px) {
+  .root {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .copy {
+    text-align: center;
+    max-width: none;
+  }
+
+  .sub,
+  .prompt,
+  .result,
+  .legend {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 480px;
+  }
+
+  .resultActions {
+    justify-content: center;
+  }
+
+  .interactive,
+  .interactiveZoomed {
+    min-height: 440px;
+    cursor: default;
+  }
+
+  .stage,
+  .stageZoomed {
+    width: min(280px, 85vw);
+    height: 440px;
+  }
+
+  .hairHit {
+    cursor: crosshair;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway .strandA,
+  .sway .strandB,
+  .sway .strandC,
+  .sway .strandD {
+    animation: none;
+  }
+
+  .fallA,
+  .fallB,
+  .fallC {
+    animation: none;
+    opacity: 0;
+  }
+
+  .result {
+    animation: none;
+  }
+
+  .cutLineSvg {
+    animation: none;
+  }
+
+  .ruler,
+  .hairHit {
+    transition: none;
+  }
+
+  .interactive {
+    transition: none;
+  }
+}

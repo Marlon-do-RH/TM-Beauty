@@ -239,6 +239,17 @@
   color: var(--gold);
 }
 
+/* Hair length guide */
+.lengthSection {
+  background: var(--sage-light);
+  padding: 100px 24px;
+}
+
+.lengthSectionInner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 /* Teaser */
 .teaserSection {
   background: var(--sage);
