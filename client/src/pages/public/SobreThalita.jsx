@@ -8,8 +8,8 @@ import {
   saveSiteMedia,
   deleteSiteMedia,
 } from '../../lib/uploadMedia'
-import { IconPlus } from '../../components/AdminIcons'
-import { CONTACT_EMAIL } from '../../lib/social'
+import { IconPlus, IconMapPin, IconPhone, IconMail, IconClock } from '../../components/AdminIcons'
+import { CONTACT_EMAIL, CONTACT_PHONE, STUDIO_ADDRESS, STUDIO_MAP_URL } from '../../lib/social'
 import styles from './PageCommon.module.css'
 import s from './OStudio.module.css'
 import ie from '../../components/InlineEdit.module.css'
@@ -259,19 +259,34 @@ export default function SobreThalita() {
             <div>
               <p className={styles.eyebrow}>{t('studio', 'locationEyebrow')}</p>
               <h2 className={styles.sectionTitle}>{t('studio', 'locationTitle')}</h2>
-              <p className={s.text}>Melbourne, Victoria, Australia</p>
+              <p className={s.text}>{STUDIO_ADDRESS}</p>
               <div className={s.locationDetails}>
-                <p>📍 Melbourne, VIC, Australia</p>
-                <p>📞 +61 400 000 000</p>
-                <p>📧 {CONTACT_EMAIL}</p>
-                <p>⏰ {t('studio', 'monFri')}: 9h–18h · {t('studio', 'sat')}: 9h–15h</p>
+                <p>
+                  <IconMapPin size={16} className={s.locationIcon} />
+                  {STUDIO_ADDRESS}
+                </p>
+                <p>
+                  <IconPhone size={16} className={s.locationIcon} />
+                  <a href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a>
+                </p>
+                <p>
+                  <IconMail size={16} className={s.locationIcon} />
+                  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+                </p>
+                <p>
+                  <IconClock size={16} className={s.locationIcon} />
+                  {t('studio', 'monFri')}: 9h–18h · {t('studio', 'sat')}: 9h–15h
+                </p>
               </div>
               <BookingButton label={t('studio', 'directions')} to="/contato" variant="outline" />
             </div>
             <div className={s.mapPlaceholder}>
-              <div className={s.mapInner}>
-                <span>📍 Melbourne, Australia</span>
-              </div>
+              <iframe
+                src={STUDIO_MAP_URL}
+                title="Studio location"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
             </div>
           </div>
         </div>

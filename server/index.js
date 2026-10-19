@@ -261,12 +261,12 @@ app.delete('/api/faq/:id', (req, res) => {
 // ── Contact Info ──────────────────────────────────────────────────────────────
 
 let contactInfo = {
-  phone: '+61 400 000 000',
-  whatsapp: '61400000000',
+  phone: '+61 450 442 869',
+  whatsapp: '61450442869',
   email: 'hello.nanobythalita@gmail.com',
   instagram: 'nanoplastybythalita',
-  address: 'Melbourne, Victoria, Australia',
-  mapUrl: '',
+  address: 'Bentleigh, Melbourne, Vic',
+  mapUrl: 'https://maps.google.com/maps?q=Bentleigh%2C%20Melbourne%2C%20VIC&output=embed',
   hoursMonFri: '9:00 – 18:00',
   hoursSat: '9:00 – 15:00',
   hoursSun: 'Closed',

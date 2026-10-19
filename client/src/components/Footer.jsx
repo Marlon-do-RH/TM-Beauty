@@ -1,5 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext'
-import { CONTACT_EMAIL, INSTAGRAM_URL, FACEBOOK_URL } from '../lib/social'
+import { CONTACT_EMAIL, CONTACT_WHATSAPP, INSTAGRAM_URL, FACEBOOK_URL } from '../lib/social'
 import styles from './Footer.module.css'
 
 function InstagramIcon() {
@@ -72,7 +72,7 @@ export default function Footer() {
             <FacebookIcon />
           </a>
           <a
-            href="https://wa.me/61450442869"
+            href={`https://wa.me/${CONTACT_WHATSAPP}`}
             target="_blank"
             rel="noreferrer"
             className={styles.socialIcon}

@@ -1,4 +1,8 @@
 export const CONTACT_EMAIL = 'hello.nanobythalita@gmail.com'
+export const CONTACT_PHONE = '+61 450 442 869'
+export const CONTACT_WHATSAPP = '61450442869'
 export const INSTAGRAM_HANDLE = 'nanoplastybythalita'
 export const INSTAGRAM_URL = 'https://www.instagram.com/nanoplastybythalita'
 export const FACEBOOK_URL = 'https://www.facebook.com/share/1CovH9LbDZ/?mibextid=wwXIfr'
+export const STUDIO_ADDRESS = 'Bentleigh, Melbourne, Vic'
+export const STUDIO_MAP_URL = 'https://maps.google.com/maps?q=Bentleigh%2C%20Melbourne%2C%20VIC&output=embed'

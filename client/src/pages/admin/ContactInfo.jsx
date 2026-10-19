@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './Admin.module.css'
 import ci from './ContactInfo.module.css'
 import { IconPhone, IconMail, IconInstagram, IconWhatsApp, IconMapPin, IconClock, IconEye, IconCheck } from '../../components/AdminIcons'
-import { CONTACT_EMAIL, INSTAGRAM_HANDLE } from '../../lib/social'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_WHATSAPP, INSTAGRAM_HANDLE, STUDIO_ADDRESS, STUDIO_MAP_URL } from '../../lib/social'
 
 const HOURS_FIELDS = [
   { key: 'hours_mon', label: 'Monday', placeholder: '9:00 – 18:00' },
@@ -15,9 +15,9 @@ const HOURS_FIELDS = [
 ]
 
 const INITIAL = {
-  phone: '+61 450 442 869', whatsapp: '61450442869',
+  phone: CONTACT_PHONE, whatsapp: CONTACT_WHATSAPP,
   email: CONTACT_EMAIL, instagram: INSTAGRAM_HANDLE,
-  address: '100 Wells St, Southbank VIC 3006', map_url: '',
+  address: STUDIO_ADDRESS, map_url: STUDIO_MAP_URL,
   hours_mon: '9:00 – 18:00',
   hours_tue: '9:00 – 18:00',
   hours_wed: '9:00 – 18:00',

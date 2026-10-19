@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { IconPhone, IconWhatsApp, IconMail, IconInstagram, IconFacebook, IconUpload } from '../../components/AdminIcons'
-import { CONTACT_EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, FACEBOOK_URL } from '../../lib/social'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_WHATSAPP, INSTAGRAM_HANDLE, INSTAGRAM_URL, FACEBOOK_URL, STUDIO_ADDRESS, STUDIO_MAP_URL } from '../../lib/social'
 import styles from './PageCommon.module.css'
 import s from './Contato.module.css'
 
 const FALLBACK = {
-  phone: '+61 450 442 869', whatsapp: '61450442869',
+  phone: CONTACT_PHONE, whatsapp: CONTACT_WHATSAPP,
   email: CONTACT_EMAIL, instagram: INSTAGRAM_HANDLE,
-  address: '100 Wells St, Southbank VIC 3006',
-  map_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.3812385175224!2d144.96832229999998!3d-37.827959899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642aec9189039%3A0xf471078d67ce75d1!2s100%20Wells%20St%2C%20Southbank%20VIC%203006!5e0!3m2!1sen!2sau!4v1784464790192!5m2!1sen!2sau',
+  address: STUDIO_ADDRESS,
+  map_url: STUDIO_MAP_URL,
   hours_mon: '9:00 – 18:00',
   hours_tue: '9:00 – 18:00',
   hours_wed: '9:00 – 18:00',
@@ -72,6 +72,10 @@ export default function Contato() {
           ...d,
           email: CONTACT_EMAIL,
           instagram: INSTAGRAM_HANDLE,
+          phone: CONTACT_PHONE,
+          whatsapp: CONTACT_WHATSAPP,
+          address: STUDIO_ADDRESS,
+          map_url: STUDIO_MAP_URL,
           hours_mon: d.hours_mon || weekday,
           hours_tue: d.hours_tue || weekday,
           hours_wed: d.hours_wed || weekday,
