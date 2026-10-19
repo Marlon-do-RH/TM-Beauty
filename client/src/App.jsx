@@ -52,11 +52,12 @@ function App() {
           <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/sobre" element={<SobreThalita />} />
+            <Route path="/aboutus" element={<SobreThalita />} />
+            <Route path="/sobre" element={<Navigate to="/aboutus" replace />} />
             <Route path="/servicos" element={<Servicos />} />
             <Route path="/before-after" element={<AntesDepois />} />
             <Route path="/antes-depois" element={<Navigate to="/before-after" replace />} />
-            <Route path="/studio" element={<Navigate to="/sobre" replace />} />
+            <Route path="/studio" element={<Navigate to="/aboutus" replace />} />
             <Route path="/produtos" element={<Produtos />} />
             <Route path="/avaliacoes" element={<Avaliacoes />} />
             <Route path="/faq" element={<FAQ />} />
