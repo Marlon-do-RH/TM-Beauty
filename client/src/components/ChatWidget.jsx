@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
+import { CONTACT_WHATSAPP } from '../lib/social'
 import styles from './ChatWidget.module.css'
 
 const STRINGS = {
@@ -70,7 +71,6 @@ const STRINGS = {
   },
 }
 
-const WA_NUMBER = '61450442869'
 
 export default function ChatWidget() {
   const { lang } = useLanguage()
@@ -134,7 +134,7 @@ export default function ChatWidget() {
 
   const handleWhatsApp = () =>
     addMessage(s.whatsapp, s.reply_whatsapp, () =>
-      window.open(`https://wa.me/${WA_NUMBER}`, '_blank')
+      window.open(`https://wa.me/${CONTACT_WHATSAPP}`, '_blank')
     )
 
   const handleContact = () =>
