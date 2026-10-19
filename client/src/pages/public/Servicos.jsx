@@ -440,6 +440,35 @@ export default function Servicos() {
           )}
         </div>
       </section>
+
+      <section className={s.guideSection}>
+        <div className={s.guideInner}>
+          <div className={s.guideCopy}>
+            <p className={styles.eyebrow}>{t('servicos', 'guideEyebrow')}</p>
+            <h2 className={s.guideTitle}>{t('servicos', 'guideTitle')}</h2>
+            <h3 className={s.guideHowTitle}>{t('servicos', 'guideHowTitle')}</h3>
+            <p className={s.guideHowText}>{t('servicos', 'guideHowText')}</p>
+            <p className={s.guideNote}>{t('servicos', 'guideNote')}</p>
+          </div>
+          <div className={s.ruler} role="img" aria-label={t('servicos', 'guideTitle')}>
+            <div className={s.rulerLine} aria-hidden="true" />
+            <div className={s.rulerMarks}>
+              {[
+                ['guideShort', 'guideShortRange'],
+                ['guideMedium', 'guideMediumRange'],
+                ['guideLong', 'guideLongRange'],
+                ['guideExtra', 'guideExtraRange'],
+              ].map(([nameKey, rangeKey]) => (
+                <div key={nameKey} className={s.rulerMark}>
+                  <span className={s.rulerTick} />
+                  <span className={s.rulerName}>{t('servicos', nameKey)}</span>
+                  <span className={s.rulerRange}>{t('servicos', rangeKey)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
