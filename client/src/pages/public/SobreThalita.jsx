@@ -278,7 +278,7 @@ export default function SobreThalita() {
                   {t('studio', 'monFri')}: 9h–18h · {t('studio', 'sat')}: 9h–15h
                 </p>
               </div>
-              <BookingButton label={t('studio', 'directions')} to="/contato" variant="outline" />
+              <BookingButton label={t('studio', 'directions')} to="/contact" variant="outline" />
             </div>
             <div className={s.mapPlaceholder}>
               <iframe

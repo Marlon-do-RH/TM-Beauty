@@ -117,7 +117,7 @@ export default function Home() {
           <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
           <div className={styles.heroCtas}>
             <BookingButton label={t('nav', 'bookNow')} variant="primary" onClick={openConsultation} />
-            <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
+            <Link to="/services" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
           </div>
           <p className={styles.langLine}>{t('home', 'languagesLine')}</p>
           <div className={styles.langRow}>
@@ -158,7 +158,7 @@ export default function Home() {
               <h3 className={styles.serviceTitle}>{s.name}</h3>
               <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
               <p className={styles.servicePrice}>{s.price}</p>
-              <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
+              <Link to="/services" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
         </div>
@@ -241,7 +241,7 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.expCta}>
-          <Link to="/avaliacoes" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
+          <Link to="/reviews" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
         </div>
       </section>
 

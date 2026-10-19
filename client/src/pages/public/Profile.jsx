@@ -58,7 +58,7 @@ export default function Profile() {
             <button type="button" className={s.primary} onClick={copyAndBook}>
               {redeemed ? 'Copy code' : 'Redeem & copy'}
             </button>
-            <Link to="/agendar" className={s.secondary}>Book now</Link>
+            <Link to="/booking" className={s.secondary}>Book now</Link>
             <button type="button" className={s.ghost} onClick={logout}>Log out</button>
           </div>
         </div>

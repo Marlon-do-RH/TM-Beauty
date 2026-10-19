@@ -30,7 +30,7 @@ export default function WelcomeOffer() {
       setOpen(false)
       return
     }
-    if (pathname === '/agendar') return
+    if (pathname === '/booking' || pathname === '/agendar') return
     if (alreadySeen()) return
 
     let cancelled = false
@@ -54,7 +54,7 @@ export default function WelcomeOffer() {
 
   const bookNow = () => {
     dismiss()
-    navigate('/agendar')
+    navigate('/booking')
   }
 
   useEffect(() => {

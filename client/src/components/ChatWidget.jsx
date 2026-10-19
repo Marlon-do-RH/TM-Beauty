@@ -127,10 +127,10 @@ export default function ChatWidget() {
   }
 
   const handleBook = () =>
-    addMessage(s.book, s.reply_book, () => navigate('/agendar'))
+    addMessage(s.book, s.reply_book, () => navigate('/booking'))
 
   const handleServices = () =>
-    addMessage(s.services, s.reply_services, () => navigate('/servicos'))
+    addMessage(s.services, s.reply_services, () => navigate('/services'))
 
   const handleWhatsApp = () =>
     addMessage(s.whatsapp, s.reply_whatsapp, () =>
@@ -138,7 +138,7 @@ export default function ChatWidget() {
     )
 
   const handleContact = () =>
-    addMessage(s.contact, s.reply_contact, () => navigate('/contato'))
+    addMessage(s.contact, s.reply_contact, () => navigate('/contact'))
 
   return (
     <div className={styles.root}>
