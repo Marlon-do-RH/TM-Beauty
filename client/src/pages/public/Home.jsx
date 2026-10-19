@@ -7,9 +7,15 @@ import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
 import styles from './Home.module.css'
 
 const serviceKeys = [
-  { key: 'nano', price: 'From A$280', icon: '✦' },
-  { key: 'botox', price: 'From A$220', icon: '✧' },
-  { key: 'deep', price: 'From A$180', icon: '◈' },
+  { key: 'nano', name: 'Nanoplasty', price: 'From A$280', icon: '✦' },
+  { key: 'botox', name: 'Botox', price: 'From A$220', icon: '✧' },
+  { key: 'deep', name: 'Deep Treatment', price: 'From A$180', icon: '◈' },
+]
+
+const CARE_PILLARS = [
+  { titleKey: 'careTimeTitle', textKey: 'careTimeText' },
+  { titleKey: 'careLearnTitle', textKey: 'careLearnText' },
+  { titleKey: 'careTextureTitle', textKey: 'careTextureText' },
 ]
 
 const reviews = [
@@ -79,12 +85,31 @@ export default function Home() {
           {serviceKeys.map(s => (
             <div key={s.key} className={styles.serviceCard}>
               <span className={styles.serviceIcon}>{s.icon}</span>
-              <h3 className={styles.serviceTitle}>{t('servicos', s.key)?.name || t('servicos', `${s.key}.name`)}</h3>
+              <h3 className={styles.serviceTitle}>{s.name}</h3>
               <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
               <p className={styles.servicePrice}>{s.price}</p>
               <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className={styles.careSection}>
+        <div className={styles.careInner}>
+          <div className={styles.sectionHeader}>
+            <p className={styles.eyebrow}>{t('home', 'careEyebrow')}</p>
+            <h2 className={styles.sectionTitle}>{t('home', 'careTitle')}</h2>
+            <p className={styles.careLead}>{t('home', 'careLead')}</p>
+            <p className={styles.sectionSub}>{t('home', 'careBody')}</p>
+          </div>
+          <div className={styles.careGrid}>
+            {CARE_PILLARS.map(p => (
+              <div key={p.titleKey} className={styles.careCard}>
+                <h3 className={styles.careCardTitle}>{t('home', p.titleKey)}</h3>
+                <p className={styles.careCardText}>{t('home', p.textKey)}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
