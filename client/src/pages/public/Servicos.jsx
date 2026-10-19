@@ -440,6 +440,42 @@ export default function Servicos() {
           )}
         </div>
       </section>
+
+      <section className={s.guideSection}>
+        <div className={s.guideInner}>
+          <p className={styles.eyebrow}>{t('servicos', 'guideEyebrow')}</p>
+          <h2 className={s.guideTitle}>{t('servicos', 'guideTitle')}</h2>
+          <table className={s.guideTable}>
+            <thead>
+              <tr>
+                <th>{t('servicos', 'guideColName')}</th>
+                <th>{t('servicos', 'guideColRange')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{t('servicos', 'guideShort')}</td>
+                <td>{t('servicos', 'guideShortRange')}</td>
+              </tr>
+              <tr>
+                <td>{t('servicos', 'guideMedium')}</td>
+                <td>{t('servicos', 'guideMediumRange')}</td>
+              </tr>
+              <tr>
+                <td>{t('servicos', 'guideLong')}</td>
+                <td>{t('servicos', 'guideLongRange')}</td>
+              </tr>
+              <tr>
+                <td>{t('servicos', 'guideExtra')}</td>
+                <td>{t('servicos', 'guideExtraRange')}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 className={s.guideHowTitle}>{t('servicos', 'guideHowTitle')}</h3>
+          <p className={s.guideHowText}>{t('servicos', 'guideHowText')}</p>
+          <p className={s.guideNote}>{t('servicos', 'guideNote')}</p>
+        </div>
+      </section>
     </div>
   )
 }

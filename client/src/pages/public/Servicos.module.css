@@ -261,3 +261,87 @@
     max-width: 280px;
   }
 }
+
+.guideSection {
+  background: var(--sage);
+  padding: 80px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.guideInner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.guideTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--chocolate);
+  margin: 0 0 36px;
+  line-height: 1.15;
+}
+
+.guideTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 48px;
+  text-align: left;
+  background: var(--white, #fff);
+  border: 1px solid var(--border);
+}
+
+.guideTable th,
+.guideTable td {
+  padding: 14px 20px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.guideTable th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(74, 52, 40, 0.04);
+  border-bottom: 1px solid var(--border);
+}
+
+.guideTable td {
+  color: var(--dark-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.guideTable td:first-child {
+  font-weight: 600;
+  color: var(--chocolate);
+  width: 38%;
+}
+
+.guideTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.guideHowTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--chocolate);
+  margin: 0 0 16px;
+}
+
+.guideHowText {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--dark-soft);
+  margin: 0 0 16px;
+}
+
+.guideNote {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted, var(--dark-soft));
+  margin: 0;
+}
