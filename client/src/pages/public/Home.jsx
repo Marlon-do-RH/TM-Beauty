@@ -12,12 +12,6 @@ const serviceKeys = [
   { key: 'deep', name: 'Deep Treatment', price: 'From A$180', icon: '◈' },
 ]
 
-const CARE_PILLARS = [
-  { titleKey: 'careTimeTitle', textKey: 'careTimeText' },
-  { titleKey: 'careLearnTitle', textKey: 'careLearnText' },
-  { titleKey: 'careTextureTitle', textKey: 'careTextureText' },
-]
-
 const reviews = [
   { name: 'Sarah M.', stars: 5, text: "Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring." },
   { name: 'Camila R.', stars: 5, text: "Incredible experience from start to finish. The studio is beautiful and the results are beyond what I expected." },
@@ -91,25 +85,6 @@ export default function Home() {
               <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className={styles.careSection}>
-        <div className={styles.careInner}>
-          <div className={styles.sectionHeader}>
-            <p className={styles.eyebrow}>{t('home', 'careEyebrow')}</p>
-            <h2 className={styles.sectionTitle}>{t('home', 'careTitle')}</h2>
-            <p className={styles.careLead}>{t('home', 'careLead')}</p>
-            <p className={styles.sectionSub}>{t('home', 'careBody')}</p>
-          </div>
-          <div className={styles.careGrid}>
-            {CARE_PILLARS.map(p => (
-              <div key={p.titleKey} className={styles.careCard}>
-                <h3 className={styles.careCardTitle}>{t('home', p.titleKey)}</h3>
-                <p className={styles.careCardText}>{t('home', p.textKey)}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

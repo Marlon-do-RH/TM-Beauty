@@ -207,56 +207,6 @@
   color: var(--gold);
 }
 
-/* Hair care */
-.careSection {
-  background: var(--sage);
-  padding: 100px 24px;
-}
-
-.careInner {
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.careSection .sectionHeader {
-  max-width: 720px;
-}
-
-.careLead {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
-  font-style: italic;
-  color: var(--gold);
-  margin: -4px 0 20px;
-}
-
-.careGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-.careCard {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 36px 28px;
-}
-
-.careCardTitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--chocolate);
-  margin-bottom: 12px;
-}
-
-.careCardText {
-  font-size: 0.88rem;
-  line-height: 1.75;
-  color: var(--dark-soft);
-}
-
 /* Teaser */
 .teaserSection {
   background: var(--sage);
@@ -510,8 +460,7 @@
     display: none;
   }
 
-  .servicesGrid,
-  .careGrid {
+  .servicesGrid {
     grid-template-columns: 1fr;
   }
 
