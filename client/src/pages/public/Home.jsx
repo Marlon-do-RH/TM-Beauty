@@ -12,11 +12,70 @@ const serviceKeys = [
   { key: 'deep', name: 'Deep Treatment', price: 'From A$180', icon: '◈' },
 ]
 
+function FlagIcon({ children, label }) {
+  return (
+    <svg
+      className={styles.langFlag}
+      viewBox="0 0 24 16"
+      width="22"
+      height="15"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <title>{label}</title>
+      {children}
+    </svg>
+  )
+}
+
 const LANGUAGES = [
-  { flag: '🇫🇷', label: 'French' },
-  { flag: '🇧🇷', label: 'Portuguese' },
-  { flag: '🇪🇸', label: 'Spanish' },
-  { flag: '🇦🇺', label: 'English' },
+  {
+    label: 'French',
+    icon: (
+      <FlagIcon label="French">
+        <rect width="8" height="16" fill="#002654" />
+        <rect x="8" width="8" height="16" fill="#fff" />
+        <rect x="16" width="8" height="16" fill="#ed2939" />
+      </FlagIcon>
+    ),
+  },
+  {
+    label: 'Portuguese',
+    icon: (
+      <FlagIcon label="Portuguese">
+        <rect width="24" height="16" fill="#009b3a" />
+        <polygon points="12,2 22,8 12,14 2,8" fill="#fedd00" />
+        <circle cx="12" cy="8" r="3.2" fill="#002776" />
+      </FlagIcon>
+    ),
+  },
+  {
+    label: 'Spanish',
+    icon: (
+      <FlagIcon label="Spanish">
+        <rect width="24" height="16" fill="#c60b1e" />
+        <rect y="4" width="24" height="8" fill="#ffc400" />
+      </FlagIcon>
+    ),
+  },
+  {
+    label: 'English',
+    icon: (
+      <FlagIcon label="English">
+        <rect width="24" height="16" fill="#012169" />
+        <path d="M0 0l12 8M12 0L0 8" stroke="#fff" strokeWidth="1.8" />
+        <path d="M0 0l12 8M12 0L0 8" stroke="#c8102e" strokeWidth="0.8" />
+        <path d="M6 0v8M0 4h12" stroke="#fff" strokeWidth="2.8" />
+        <path d="M6 0v8M0 4h12" stroke="#c8102e" strokeWidth="1.4" />
+        <polygon points="6,9.4 6.7,11.4 4.6,10.2 7.4,10.2 5.3,11.4" fill="#fff" />
+        <polygon points="16.5,3.2 17,4.8 15.4,3.8 17.6,3.8 16,4.8" fill="#fff" />
+        <polygon points="20.2,6.4 20.6,7.6 19.3,6.9 21.1,6.9 19.8,7.6" fill="#fff" />
+        <polygon points="19.4,10.6 19.8,11.8 18.5,11.1 20.3,11.1 19,11.8" fill="#fff" />
+        <polygon points="15.6,8.6 15.9,9.5 14.9,9 16.3,9 15.3,9.5" fill="#fff" />
+        <circle cx="17.2" cy="12.8" r="0.55" fill="#fff" />
+      </FlagIcon>
+    ),
+  },
 ]
 
 const reviews = [
@@ -63,7 +122,7 @@ export default function Home() {
           <div className={styles.langRow}>
             {LANGUAGES.map(l => (
               <span key={l.label} className={styles.langItem}>
-                <span className={styles.langFlag} aria-hidden="true">{l.flag}</span>
+                {l.icon}
                 {l.label}
               </span>
             ))}

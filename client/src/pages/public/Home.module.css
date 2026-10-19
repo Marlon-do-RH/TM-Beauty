@@ -89,8 +89,11 @@
 }
 
 .langFlag {
-  font-size: 1.15rem;
-  line-height: 1;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(74, 52, 40, 0.12);
+  overflow: hidden;
 }
 
 .heroVisual {
