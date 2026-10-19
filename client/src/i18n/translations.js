@@ -32,7 +32,7 @@ const translations = {
     // Home
     home: {
       heroEyebrow: 'Brazilian Hair Specialist · Melbourne',
-      heroTagline: 'Your hair doesn’t need to change to be beautiful. I respect every type and texture — and help you care for it just as it is.',
+      heroTagline: 'Your hair doesn’t need to change to be beautiful. Respecting every type and texture and help you care for it just as it is.',
       viewServices: 'View Services →',
       statsYears: 'Years of Experience',
       statsCountries: 'Countries',
