@@ -12,6 +12,13 @@ const serviceKeys = [
   { key: 'deep', name: 'Deep Treatment', price: 'From A$180', icon: '◈' },
 ]
 
+const LANGUAGES = [
+  { flag: '🇫🇷', label: 'French' },
+  { flag: '🇧🇷', label: 'Portuguese' },
+  { flag: '🇪🇸', label: 'Spanish' },
+  { flag: '🇦🇺', label: 'English' },
+]
+
 const reviews = [
   { name: 'Sarah M.', stars: 5, text: "Absolutely amazing! My hair has never felt this smooth. Thalita is a true artist — so professional and caring." },
   { name: 'Camila R.', stars: 5, text: "Incredible experience from start to finish. The studio is beautiful and the results are beyond what I expected." },
@@ -51,6 +58,15 @@ export default function Home() {
           <div className={styles.heroCtas}>
             <BookingButton label={t('nav', 'bookNow')} variant="primary" onClick={openConsultation} />
             <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
+          </div>
+          <p className={styles.langLine}>{t('home', 'languagesLine')}</p>
+          <div className={styles.langRow}>
+            {LANGUAGES.map(l => (
+              <span key={l.label} className={styles.langItem}>
+                <span className={styles.langFlag} aria-hidden="true">{l.flag}</span>
+                {l.label}
+              </span>
+            ))}
           </div>
         </div>
         <div className={styles.heroVisual}>

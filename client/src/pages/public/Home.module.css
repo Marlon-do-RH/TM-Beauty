@@ -64,6 +64,35 @@
   color: var(--gold);
 }
 
+.langLine {
+  margin-top: 28px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.langRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 12px;
+}
+
+.langItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--dark-soft);
+}
+
+.langFlag {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
 .heroVisual {
   display: flex;
   flex-direction: column;
