@@ -46,7 +46,7 @@ export default function Footer() {
 
         {/* Brand */}
         <div className={styles.brand}>
-          <span className={styles.logoTm}>TM</span>
+          <span className={styles.logoTm}>NBT</span>
           <p className={styles.tagline}>{t('footer', 'tagline')}</p>
           <p className={styles.sub}>{t('footer', 'sub')}</p>
         </div>
