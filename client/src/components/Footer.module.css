@@ -25,21 +25,20 @@
   gap: 10px;
 }
 
-.logoTm {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.08em;
-  border: 1.5px solid var(--gold);
-  min-width: 56px;
-  height: 48px;
-  padding: 0 10px;
+.logoLockup {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 2px;
+  gap: 12px;
   margin-bottom: 4px;
+  color: var(--gold);
+}
+
+.logoLetters {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--gold);
 }
 
 .tagline {
