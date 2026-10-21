@@ -51,7 +51,7 @@ export default function AdminLoginModal({ onClose }) {
         <div className={styles.mark} aria-hidden="true">TM</div>
         <h2 id="auth-title" className={styles.title}>Staff log in</h2>
         <p className={styles.sub}>
-          Admin only. Customers book and redeem WELCOME10 in Acuity checkout.
+          Admin only.
         </p>
 
         {error && <div className={styles.error}>{error}</div>}
