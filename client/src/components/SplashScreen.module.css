@@ -64,19 +64,7 @@
 /* ── Monogram ──────────────────────────────────────────────────────────────── */
 
 .monogram {
-  min-width: 88px;
-  height: 64px;
-  padding: 0 14px;
-  border: 1.5px solid var(--gold);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.1em;
+  display: block;
   margin: 4px 0;
 }
 
