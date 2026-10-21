@@ -18,7 +18,7 @@ const translations = {
 
     // Footer
     footer: {
-      tagline: 'Thalita Medeiros',
+      tagline: 'Nanoplasty by Thalita',
       sub: 'Brazilian Hair Specialist in Melbourne',
       copy: 'All rights reserved.',
       nav: 'Navigation',

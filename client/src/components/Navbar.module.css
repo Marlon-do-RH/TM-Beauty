@@ -35,13 +35,14 @@
 
 .brandTm {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--gold);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   border: 1.5px solid var(--gold);
-  width: 36px;
+  min-width: 44px;
   height: 36px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;

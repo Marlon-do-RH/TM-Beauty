@@ -19,10 +19,10 @@ export default function SplashScreen({ onDone }) {
         </div>
 
         {/* Monogram */}
-        <div className={styles.monogram}>TM</div>
+        <div className={styles.monogram}>NBT</div>
 
         {/* Brand name */}
-        <h1 className={styles.name}>Thalita Medeiros</h1>
+        <h1 className={styles.name}>Nanoplasty by Thalita</h1>
 
         {/* Tagline */}
         <p className={styles.tagline}>Brazilian Hair Specialist · Melbourne</p>
