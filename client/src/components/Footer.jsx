@@ -1,6 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext'
 import { CONTACT_EMAIL, CONTACT_WHATSAPP, INSTAGRAM_URL, FACEBOOK_URL } from '../lib/social'
-import BrandMark from './BrandMark'
 import styles from './Footer.module.css'
 
 function InstagramIcon() {
@@ -47,10 +46,7 @@ export default function Footer() {
 
         {/* Brand */}
         <div className={styles.brand}>
-          <div className={styles.logoLockup}>
-            <BrandMark size={48} />
-            <span className={styles.logoLetters}>NBT</span>
-          </div>
+          <span className={styles.logoTm}>NBT</span>
           <p className={styles.tagline}>{t('footer', 'tagline')}</p>
           <p className={styles.sub}>{t('footer', 'sub')}</p>
         </div>

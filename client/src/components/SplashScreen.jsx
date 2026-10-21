@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import BrandMark from './BrandMark'
 import styles from './SplashScreen.module.css'
 
 export default function SplashScreen({ onDone }) {
@@ -20,10 +19,7 @@ export default function SplashScreen({ onDone }) {
         </div>
 
         {/* Monogram */}
-        <div className={styles.monogram}>
-          <BrandMark size={72} />
-          <span className={styles.monogramLetters}>NBT</span>
-        </div>
+        <div className={styles.monogram}>NBT</div>
 
         {/* Brand name */}
         <h1 className={styles.name}>Nanoplasty by Thalita</h1>

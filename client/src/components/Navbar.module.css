@@ -33,12 +33,29 @@
   flex-shrink: 0;
 }
 
+.brandTm {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  border: 1.5px solid var(--gold);
+  min-width: 44px;
+  height: 36px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+
 .brandName {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--chocolate);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .links {
@@ -320,6 +337,10 @@
   }
 
   .bookBtn {
+    display: none;
+  }
+
+  .brandName {
     display: none;
   }
 }
