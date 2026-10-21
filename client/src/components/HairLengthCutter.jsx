@@ -1,6 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useLanguage } from '../i18n/LanguageContext'
-import { useConsultation } from '../layouts/PublicLayout'
 import BookingButton from './BookingButton'
 import styles from './HairLengthCutter.module.css'
 
@@ -294,7 +293,6 @@ function WomanFigure({ viewBox, cutPercent, falling, sway, uid }) {
 
 export default function HairLengthCutter() {
   const { t } = useLanguage()
-  const openConsultation = useConsultation()
   const uid = useId().replace(/:/g, '')
   const hairRef = useRef(null)
   const viewRef = useRef({ ...VIEW_IDLE })
@@ -444,7 +442,6 @@ export default function HairLengthCutter() {
               <BookingButton
                 label={t('home', 'lengthBookCta')}
                 variant="primary"
-                onClick={openConsultation}
               />
               <button type="button" className={styles.resetBtn} onClick={handleReset}>
                 {t('home', 'lengthTryAgain')}
