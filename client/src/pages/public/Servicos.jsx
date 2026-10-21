@@ -230,7 +230,7 @@ export default function Servicos() {
           benefits: sk.benefits.map(b => data?.[b]).filter(Boolean),
           priceLabel: formatPrice(sk.price_min),
           durationLabel: formatDuration(sk.duration, sk.duration_unit),
-          bookTo: `/agendar?service=${sk.key}`,
+          bookTo: `/booking?service=${sk.key}`,
           raw: null,
         }
       })
@@ -247,7 +247,7 @@ export default function Servicos() {
           benefits: key ? ['b1', 'b2', 'b3', 'b4'].map(b => data?.[b]).filter(Boolean) : [],
           priceLabel: formatPrice(svc.price_min, svc.price_max),
           durationLabel: formatDuration(svc.duration, svc.duration_unit),
-          bookTo: `/agendar?service=${key || svc.id}`,
+          bookTo: `/booking?service=${key || svc.id}`,
           raw: svc,
         }
       })

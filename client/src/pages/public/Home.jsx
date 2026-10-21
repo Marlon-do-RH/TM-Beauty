@@ -8,9 +8,9 @@ import HairLengthCutter from '../../components/HairLengthCutter'
 import styles from './Home.module.css'
 
 const serviceKeys = [
-  { key: 'nano', name: 'Nanoplasty', price: 'From A$280', icon: '✦' },
-  { key: 'botox', name: 'Botox', price: 'From A$220', icon: '✧' },
-  { key: 'deep', name: 'Deep Treatment', price: 'From A$180', icon: '◈' },
+  { key: 'nano', name: 'Nanoplasty', icon: '✦' },
+  { key: 'botox', name: 'Botox', icon: '✧' },
+  { key: 'deep', name: 'Deep Treatment', icon: '◈' },
 ]
 
 function FlagIcon({ children, label }) {
@@ -117,7 +117,7 @@ export default function Home() {
           <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
           <div className={styles.heroCtas}>
             <BookingButton label={t('nav', 'bookNow')} variant="primary" onClick={openConsultation} />
-            <Link to="/servicos" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
+            <Link to="/services" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
           </div>
           <p className={styles.langLine}>{t('home', 'languagesLine')}</p>
           <div className={styles.langRow}>
@@ -157,8 +157,7 @@ export default function Home() {
               <span className={styles.serviceIcon}>{s.icon}</span>
               <h3 className={styles.serviceTitle}>{s.name}</h3>
               <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
-              <p className={styles.servicePrice}>{s.price}</p>
-              <Link to="/servicos" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
+              <Link to="/services" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
             </div>
           ))}
         </div>
@@ -241,7 +240,7 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.expCta}>
-          <Link to="/avaliacoes" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
+          <Link to="/reviews" className={styles.heroSecondary}>{t('home', 'viewAllReviews')}</Link>
         </div>
       </section>
 

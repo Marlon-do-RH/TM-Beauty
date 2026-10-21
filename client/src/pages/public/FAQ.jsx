@@ -58,7 +58,7 @@ export default function FAQ() {
           <div className={s.faqCta}>
             <h3 className={s.faqCtaTitle}>{t('faq', 'stillQuestions')}</h3>
             <p className={s.faqCtaText}>{t('faq', 'stillText')}</p>
-            <BookingButton label={t('faq', 'contactBtn')} to="/contato" variant="primary" />
+            <BookingButton label={t('faq', 'contactBtn')} to="/contact" variant="primary" />
           </div>
         </div>
       </section>

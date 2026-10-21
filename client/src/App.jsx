@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { LanguageProvider } from './i18n/LanguageContext'
 import { AdminAuthProvider } from './context/AdminAuth'
 import PublicLayout from './layouts/PublicLayout'
@@ -36,6 +36,11 @@ const markSplashSeen = () => {
   try { sessionStorage.setItem('tm_splash', '1') } catch {}
 }
 
+function Redirect({ to }) {
+  const { search } = useLocation()
+  return <Navigate to={`${to}${search}`} replace />
+}
+
 function App() {
   const [showSplash, setShowSplash] = useState(!hasSeenSplash())
 
@@ -53,16 +58,21 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<SobreThalita />} />
-            <Route path="/sobre" element={<Navigate to="/aboutus" replace />} />
-            <Route path="/servicos" element={<Servicos />} />
+            <Route path="/sobre" element={<Redirect to="/aboutus" />} />
+            <Route path="/services" element={<Servicos />} />
+            <Route path="/servicos" element={<Redirect to="/services" />} />
             <Route path="/before-after" element={<AntesDepois />} />
-            <Route path="/antes-depois" element={<Navigate to="/before-after" replace />} />
-            <Route path="/studio" element={<Navigate to="/aboutus" replace />} />
-            <Route path="/produtos" element={<Produtos />} />
-            <Route path="/avaliacoes" element={<Avaliacoes />} />
+            <Route path="/antes-depois" element={<Redirect to="/before-after" />} />
+            <Route path="/studio" element={<Redirect to="/aboutus" />} />
+            <Route path="/products" element={<Produtos />} />
+            <Route path="/produtos" element={<Redirect to="/products" />} />
+            <Route path="/reviews" element={<Avaliacoes />} />
+            <Route path="/avaliacoes" element={<Redirect to="/reviews" />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/contato" element={<Contato />} />
-            <Route path="/agendar" element={<Booking />} />
+            <Route path="/contact" element={<Contato />} />
+            <Route path="/contato" element={<Redirect to="/contact" />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/agendar" element={<Redirect to="/booking" />} />
             <Route path="/profile" element={<Navigate to="/" replace />} />
             <Route path="/auth/callback" element={<Navigate to="/" replace />} />
           </Route>

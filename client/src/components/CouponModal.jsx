@@ -13,7 +13,7 @@ export default function CouponModal({ onClose }) {
       await redeemCoupon()
       try { await navigator.clipboard.writeText(FIRST_VISIT_CODE) } catch { /* empty */ }
       onClose()
-      navigate('/agendar')
+      navigate('/booking')
     } catch (err) {
       alert(err.message || 'Could not redeem coupon.')
     }

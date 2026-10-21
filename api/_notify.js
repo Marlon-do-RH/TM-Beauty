@@ -1,15 +1,16 @@
 /**
  * Sends admin notification emails via Resend.
- * Requires env: RESEND_API_KEY, ADMIN_NOTIFY_EMAIL, EMAIL_FROM
- * Skips silently if not configured.
+ * Requires env: RESEND_API_KEY. Optional: ADMIN_NOTIFY_EMAIL, EMAIL_FROM.
+ * Falls back to hello.nanobythalita@gmail.com when ADMIN_NOTIFY_EMAIL is unset.
+ * Skips silently if RESEND_API_KEY is missing.
  */
 async function sendEmail({ subject, html, text }) {
   const apiKey = process.env.RESEND_API_KEY
-  const to = process.env.ADMIN_NOTIFY_EMAIL
+  const to = process.env.ADMIN_NOTIFY_EMAIL || 'hello.nanobythalita@gmail.com'
   const from = process.env.EMAIL_FROM || 'TM Beauty <onboarding@resend.dev>'
 
-  if (!apiKey || !to) {
-    console.warn('[notify] Skipping email — set RESEND_API_KEY and ADMIN_NOTIFY_EMAIL')
+  if (!apiKey) {
+    console.warn('[notify] Skipping email — set RESEND_API_KEY')
     return { skipped: true }
   }
 

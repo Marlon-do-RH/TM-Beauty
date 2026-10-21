@@ -20,11 +20,11 @@ export default function Navbar() {
   const navLinks = [
     { to: '/', label: t('nav', 'home') },
     { to: '/aboutus', label: t('nav', 'sobre') },
-    { to: '/servicos', label: t('nav', 'servicos') },
+    { to: '/services', label: t('nav', 'servicos') },
     { to: '/before-after', label: t('nav', 'antesDepois') },
-    { to: '/avaliacoes', label: t('nav', 'avaliacoes') },
+    { to: '/reviews', label: t('nav', 'avaliacoes') },
     { to: '/faq', label: t('nav', 'faq') },
-    { to: '/contato', label: t('nav', 'contato') },
+    { to: '/contact', label: t('nav', 'contato') },
   ]
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Navbar() {
         </ul>
 
         <div className={styles.actions}>
-          <Link to="/agendar" className={styles.bookBtn}>
+          <Link to="/booking" className={styles.bookBtn}>
             {t('nav', 'bookNow')}
           </Link>
 
