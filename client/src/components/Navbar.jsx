@@ -5,6 +5,7 @@ import { useSession } from '../context/AdminAuth'
 import AdminLoginModal from './AdminLoginModal'
 import AdminChip from './AdminChip'
 import { IconLock } from './AdminIcons'
+import BrandMark from './BrandMark'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
@@ -58,7 +59,7 @@ export default function Navbar() {
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand}>
-          <span className={styles.brandTm}>NBT</span>
+          <BrandMark size={36} className={styles.brandMark} />
           <span className={styles.brandName}>Nanoplasty by Thalita</span>
         </Link>
 
