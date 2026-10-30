@@ -59,7 +59,7 @@ export default function Navbar() {
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand}>
-          <BrandMark size={36} className={styles.brandMark} />
+          <BrandMark size={44} className={styles.brandMark} />
           <span className={styles.brandName}>Nanoplasty by Thalita</span>
         </Link>
 
