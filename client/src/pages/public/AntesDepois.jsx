@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useAdminAuth } from '../../context/AdminAuth'
-import { EditOverlay, ReplaceBtn, DeleteBtn } from '../../components/InlineEdit'
+import { EditOverlay, ReplaceBtn, DeleteBtn, EditBtn } from '../../components/InlineEdit'
 import {
   uploadToCloudinary,
   saveGalleryItem,
   updateGalleryItem,
   deleteGalleryItem,
 } from '../../lib/uploadMedia'
-import { IconPlus } from '../../components/AdminIcons'
+import { IconPlus, IconEdit } from '../../components/AdminIcons'
 import styles from './PageCommon.module.css'
 import s from './AntesDepois.module.css'
 import ie from '../../components/InlineEdit.module.css'
@@ -55,6 +55,8 @@ export default function AntesDepois() {
   const [form, setForm] = useState({ category: 'Nanoplasty', caption: '' })
   const [beforeFile, setBeforeFile] = useState(null)
   const [afterFile, setAfterFile] = useState(null)
+  const [editingId, setEditingId] = useState(null)
+  const [editForm, setEditForm] = useState({ category: 'Nanoplasty', caption: '' })
 
   const loadGallery = () => {
     fetch('/api/gallery?section=gallery')
@@ -99,8 +101,49 @@ export default function AntesDepois() {
     try {
       await deleteGalleryItem(item.id)
       setPairs(list => list.filter(p => p.id !== item.id))
+      if (editingId === item.id) {
+        setEditingId(null)
+        setEditForm({ category: 'Nanoplasty', caption: '' })
+      }
     } catch (err) {
       alert(err.message || 'Could not delete pair')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const startEdit = (item) => {
+    setEditingId(item.id)
+    setEditForm({
+      category: displayCategory(item.category),
+      caption: item.caption || item.label || '',
+    })
+  }
+
+  const cancelEdit = () => {
+    setEditingId(null)
+    setEditForm({ category: 'Nanoplasty', caption: '' })
+  }
+
+  const saveEdit = async (item) => {
+    if (!item?.id) return
+    const caption = editForm.caption.trim()
+    if (!caption) {
+      alert('Caption cannot be empty.')
+      return
+    }
+    setBusy(item.id)
+    try {
+      const updated = await updateGalleryItem(item.id, {
+        category: editForm.category,
+        caption,
+      })
+      setPairs(list => list.map(p => (
+        p.id === item.id ? { ...updated, label: updated.caption } : p
+      )))
+      cancelEdit()
+    } catch (err) {
+      alert(err.message || 'Could not save changes')
     } finally {
       setBusy(null)
     }
@@ -250,12 +293,59 @@ export default function AntesDepois() {
                       </div>
                     </div>
                     <div className={s.pairInfo}>
-                      <span className={s.pairCategory}>{displayCategory(p.category)}</span>
-                      <p className={s.pairLabel}>{p.caption || p.label}</p>
-                      {isAdmin && p.id && (
-                        <div className={s.cardEdit}>
-                          <DeleteBtn title="Remove pair" onClick={() => removePair(p)} disabled={!!busy} />
+                      {isAdmin && p.id && editingId === p.id ? (
+                        <div className={s.editFields}>
+                          <select
+                            className={s.addInput}
+                            value={editForm.category}
+                            onChange={e => setEditForm(f => ({ ...f, category: e.target.value }))}
+                            disabled={!!busy}
+                          >
+                            {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                          </select>
+                          <input
+                            className={s.addInput}
+                            value={editForm.caption}
+                            onChange={e => setEditForm(f => ({ ...f, caption: e.target.value }))}
+                            placeholder="Caption"
+                            disabled={!!busy}
+                          />
+                          <div className={s.editActions}>
+                            <button
+                              type="button"
+                              className={s.addPairBtn}
+                              disabled={!!busy}
+                              onClick={() => saveEdit(p)}
+                            >
+                              {busy === p.id ? 'Saving…' : 'Save'}
+                            </button>
+                            <button
+                              type="button"
+                              className={s.cancelBtn}
+                              disabled={!!busy}
+                              onClick={cancelEdit}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
+                      ) : (
+                        <>
+                          <span className={s.pairCategory}>{displayCategory(p.category)}</span>
+                          <p className={s.pairLabel}>{p.caption || p.label}</p>
+                          {isAdmin && p.id && (
+                            <div className={s.cardEdit}>
+                              <EditBtn
+                                title="Edit caption and category"
+                                onClick={() => startEdit(p)}
+                                disabled={!!busy}
+                              >
+                                <IconEdit size={13} />
+                              </EditBtn>
+                              <DeleteBtn title="Remove pair" onClick={() => removePair(p)} disabled={!!busy} />
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                     {busy === p.id && <div className={ie.busy} />}

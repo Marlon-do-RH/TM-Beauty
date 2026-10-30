@@ -111,6 +111,21 @@
 
 .cardEdit {
   margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editFields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .adminBar {
