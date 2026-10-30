@@ -1,22 +1,23 @@
 .page {
   height: calc(100dvh - 72px);
   min-height: calc(100dvh - 72px);
-  padding: 0;
-  background: var(--offwhite);
+  padding: 24px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--sage) 0%, var(--offwhite) 40%);
   display: flex;
-  justify-content: stretch;
+  justify-content: center;
   align-items: stretch;
   overflow: hidden;
 }
 
 .card {
   width: 100%;
+  max-width: 1100px;
   height: 100%;
-  max-width: none;
   background: var(--white);
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 16px 48px rgba(74, 52, 40, 0.08);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -28,23 +29,22 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 24px;
+  padding: 20px 28px 14px;
   border-bottom: 1px solid var(--border);
-  background: var(--white);
 }
 
 .eyebrow {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--chocolate);
   margin: 0;
@@ -76,14 +76,18 @@
 }
 
 @media (max-width: 640px) {
+  .page {
+    padding: 12px;
+  }
+
   .header {
-    padding: 12px 16px;
+    padding: 16px 16px 12px;
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
   }
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
   }
 }
