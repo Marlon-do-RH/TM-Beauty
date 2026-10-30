@@ -1,73 +1,89 @@
 .page {
-  min-height: calc(100vh - 72px);
-  padding: 48px 24px 80px;
-  background: linear-gradient(180deg, var(--sage) 0%, var(--offwhite) 40%);
+  height: calc(100dvh - 72px);
+  min-height: calc(100dvh - 72px);
+  padding: 0;
+  background: var(--offwhite);
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: stretch;
+  align-items: stretch;
+  overflow: hidden;
 }
 
 .card {
   width: 100%;
-  max-width: 1100px;
+  height: 100%;
+  max-width: none;
   background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  box-shadow: 0 16px 48px rgba(74, 52, 40, 0.08);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  padding: 28px 28px 16px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
 }
 
 .eyebrow {
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--chocolate);
   margin: 0;
+  line-height: 1.2;
+}
+
+.openLink {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+
+.openLink:hover {
+  color: var(--chocolate);
 }
 
 .scheduler {
+  flex: 1 1 auto;
   display: block;
   width: 100%;
-  min-height: 800px;
+  min-height: 0;
+  height: 100%;
   border: 0;
 }
 
-.fallback {
-  margin: 0;
-  padding: 12px 28px 24px;
-  font-size: 0.82rem;
-  color: var(--dark-soft);
-  text-align: center;
-}
-
-.fallback a {
-  color: var(--gold-dark);
-  font-weight: 600;
-}
-
 @media (max-width: 640px) {
-  .page {
-    padding: 24px 12px 60px;
-  }
-
   .header {
-    padding: 20px 16px 8px;
+    padding: 12px 16px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .scheduler {
-    min-height: 720px;
+  .title {
+    font-size: 1.2rem;
   }
 }

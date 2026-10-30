@@ -16,6 +16,7 @@ export function useConsultation() {
 export default function PublicLayout() {
   const { pathname } = useLocation()
   const [showModal, setShowModal] = useState(false)
+  const isBooking = pathname === '/booking' || pathname === '/agendar'
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -30,10 +31,10 @@ export default function PublicLayout() {
       <main style={{ paddingTop: '72px' }}>
         <Outlet />
       </main>
-      <Footer />
-      <ChatWidget />
+      {!isBooking && <Footer />}
+      {!isBooking && <ChatWidget />}
       {showModal && <ConsultationModal onClose={closeConsultation} />}
-      <WelcomeOffer />
+      {!isBooking && <WelcomeOffer />}
     </ConsultationContext.Provider>
   )
 }
