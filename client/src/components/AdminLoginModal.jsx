@@ -29,7 +29,7 @@ export default function AdminLoginModal({ onClose }) {
       const data = await login(email, password)
       if (data.role !== 'admin') {
         logout()
-        throw new Error('This login is for staff only. Book and redeem WELCOME10 in Acuity.')
+        throw new Error('This login is for staff only. Clients book on the site and redeem WELCOME10 at Square checkout.')
       }
       onClose()
     } catch (err) {

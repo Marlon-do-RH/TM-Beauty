@@ -1,41 +1,33 @@
-import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
-import { FIRST_VISIT_CODE } from '../../lib/coupon'
 import styles from './Booking.module.css'
 
-const ACUITY_OWNER = '40382920'
-const ACUITY_BASE = `https://app.acuityscheduling.com/schedule.php?owner=${ACUITY_OWNER}`
-const ACUITY_EMBED_JS = 'https://embed.acuityscheduling.com/js/embed.js'
+/** Square Appointments booking widget for this location. */
+const SQUARE_WIDGET_SRC =
+  'https://square.site/appointments/buyer/widget/e54unyi5128xkb/LWTMC13W73RJF.js'
 
-/** Map site service keys to Acuity appointmentType IDs when those types exist. */
-const SERVICE_TYPE_IDS = {
-  // consultation: '98230321',
-  // nano: '',
-  // botox: '',
-  // deep: '',
-}
-
-function acuitySrc(serviceKey) {
-  const typeId = SERVICE_TYPE_IDS[serviceKey]
-  const base = typeId ? `${ACUITY_BASE}&appointmentType=${typeId}` : ACUITY_BASE
-  return `${base}&coupon=${encodeURIComponent(FIRST_VISIT_CODE)}`
-}
+/** Direct booking flow (fallback / open-in-new-tab). */
+export const SQUARE_BOOKING_URL =
+  'https://app.squareup.com/appointments/book/e54unyi5128xkb/LWTMC13W73RJF/start'
 
 export default function Booking() {
   const { t } = useLanguage()
-  const [params] = useSearchParams()
-  const src = acuitySrc(params.get('service') || '')
+  const mountRef = useRef(null)
 
   useEffect(() => {
+    const mount = mountRef.current
+    if (!mount) return undefined
+
+    mount.innerHTML = ''
     const script = document.createElement('script')
-    script.src = ACUITY_EMBED_JS
+    script.src = SQUARE_WIDGET_SRC
     script.async = true
-    document.body.appendChild(script)
+    mount.appendChild(script)
+
     return () => {
-      script.remove()
+      mount.innerHTML = ''
     }
-  }, [src])
+  }, [])
 
   return (
     <div className={styles.page}>
@@ -44,15 +36,17 @@ export default function Booking() {
           <p className={styles.eyebrow}>{t('common', 'bookNow')}</p>
           <h1 className={styles.title}>{t('booking', 'title')}</h1>
         </div>
-        <iframe
-          src={src}
-          title={t('booking', 'title')}
+        <div
+          ref={mountRef}
           className={styles.scheduler}
-          width="100%"
-          height="800"
-          frameBorder="0"
-          allow="payment"
+          title={t('booking', 'title')}
         />
+        <p className={styles.fallback}>
+          Having trouble loading the calendar?{' '}
+          <a href={SQUARE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            Open booking in a new tab
+          </a>
+        </p>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function CouponModal({ onClose }) {
         <p className={styles.eyebrow}>Welcome gift</p>
         <h2 id="coupon-title" className={styles.title}>{FIRST_VISIT_PERCENT}% off your first booking</h2>
         <p className={styles.copy}>
-          Redeem now to apply this one-time code to your first booking. Enter it at checkout on Acuity when you book.
+          Redeem now to apply this one-time code to your first booking. Enter it at Square checkout when you book.
         </p>
         <p className={styles.code}>{FIRST_VISIT_CODE}</p>
         <div className={styles.actions}>

@@ -45,6 +45,19 @@
   border: 0;
 }
 
+.fallback {
+  margin: 0;
+  padding: 12px 28px 24px;
+  font-size: 0.82rem;
+  color: var(--dark-soft);
+  text-align: center;
+}
+
+.fallback a {
+  color: var(--gold-dark);
+  font-weight: 600;
+}
+
 @media (max-width: 640px) {
   .page {
     padding: 24px 12px 60px;

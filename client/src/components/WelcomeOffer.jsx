@@ -88,7 +88,7 @@ export default function WelcomeOffer() {
           </p>
           <p className={styles.sub}>your first booking</p>
           <p className={styles.copy}>
-            Use this code at Acuity checkout after you log in there. It applies once, on your first booking.
+            Use this code at Square checkout when you book. It applies once, on your first booking.
           </p>
           <p className={styles.code}>{FIRST_VISIT_CODE}</p>
           <button type="button" className={styles.cta} onClick={bookNow}>
