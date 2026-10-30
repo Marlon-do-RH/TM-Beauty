@@ -47,8 +47,7 @@ export default function Footer() {
 
         {/* Brand */}
         <div className={styles.brand}>
-          <BrandMark size={56} className={styles.logoMark} />
-          <p className={styles.tagline}>{t('footer', 'tagline')}</p>
+          <BrandMark size={88} className={styles.logoMark} />
           <p className={styles.sub}>{t('footer', 'sub')}</p>
         </div>
 

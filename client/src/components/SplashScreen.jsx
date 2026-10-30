@@ -19,13 +19,9 @@ export default function SplashScreen({ onDone }) {
           <span className={styles.ornLine} />
         </div>
 
-        <BrandMark size={72} className={styles.monogram} />
+        <BrandMark size={120} className={styles.monogram} />
 
-        {/* Brand name */}
         <h1 className={styles.name}>Nanoplasty by Thalita</h1>
-
-        {/* Tagline */}
-        <p className={styles.tagline}>Brazilian Hair Specialist · Melbourne</p>
 
         {/* Decorative line below */}
         <div className={styles.ornament}>

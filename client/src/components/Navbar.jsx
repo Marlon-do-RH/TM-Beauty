@@ -58,9 +58,8 @@ export default function Navbar() {
     <>
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
-        <Link to="/" className={styles.brand}>
-          <BrandMark size={44} className={styles.brandMark} />
-          <span className={styles.brandName}>Nanoplasty by Thalita</span>
+        <Link to="/" className={styles.brand} aria-label="Nanoplasty by Thalita">
+          <BrandMark size={52} className={styles.brandMark} />
         </Link>
 
         <ul className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
