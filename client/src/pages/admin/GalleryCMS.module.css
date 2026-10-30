@@ -119,6 +119,23 @@
   line-height: 1.4;
 }
 
+.editFields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editFields .label {
+  margin-bottom: 0;
+}
+
+.editActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
 .cardFooter {
   display: flex;
   justify-content: space-between;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './Admin.module.css'
 import g from './GalleryCMS.module.css'
-import { IconTrash, IconCamera, IconImage, IconStar } from '../../components/AdminIcons'
+import { IconTrash, IconCamera, IconImage, IconStar, IconEdit } from '../../components/AdminIcons'
 import { uploadToCloudinary } from '../../lib/uploadMedia'
 
 const categories = ['Nanoplasty', 'Botox', 'Deep Treatment']
@@ -16,6 +16,9 @@ export default function GalleryCMS() {
   const [afterFile, setAfterFile] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [filter, setFilter] = useState('all')
+  const [editingId, setEditingId] = useState(null)
+  const [editForm, setEditForm] = useState({ category: 'Nanoplasty', caption: '' })
+  const [savingEdit, setSavingEdit] = useState(false)
   const beforeRef = useRef()
   const afterRef = useRef()
 
@@ -68,6 +71,46 @@ export default function GalleryCMS() {
       if (newVal && x.category === item.category) return { ...x, featured: false }
       return x
     }))
+  }
+
+  const startEdit = item => {
+    setEditingId(item.id)
+    setEditForm({
+      category: displayCategory(item.category),
+      caption: item.caption || '',
+    })
+  }
+
+  const cancelEdit = () => {
+    setEditingId(null)
+    setEditForm({ category: 'Nanoplasty', caption: '' })
+  }
+
+  const saveEdit = async id => {
+    const caption = editForm.caption.trim()
+    if (!caption) {
+      alert('Caption cannot be empty.')
+      return
+    }
+    setSavingEdit(true)
+    try {
+      const res = await fetch(`/api/gallery?id=${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category: editForm.category,
+          caption,
+        }),
+      })
+      const updated = await res.json()
+      if (!res.ok) throw new Error(updated.error || 'Failed to save')
+      setItems(it => it.map(x => (x.id === updated.id ? updated : x)))
+      cancelEdit()
+    } catch (err) {
+      alert('Save error: ' + err.message)
+    } finally {
+      setSavingEdit(false)
+    }
   }
 
   const filtered = filter === 'all' ? items : items.filter(x => sameCategory(x.category, filter))
@@ -138,23 +181,65 @@ export default function GalleryCMS() {
               </div>
             </div>
             <div className={g.cardInfo}>
-              <span className={g.cardCategory}>{displayCategory(item.category)}</span>
-              <p className={g.cardCaption}>{item.caption}</p>
-              <div className={g.cardFooter}>
-                <span className={g.cardDate}>{item.created_at?.slice(0, 10) || ''}</span>
-                <div className={g.cardActions}>
-                  <button
-                    className={`${styles.actionBtn} ${item.featured ? g.featuredBtn : ''}`}
-                    onClick={() => toggleFeatured(item)}
-                    title={item.featured ? 'Featured on home page — click to unfeature' : 'Set as featured on home page'}
+              {editingId === item.id ? (
+                <div className={g.editFields}>
+                  <label className={styles.label}>Category</label>
+                  <select
+                    className={styles.select}
+                    value={editForm.category}
+                    onChange={e => setEditForm(f => ({ ...f, category: e.target.value }))}
                   >
-                    <IconStar size={13} /> {item.featured ? 'Featured' : 'Feature'}
-                  </button>
-                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
-                    <IconTrash size={12} /> Remove
-                  </button>
+                    {categories.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                  <label className={styles.label}>Caption</label>
+                  <input
+                    className={styles.input}
+                    value={editForm.caption}
+                    onChange={e => setEditForm(f => ({ ...f, caption: e.target.value }))}
+                    placeholder="e.g. Curly hair — silky straight"
+                  />
+                  <div className={g.editActions}>
+                    <button
+                      type="button"
+                      className={styles.submitBtn}
+                      disabled={savingEdit}
+                      onClick={() => saveEdit(item.id)}
+                    >
+                      {savingEdit ? 'Saving...' : 'Save'}
+                    </button>
+                    <button type="button" className={styles.actionBtn} disabled={savingEdit} onClick={cancelEdit}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <>
+                  <span className={g.cardCategory}>{displayCategory(item.category)}</span>
+                  <p className={g.cardCaption}>{item.caption}</p>
+                  <div className={g.cardFooter}>
+                    <span className={g.cardDate}>{item.created_at?.slice(0, 10) || ''}</span>
+                    <div className={g.cardActions}>
+                      <button
+                        className={styles.actionBtn}
+                        onClick={() => startEdit(item)}
+                        title="Edit caption and category"
+                      >
+                        <IconEdit size={12} /> Edit
+                      </button>
+                      <button
+                        className={`${styles.actionBtn} ${item.featured ? g.featuredBtn : ''}`}
+                        onClick={() => toggleFeatured(item)}
+                        title={item.featured ? 'Featured on home page — click to unfeature' : 'Set as featured on home page'}
+                      >
+                        <IconStar size={13} /> {item.featured ? 'Featured' : 'Feature'}
+                      </button>
+                      <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => remove(item.id)}>
+                        <IconTrash size={12} /> Remove
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ))}
