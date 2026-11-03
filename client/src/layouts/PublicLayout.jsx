@@ -17,6 +17,9 @@ export default function PublicLayout() {
   const { pathname } = useLocation()
   const [showModal, setShowModal] = useState(false)
   const isBooking = pathname === '/booking' || pathname === '/agendar'
+  // Service landing pages carry their own offer and book through JotForm,
+  // so the site-wide welcome popup (Square checkout code) stays off there.
+  const isLanding = pathname === '/nanoplasty' || pathname === '/botox'
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -34,7 +37,7 @@ export default function PublicLayout() {
       {!isBooking && <Footer />}
       {!isBooking && <ChatWidget />}
       {showModal && <ConsultationModal onClose={closeConsultation} />}
-      {!isBooking && <WelcomeOffer />}
+      {!isBooking && !isLanding && <WelcomeOffer />}
     </ConsultationContext.Provider>
   )
 }

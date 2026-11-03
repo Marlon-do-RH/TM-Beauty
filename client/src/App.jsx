@@ -16,6 +16,8 @@ import Avaliacoes from './pages/public/Avaliacoes'
 import FAQ from './pages/public/FAQ'
 import Contato from './pages/public/Contato'
 import Booking from './pages/public/Booking'
+import Nanoplasty from './pages/public/Nanoplasty'
+import HairBotox from './pages/public/HairBotox'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Appointments from './pages/admin/Appointments'
@@ -73,6 +75,9 @@ function App() {
             <Route path="/contato" element={<Redirect to="/contact" />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/agendar" element={<Redirect to="/booking" />} />
+            <Route path="/nanoplasty" element={<Nanoplasty />} />
+            <Route path="/botox" element={<HairBotox />} />
+            <Route path="/hair-botox" element={<Redirect to="/botox" />} />
             <Route path="/profile" element={<Navigate to="/" replace />} />
             <Route path="/auth/callback" element={<Navigate to="/" replace />} />
           </Route>
