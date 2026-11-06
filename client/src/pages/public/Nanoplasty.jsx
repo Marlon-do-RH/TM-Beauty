@@ -28,7 +28,7 @@ const REVIEWS = [
 function Offer() {
   return (
     <p className="gift">
-      First time with us? Get <strong>{FIRST_VISIT_PERCENT}% off</strong> your first Nanoplasty. Write <code>{FIRST_VISIT_CODE}</code> in the “Additional information” field of the booking form.
+      First time with us? Get <strong>{FIRST_VISIT_PERCENT}% off</strong> your first Nanoplasty. Use code <code>{FIRST_VISIT_CODE}</code> at checkout when you book.
     </p>
   )
 }
@@ -245,7 +245,7 @@ export default function Nanoplasty() {
             <BookButton service={SERVICE}>Book my Nanoplasty</BookButton>
             <WhatsAppButton service={SERVICE} light icon={false} />
           </div>
-          <p className="gift-line">First Nanoplasty? Write <code>{FIRST_VISIT_CODE}</code> in the booking form for {FIRST_VISIT_PERCENT}% off.</p>
+          <p className="gift-line">First Nanoplasty? Use code <code>{FIRST_VISIT_CODE}</code> at checkout for {FIRST_VISIT_PERCENT}% off.</p>
           <p className="contact-line">Bentleigh, Melbourne VIC · +61 450 442 869</p>
         </div>
       </section>

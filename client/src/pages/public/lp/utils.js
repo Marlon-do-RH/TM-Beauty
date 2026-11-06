@@ -1,11 +1,8 @@
 import { useEffect } from 'react'
 import { CONTACT_WHATSAPP } from '../../../lib/social'
 
-// Bookings from the landing pages go to Thalita's JotForm consultation form.
-// `selectA7` pre-ticks the service checkbox on the form.
-const JOTFORM_URL = 'https://form.jotform.com/263010596024853'
-
-export const bookingUrl = service => `${JOTFORM_URL}?selectA7=${encodeURIComponent(service)}`
+// Bookings from the landing pages go to the site's own booking page (Square).
+export const BOOKING_PATH = '/booking'
 
 export const whatsappUrl = service =>
   `https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent(`Hi Thalita, I'd like to know if ${service} is right for my hair.`)}`

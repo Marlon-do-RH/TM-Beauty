@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { faqFor } from './faqData'
-import { bookingUrl, whatsappUrl } from './utils'
+import { BOOKING_PATH, whatsappUrl } from './utils'
 
-export function BookButton({ service, children, className = 'btn btn-gold' }) {
+export function BookButton({ children, className = 'btn btn-gold' }) {
   return (
-    <a className={className} href={bookingUrl(service)}>
+    <Link className={className} to={BOOKING_PATH}>
       {children}
-    </a>
+    </Link>
   )
 }
 
