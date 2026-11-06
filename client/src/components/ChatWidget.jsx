@@ -130,7 +130,7 @@ export default function ChatWidget() {
     addMessage(s.book, s.reply_book, () => navigate('/booking'))
 
   const handleServices = () =>
-    addMessage(s.services, s.reply_services, () => navigate('/services'))
+    addMessage(s.services, s.reply_services, () => navigate('/#services'))
 
   const handleWhatsApp = () =>
     addMessage(s.whatsapp, s.reply_whatsapp, () =>

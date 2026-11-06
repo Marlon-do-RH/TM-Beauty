@@ -9,7 +9,7 @@ import SplashScreen from './components/SplashScreen'
 
 import Home from './pages/public/Home'
 // SobreThalita (About Us) is kept in the repo but not routed: unpublished from the site.
-import Servicos from './pages/public/Servicos'
+// Servicos (Services) is kept in the repo but not routed: unpublished from the site.
 import AntesDepois from './pages/public/AntesDepois'
 import Produtos from './pages/public/Produtos'
 import Avaliacoes from './pages/public/Avaliacoes'
@@ -59,8 +59,6 @@ function App() {
           <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Servicos />} />
-            <Route path="/servicos" element={<Redirect to="/services" />} />
             <Route path="/before-after" element={<AntesDepois />} />
             <Route path="/antes-depois" element={<Redirect to="/before-after" />} />
             <Route path="/products" element={<Produtos />} />

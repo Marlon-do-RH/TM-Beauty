@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import BookingButton from '../../components/BookingButton'
 import BeforeAfterCarousel from '../../components/BeforeAfterCarousel'
@@ -7,8 +7,8 @@ import HairLengthCutter from '../../components/HairLengthCutter'
 import styles from './Home.module.css'
 
 const serviceKeys = [
-  { key: 'nano', name: 'Nanoplasty', icon: '✦' },
-  { key: 'botox', name: 'Botox', icon: '✧' },
+  { key: 'nano', name: 'Nanoplasty', icon: '✦', to: '/nanoplasty' },
+  { key: 'botox', name: 'Botox', icon: '✧', to: '/botox' },
   { key: 'deep', name: 'Deep Treatment', icon: '◈' },
 ]
 
@@ -86,7 +86,15 @@ const reviews = [
 
 export default function Home() {
   const { t } = useLanguage()
+  const { hash } = useLocation()
   const [teaserPair, setTeaserPair] = useState(null)
+
+  // "/#services" (hero link, chat widget) scrolls to the services section
+  useEffect(() => {
+    if (hash === '#services') {
+      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [hash])
 
   useEffect(() => {
     fetch('/api/gallery?view=carousel')
@@ -115,7 +123,7 @@ export default function Home() {
           <p className={styles.heroTagline}>{t('home', 'heroTagline')}</p>
           <div className={styles.heroCtas}>
             <BookingButton label={t('nav', 'bookNow')} variant="primary" />
-            <Link to="/services" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
+            <Link to="/#services" className={styles.heroSecondary}>{t('home', 'viewServices')}</Link>
           </div>
           <p className={styles.langLine}>{t('home', 'languagesLine')}</p>
           <div className={styles.langRow}>
@@ -143,7 +151,7 @@ export default function Home() {
       </section>
 
       {/* Services preview */}
-      <section className={styles.section}>
+      <section className={styles.section} id="services" style={{ scrollMarginTop: 80 }}>
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>{t('home', 'servicesEyebrow')}</p>
           <h2 className={styles.sectionTitle}>{t('home', 'servicesTitle')}</h2>
@@ -155,7 +163,7 @@ export default function Home() {
               <span className={styles.serviceIcon}>{s.icon}</span>
               <h3 className={styles.serviceTitle}>{s.name}</h3>
               <p className={styles.serviceDesc}>{t('servicos', s.key)?.desc || ''}</p>
-              <Link to="/services" className={styles.serviceLink}>{t('home', 'learnMore')}</Link>
+              {s.to && <Link to={s.to} className={styles.serviceLink}>{t('home', 'learnMore')}</Link>}
             </div>
           ))}
         </div>
