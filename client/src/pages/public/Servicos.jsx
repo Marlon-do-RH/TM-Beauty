@@ -10,7 +10,7 @@ import s from './Servicos.module.css'
 import ie from '../../components/InlineEdit.module.css'
 
 const SERVICE_KEYS = [
-  { key: 'nano', benefits: ['b1', 'b2', 'b3', 'b4'], icon: '✦', price_min: 280, duration: '3–4', duration_unit: 'hours' },
+  { key: 'nano', benefits: ['b1', 'b2', 'b3', 'b4'], icon: '✦', price_min: 330, price_max: 550, duration: '3–4', duration_unit: 'hours' },
   { key: 'botox', benefits: ['b1', 'b2', 'b3', 'b4'], icon: '✧', price_min: 220, duration: '2–3', duration_unit: 'hours' },
   { key: 'deep', benefits: ['b1', 'b2', 'b3', 'b4'], icon: '◈', price_min: 180, duration: '1–2', duration_unit: 'hours' },
 ]
@@ -228,7 +228,7 @@ export default function Servicos() {
           tagline: data?.tagline,
           description: data?.desc,
           benefits: sk.benefits.map(b => data?.[b]).filter(Boolean),
-          priceLabel: formatPrice(sk.price_min),
+          priceLabel: formatPrice(sk.price_min, sk.price_max),
           durationLabel: formatDuration(sk.duration, sk.duration_unit),
           bookTo: `/booking?service=${sk.key}`,
           raw: null,

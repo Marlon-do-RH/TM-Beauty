@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage'
 import SplashScreen from './components/SplashScreen'
 
 import Home from './pages/public/Home'
-import SobreThalita from './pages/public/SobreThalita'
+// SobreThalita (About Us) is kept in the repo but not routed: unpublished from the site.
 import Servicos from './pages/public/Servicos'
 import AntesDepois from './pages/public/AntesDepois'
 import Produtos from './pages/public/Produtos'
@@ -59,13 +59,10 @@ function App() {
           <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/aboutus" element={<SobreThalita />} />
-            <Route path="/sobre" element={<Redirect to="/aboutus" />} />
             <Route path="/services" element={<Servicos />} />
             <Route path="/servicos" element={<Redirect to="/services" />} />
             <Route path="/before-after" element={<AntesDepois />} />
             <Route path="/antes-depois" element={<Redirect to="/before-after" />} />
-            <Route path="/studio" element={<Redirect to="/aboutus" />} />
             <Route path="/products" element={<Produtos />} />
             <Route path="/produtos" element={<Redirect to="/products" />} />
             <Route path="/reviews" element={<Avaliacoes />} />

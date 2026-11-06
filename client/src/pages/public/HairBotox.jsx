@@ -193,7 +193,7 @@ export default function HairBotox() {
                 <tr><th>Focus</th><td className="is-this">Softness, frizz control and volume reduction</td><td>Straightening and volume reduction</td></tr>
                 <tr><th>Lasts</th><td className="is-this">Up to 3 months</td><td>Around 6 months</td></tr>
                 <tr><th>Time</th><td className="is-this">3–3½ hours</td><td>3½–5½ hours</td></tr>
-                <tr><th>From</th><td className="is-this">A$220 – A$350</td><td>A$180 – A$450</td></tr>
+                <tr><th>From</th><td className="is-this">A$220 – A$350</td><td>A$330 – A$550</td></tr>
               </tbody>
             </table>
           </div>

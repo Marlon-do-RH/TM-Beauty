@@ -4,6 +4,8 @@ const translations = {
     nav: {
       home: 'Home',
       sobre: 'About Us',
+      nanoplasty: 'Nanoplasty',
+      botox: 'Hair Botox',
       servicos: 'Services',
       antesDepois: 'Before & After',
       experiencia: 'The Experience',
@@ -379,6 +381,8 @@ const translations = {
     nav: {
       home: 'Início',
       sobre: 'Sobre Nós',
+      nanoplasty: 'Nanoplastia',
+      botox: 'Botox Capilar',
       servicos: 'Serviços',
       antesDepois: 'Antes & Depois',
       experiencia: 'A Experiência',
@@ -561,7 +565,7 @@ const translations = {
 
   // ─────────────────────────────────────────────────────────────────────────
   fr: {
-    nav: { home: 'Accueil', sobre: 'À propos', servicos: 'Services', antesDepois: 'Avant & Après', experiencia: "L'Expérience", studio: 'Le Studio', produtos: 'Produits', avaliacoes: 'Avis', faq: 'FAQ', contato: 'Contact', bookNow: 'Réserver', adminLogin: 'Admin' },
+    nav: { home: 'Accueil', sobre: 'À propos', nanoplasty: 'Nanoplastie', botox: 'Botox Capillaire', servicos: 'Services', antesDepois: 'Avant & Après', experiencia: "L'Expérience", studio: 'Le Studio', produtos: 'Produits', avaliacoes: 'Avis', faq: 'FAQ', contato: 'Contact', bookNow: 'Réserver', adminLogin: 'Admin' },
     footer: { tagline: 'Thalita Medeiros', sub: 'Spécialiste en Cheveux Brésiliens à Melbourne', copy: 'Tous droits réservés.', nav: 'Navigation', more: 'Plus', connect: 'Connectez-vous', newsletter: 'Newsletter', newsletterSub: 'Recevez des conseils et actualités exclusifs.', newsletterPlaceholder: 'Votre e-mail' },
     home: {
       heroEyebrow: 'Spécialiste en Cheveux Brésiliens · Melbourne',
@@ -637,7 +641,7 @@ const translations = {
 
   // ─────────────────────────────────────────────────────────────────────────
   es: {
-    nav: { home: 'Inicio', sobre: 'Sobre Nosotros', servicos: 'Servicios', antesDepois: 'Antes & Después', experiencia: 'La Experiencia', studio: 'El Estudio', produtos: 'Productos', avaliacoes: 'Reseñas', faq: 'FAQ', contato: 'Contacto', bookNow: 'Reservar', adminLogin: 'Admin' },
+    nav: { home: 'Inicio', sobre: 'Sobre Nosotros', nanoplasty: 'Nanoplastia', botox: 'Botox Capilar', servicos: 'Servicios', antesDepois: 'Antes & Después', experiencia: 'La Experiencia', studio: 'El Estudio', produtos: 'Productos', avaliacoes: 'Reseñas', faq: 'FAQ', contato: 'Contacto', bookNow: 'Reservar', adminLogin: 'Admin' },
     footer: { tagline: 'Thalita Medeiros', sub: 'Especialista en Cabello Brasileño en Melbourne', copy: 'Todos los derechos reservados.', nav: 'Navegación', more: 'Más', connect: 'Conéctate', newsletter: 'Newsletter', newsletterSub: 'Recibe consejos y novedades exclusivas.', newsletterPlaceholder: 'Tu correo' },
     home: {
       heroEyebrow: 'Especialista en Cabello Brasileño · Melbourne',

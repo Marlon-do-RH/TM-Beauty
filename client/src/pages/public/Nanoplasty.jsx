@@ -80,7 +80,7 @@ export default function Nanoplasty() {
           <div className="fact"><strong>~6 months</strong><span>Lasting results</span></div>
           <div className="fact"><strong>0%</strong><span>Formaldehyde</span></div>
           <div className="fact"><strong>3½–5½ h</strong><span>In the chair</span></div>
-          <div className="fact"><strong>From A$180</strong><span>By hair length</span></div>
+          <div className="fact"><strong>From A$330</strong><span>By hair length</span></div>
         </div>
       </section>
 
@@ -175,7 +175,7 @@ export default function Nanoplasty() {
           <div className="price-card">
             <span className="eyebrow">Investment</span>
             <span className="from">From</span>
-            <div className="amount">A$180 – A$450</div>
+            <div className="amount">A$330 – A$550</div>
             <p className="dur">⏱ 3½–5½ hours · price depends on length, density and texture</p>
             <ul className="checks">
               <li>Assessment of your hair history</li>
@@ -207,7 +207,7 @@ export default function Nanoplasty() {
                 <tr><th>Focus</th><td className="is-this">Straightening and volume reduction</td><td>Softness, frizz control and volume reduction</td></tr>
                 <tr><th>Lasts</th><td className="is-this">Around 6 months</td><td>Up to 3 months</td></tr>
                 <tr><th>Time</th><td className="is-this">3½–5½ hours</td><td>3–3½ hours</td></tr>
-                <tr><th>From</th><td className="is-this">A$180 – A$450</td><td>A$220 – A$350</td></tr>
+                <tr><th>From</th><td className="is-this">A$330 – A$550</td><td>A$220 – A$350</td></tr>
               </tbody>
             </table>
           </div>

@@ -20,7 +20,8 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/', label: t('nav', 'home') },
-    { to: '/aboutus', label: t('nav', 'sobre') },
+    { to: '/nanoplasty', label: t('nav', 'nanoplasty') },
+    { to: '/botox', label: t('nav', 'botox') },
     { to: '/services', label: t('nav', 'servicos') },
     { to: '/before-after', label: t('nav', 'antesDepois') },
     { to: '/reviews', label: t('nav', 'avaliacoes') },
